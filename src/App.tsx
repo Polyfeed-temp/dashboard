@@ -1,24 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import {HighlightFeed} from "./components/HighlightFeed";
+import {NavBar} from "./components/NavBar";
+import {MultiSectionProgressBar} from "./components/ProgressBar";
+import {AssignmentView} from "./components/AssignmentView";
+import {UnitSummary} from "./components/UnitSummary";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <NavBar></NavBar>
+      <div className="grid grid-cols-3 gap-4">
+        <div className="pl-4 col-1">
+          <UnitSummary />
+        </div>
+        <div className="col-2-span-2">
+          <AssignmentView></AssignmentView>
+        </div>
+      </div>
     </div>
   );
 }
