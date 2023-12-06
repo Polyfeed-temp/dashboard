@@ -2,13 +2,13 @@ import React, {useState} from "react";
 
 function SignUpPage() {
   const [formData, setFormData] = useState({
-    authcate: "",
+    // authcate: "",
     email: "",
     lastName: "",
     firstName: "",
     role: "Student",
     password: "",
-    faculty: "",
+    faculty: "Engineering",
   });
 
   const handleChange = (e: {target: {name: any; value: any}}) => {
@@ -18,26 +18,22 @@ function SignUpPage() {
       [e.target.name]: e.target.value,
     });
   };
-  const allFieldsFilled = () => {
-    return Object.values(formData).every((field) => field !== "");
-  };
 
   const handleSubmit = (e: {preventDefault: () => void}) => {
     e.preventDefault();
+    console.log(formData);
     fetch("http://localhost:8000/api/user/signup", {
       method: "POST",
+      mode: "no-cors",
+
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify(formData),
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((error) => console.error("Error:", error));
-
-    console.log("Form Data:", formData);
-    // Add your submit logic here
+    }).then((response) => {
+      console.log(response);
+    });
   };
 
   return (
@@ -102,12 +98,7 @@ function SignUpPage() {
           </select>
           <button
             type="submit"
-            disabled={!allFieldsFilled()}
-            className={`col-span-2 py-2 rounded-md ${
-              allFieldsFilled()
-                ? "bg-blue-500 text-white hover:bg-blue-600"
-                : "bg-gray-500 text-gray-400 cursor-not-allowed"
-            }`}
+            className={`col-span-2 py-2 rounded-md ${"bg-gray-500 text-white hover:bg-black"}`}
           >
             Sign Up
           </button>

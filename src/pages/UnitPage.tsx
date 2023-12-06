@@ -1,31 +1,57 @@
 import {AssignmentView} from "../components/AssignmentView";
-
+import {Feedback} from "../types";
+const feedback: Feedback = {
+  assessmentId: 1,
+  assessmentName: "Assignment 1",
+  unitCode: "FIT2099",
+  mark: 80,
+  marker: "John Smith",
+  url: "https://lms.monash.edu/mod/assign/view.php?id=12092529#",
+  highlights: [
+    {
+      annotation: {
+        feedbackId: 1,
+        id: "83257719-0008-435d-90ee-273ee1bd2f1e",
+        text: "Test only odd N-bit prim",
+        annotationTag: "Strength",
+        notes: "<p>test</p>",
+      },
+    },
+    {
+      annotation: {
+        feedbackId: 1,
+        id: "83257719-0008-435d-90ee-273ee1bd2f1e",
+        text: "Test only odd N-bit prim",
+        annotationTag: "Strength",
+        notes: "<p>test</p>",
+      },
+      actionItems: [
+        {
+          action: "need to define weapons coorectly in the code",
+          actionpoint: "Contact Tutor",
+          deadline: new Date(20 / 11 / 2023),
+          completed: false,
+        },
+        {
+          action: "action point2 ",
+          actionpoint: "Contact Tutor",
+          deadline: new Date(20 / 11 / 2023),
+          completed: true,
+        },
+        {
+          action: "need to define weapons coorectly in the code",
+          actionpoint: "Contact Tutor",
+          deadline: new Date(20 / 11 / 2023),
+          completed: false,
+        },
+      ],
+    },
+  ],
+};
 export function UnitSummaryPage() {
   return (
     <>
-      <AssignmentView
-        unitHighlight={{
-          unitCode: "FIT2099",
-          assignment: "Assignment 1",
-          annotation: {
-            id: "83257719-0008-435d-90ee-273ee1bd2f1e",
-            startMeta: {
-              parentTagName: "DIV",
-              parentIndex: 78,
-              textOffset: 102,
-            },
-            endMeta: {
-              parentTagName: "DIV",
-              parentIndex: 78,
-              textOffset: 126,
-            },
-            text: "Test only odd N-bit prim",
-            url: "https://lms.monash.edu/mod/assign/view.php?id=12092529#",
-            annotationTag: "Strength",
-            notes: "<p>test</p>",
-          },
-        }}
-      ></AssignmentView>
+      <AssignmentView feedback={feedback}></AssignmentView>
     </>
   );
 }

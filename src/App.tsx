@@ -48,8 +48,9 @@ function App() {
 
   return (
     <div>
-      <NavBar></NavBar>
       <BrowserRouter>
+        <NavBar></NavBar>
+
         <Routes>
           <Route path="/" element={<OverviewPage />}></Route>
           <Route path="/signup" element={<SignUpPage />}></Route>

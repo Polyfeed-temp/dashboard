@@ -1,25 +1,16 @@
 import React, {useState} from "react";
+import {useUserDispatch} from "../store/UserContext";
 export function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const userDispatch = useUserDispatch();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new URLSearchParams();
-    formData.append("username", username);
-    formData.append("password", password);
-    const res = await fetch("http://localhost:8000/api/login/token", {
-      method: "POST",
-      body: formData,
-      credentials: "include",
+    userDispatch({
+      type: "LOGIN",
+      payload: {username: username, password: password},
     });
-
-    if (res.status === 200) {
-      res.json().then((data) => {
-        localStorage.setItem("token", data.access_token);
-      });
-      //   setIsLoggedIn(true);
-    }
   };
 
   return (
