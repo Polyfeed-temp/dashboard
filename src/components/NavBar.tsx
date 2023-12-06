@@ -11,13 +11,19 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import React, {useState} from "react";
-import LoginPopup from "./LoginPopup";
+import {useUserDispatch, useUserState} from "../store/UserContext";
+import {Link} from "react-router-dom";
 
 export function NavBar() {
-  const [activeButton, setActiveButton] = useState("");
-  const buttons = ["Overview", "FIT 2099", "FIT 2004", "ENG 1055"];
+  const [activeButton, setActiveButton] = useState("OVERVIEW");
+  const buttons = ["FIT 2099", "FIT 2004", "ENG 1055"];
   const [isOpen, setIsOpen] = useState(false);
-  const user = {login: false};
+  const user = useUserState();
+  const userDispatch = useUserDispatch();
+  const initial =
+    user.user?.firstName.substring(0, 1) +
+    " " +
+    user.user?.lastName.substring(0, 1);
   return (
     <Navbar className="max-w-full">
       <div className="container mx-auto flex flex-col text-blue-gray-900">
@@ -28,12 +34,9 @@ export function NavBar() {
               <div className="flex items-center gap-x-1">
                 <Menu>
                   <MenuHandler>
-                    <Avatar
-                      variant="circular"
-                      alt="tania andrew"
-                      className="cursor-pointer"
-                      src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
-                    />
+                    <button className="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-500 rounded-full dark:bg-gray-600">
+                      <span>{initial}</span>
+                    </button>
                   </MenuHandler>
                   <MenuList>
                     <MenuItem className="flex items-center gap-2">
@@ -58,7 +61,12 @@ export function NavBar() {
                     </MenuItem>
 
                     <hr className="my-2 border-blue-gray-50" />
-                    <MenuItem className="flex items-center gap-2 ">
+                    <MenuItem
+                      className="flex items-center gap-2 "
+                      onClick={() => {
+                        userDispatch({type: "LOGOUT"});
+                      }}
+                    >
                       <svg
                         width="16"
                         height="14"
@@ -73,6 +81,7 @@ export function NavBar() {
                           fill="#90A4AE"
                         />
                       </svg>
+
                       <Typography variant="small" className="font-medium">
                         Sign Out
                       </Typography>
@@ -84,11 +93,26 @@ export function NavBar() {
 
             {/* Second Row */}
             <div className="flex items-center justify-end gap-x-2 mt-4">
+              <Button
+                key={"OVERVIEW"}
+                variant={activeButton === "OVERVIEW" ? "filled" : "outlined"}
+                onClick={() => {
+                  setActiveButton("OVERVIEW");
+
+                  window.location.href = "/";
+                }}
+              >
+                {" "}
+                Overview
+              </Button>
               {buttons.map((button, index) => (
                 <Button
                   key={index}
                   variant={activeButton === button ? "filled" : "outlined"}
-                  onClick={() => setActiveButton(button)}
+                  onClick={() => {
+                    setActiveButton(button);
+                    window.location.href = "/unit";
+                  }}
                 >
                   {button}
                 </Button>
@@ -99,8 +123,8 @@ export function NavBar() {
           <div className="flex items-center justify-between">
             <img src="/logo.png" alt="Logo" className="h-8 md:h-12" />
             <div className="flex items-center gap-x-1">
-              <button className="mr-2"> Sign Up</button>
-              <button> Login</button>
+              <Link to="/signUp"> Sign up</Link>
+              <Link to="/login"> Login</Link>
             </div>
           </div>
         )}
