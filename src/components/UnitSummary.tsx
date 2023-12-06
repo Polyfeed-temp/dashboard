@@ -13,12 +13,21 @@ import {
 } from "@material-tailwind/react";
 import {useState} from "react";
 
-export function UnitSummary() {
+export function UnitSummary({
+  tab,
+  setTab,
+}: {
+  tab: string;
+  setTab: (x: string) => void;
+}) {
   const [selected, setSelected] = useState(1);
   const setSelectedItem = (value: number) => setSelected(value);
   return (
     <div className="flex flex-col space-y-4">
-      <div className="w-96 bg-black text-white rounded-md p-1">
+      <div
+        className="w-96 bg-(135,1) text-white rounded-md p-1"
+        style={{backgroundColor: "#878787"}}
+      >
         <Typography variant="lead" color="white" className="font-normal">
           Overall Summary
         </Typography>
@@ -37,27 +46,41 @@ export function UnitSummary() {
             // onChange={handleLabelChange}
           >
             <option value="">FIT2099</option>
-            <option value="label1">Strength</option>
-            <option value="label2">Weakness</option>
-            <option value="label3"> To-Do</option>
-            <option value="other">Other</option>
+            <option value="">FIT2100</option>
+            <option value="">FIT2094</option>
+            <option value="">FIT2002</option>
           </select>
         </CardHeader>
         <CardBody>
           <List>
             <ListItem
               selected={selected === 1}
-              onClick={() => setSelectedItem(1)}
+              onClick={() => {
+                setSelectedItem(1);
+                setTab("strength");
+              }}
             >
               Strength Summary
             </ListItem>
             <ListItem
               selected={selected === 2}
-              onClick={() => setSelectedItem(2)}
+              onClick={() => {
+                setSelectedItem(2);
+                setTab("weakness");
+              }}
             >
               Weakness Summary
             </ListItem>
             <ListItem
+              selected={selected === 2}
+              onClick={() => {
+                setSelectedItem(2);
+                setTab("actions");
+              }}
+            >
+              Actions
+            </ListItem>
+            {/* <ListItem
               selected={selected === 3}
               onClick={() => setSelectedItem(3)}
             >
@@ -68,7 +91,7 @@ export function UnitSummary() {
               onClick={() => setSelectedItem(4)}
             >
               Interaction with Learning Activities
-            </ListItem>
+            </ListItem> */}
           </List>
         </CardBody>
       </Card>
