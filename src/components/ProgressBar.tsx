@@ -17,7 +17,7 @@ export function MultiSectionProgressBar() {
 
   return (
     <div>
-      {checklistItems.map((item, index) => (
+      {/* {checklistItems.map((item, index) => (
         <div key={index} className="mb-2">
           <input
             type="checkbox"
@@ -26,7 +26,7 @@ export function MultiSectionProgressBar() {
           />
           {item.label}
         </div>
-      ))}
+      ))} */}
 
       <div className="mb-2 flex ">
         {checklistItems.map((item, index) => (

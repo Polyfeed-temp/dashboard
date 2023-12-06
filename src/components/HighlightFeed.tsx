@@ -2,60 +2,55 @@ import {
   Card,
   CardHeader,
   CardBody,
-  CardFooter,
   Typography,
-  Button,
   IconButton,
 } from "@material-tailwind/react";
 import {ActionItemChecklist} from "./ActionItemChecklist";
 import {AnnotationActionPoint} from "./ActionItemChecklist";
 import {MultiSectionProgressBar} from "./ProgressBar";
+import {AnnotationData} from "../types";
+const icons = {
+  strength: "/tag_icons/Strength_Col_Pos.svg",
+  weakness: "/tag_icons/Weakness_Col_Neg.svg",
+  Confused: "/tag_icons/Confused_Col_Neg.svg",
+  Action: "/tag_icons/Action_Col_Pos.svg",
+  Other: "/tag_icons/Other_Col_Neg.svg",
+};
 
-export function HighlightFeed() {
+export function HighlightFeed({Highlight}: {Highlight: AnnotationData}) {
   return (
     <Card className="mt-6 w-96 border border-solid border-gray-300 relative">
-      <CardHeader floated={false} shadow={false}>
-        <h2 className="text-2xl font-semibold">Highlight</h2>
+      <CardHeader floated={false} shadow={false} className="rounded-none">
+        <div className="flex items-center">
+          <img
+            src={icons.strength}
+            style={{width: 20, height: 20}}
+            alt="Strength Icon"
+          />
+          <h3 className="ml-2">Strength</h3>
+        </div>
       </CardHeader>
-      <hr style={{borderTop: "3px solid #bbb"}}></hr>
+      <hr style={{borderTop: "2px solid #bbb"}}></hr>
       <CardBody className="relative">
         <div className="flex flex-col justify-between h-full">
-          <Typography>
-            The place is close to Barceloneta Beach and bus stop just 2 min by
-            walk and near to &quot;Naviglio&quot; where you can enjoy the main
-            night life in Barcelona.
-          </Typography>
-          <ActionItemChecklist
-            actionPointItem={
-              {
-                action: "need to define weapons coorectly in the code",
-                actionpoint: "Contact Tutor",
-                deadline: new Date(20 / 11 / 2023),
-              } as AnnotationActionPoint
-            }
-          />
-          <ActionItemChecklist
-            actionPointItem={
-              {
-                action:
-                  "need to define weapons coorectly in the code " +
-                  `  The place is close to Barceloneta Beach and bus stop just 2 min by
-          walk and near to &quot;Naviglio&quot; where you can enjoy the main
-          night life in Barcelona.`,
-                actionpoint: "Contact Tutor",
-                deadline: new Date(20 / 11 / 2023),
-              } as AnnotationActionPoint
-            }
-          />
-          <ActionItemChecklist
-            actionPointItem={
-              {
-                action: "need to define weapons coorectly in the code",
-                actionpoint: "Contact Tutor",
-                deadline: new Date(20 / 11 / 2023),
-              } as AnnotationActionPoint
-            }
-          />
+          <p className="text text-gray-700 italic">
+            <span className="block text-sm text-gray-500 mb-1">
+              {Highlight.annotation.text}
+            </span>
+          </p>
+
+          {Highlight.annotation.notes ? (
+            <div
+              dangerouslySetInnerHTML={{__html: Highlight.annotation.notes}}
+            />
+          ) : null}
+          {Highlight.actionItems
+            ? Highlight.actionItems.map((actionItem: AnnotationActionPoint) => (
+                <ActionItemChecklist
+                  actionPointItem={actionItem}
+                ></ActionItemChecklist>
+              ))
+            : null}
         </div>
 
         <div className="flex justify-end gap-x-2 pt-2">
@@ -92,7 +87,6 @@ export function HighlightFeed() {
             </svg>
           </IconButton>
         </div>
-        <MultiSectionProgressBar />
       </CardBody>
       {/* <CardFooter className="right pt-0"></CardFooter> */}
     </Card>
