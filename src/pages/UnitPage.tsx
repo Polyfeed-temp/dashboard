@@ -1,5 +1,7 @@
 import {AssignmentView} from "../components/AssignmentView";
 import {Feedback} from "../types";
+import {useEffect, useState} from "react";
+import UserService from "../services/user.service";
 const feedback: Feedback = {
   assessmentId: 1,
   assessmentName: "Assignment 1",
@@ -49,9 +51,19 @@ const feedback: Feedback = {
   ],
 };
 export function UnitSummaryPage() {
+  const [feedbacks, setFeedback] = useState<Feedback[]>([]);
+  const userService = new UserService();
+  useEffect(() => {
+    userService.getUserFeedbacks().then((res) => setFeedback(res));
+  }, []);
+
+  console.log(feedbacks);
+
   return (
     <>
-      <AssignmentView feedback={feedback}></AssignmentView>
+      {feedbacks.map((feedback) => (
+        <AssignmentView feedback={feedback} />
+      ))}
     </>
   );
 }

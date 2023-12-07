@@ -1,5 +1,5 @@
 import axios, { TOKEN_KEY } from "./api.service"
-import { UserState, User } from "../types";
+import { UserState, User, Feedback } from "../types";
 
 const USER_KEY = "user";
 class UserService {
@@ -41,9 +41,15 @@ class UserService {
     }
 
     public async register(user: User) {
-        const response = await axios.post("api/login/register", user);
+        const response = await axios.post("api/user/signup", user, { withCredentials: true, headers: { 'Content-Type': 'application/json', "Authorization": 'Bearer ' + localStorage.getItem('token') }, });
         return response.data as UserState
 
+    }
+
+    public async getUserFeedbacks() {
+        const response = await axios.get("api/feedback/all");
+
+        return response.data as Feedback[]
     }
 
 
