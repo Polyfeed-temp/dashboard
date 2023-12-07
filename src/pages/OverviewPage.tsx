@@ -11,18 +11,25 @@ import {useState} from "react";
 
 export function OverviewPage() {
   const user = useUserState();
-  const [tab, setTab] = useState("strength");
+  const [tab, setTab] = useState("overview");
   function graphs() {
     switch (tab) {
       case "actions":
         return <ActionItemBarChart />;
+      case "overview":
+        return (
+          <>
+            <h1>Strength Across Units</h1>
+            <CommonStrengthChart />
+            <h1>Weaknesses Across Units</h1>
+            <CommonWeaknessChart />
+          </>
+        );
       case "strength":
         return (
           <>
             <h1>Strength Across Assessments</h1>
             <TemporalStrengthChart />
-            <h1>Strength Across Units</h1>
-            <CommonStrengthChart />
           </>
         );
       case "weakness":
@@ -30,8 +37,6 @@ export function OverviewPage() {
           <>
             <h1>Weaknesses Across Assessments</h1>
             <TemporalWeaknessChart />
-            <h1>Weaknesses Across Units</h1>
-            <CommonWeaknessChart />
           </>
         );
       default:
