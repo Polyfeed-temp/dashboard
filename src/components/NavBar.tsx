@@ -14,10 +14,9 @@ import React, {useState} from "react";
 import {useUserDispatch, useUserState} from "../store/UserContext";
 import {Link} from "react-router-dom";
 
-export function NavBar() {
+export function NavBar({unitCodes}: {unitCodes: string[]}) {
   const [activeButton, setActiveButton] = useState("OVERVIEW");
-  const buttons = ["FIT 2099", "FIT 2004", "ENG 1055"];
-  const [isOpen, setIsOpen] = useState(false);
+
   const user = useUserState();
   const userDispatch = useUserDispatch();
   const initial =
@@ -93,29 +92,31 @@ export function NavBar() {
 
             {/* Second Row */}
             <div className="flex items-center justify-end gap-x-2 mt-4">
-              <Button
-                key={"OVERVIEW"}
-                variant={activeButton === "OVERVIEW" ? "filled" : "outlined"}
-                onClick={() => {
-                  setActiveButton("OVERVIEW");
-
-                  window.location.href = "/";
-                }}
+              <Link
+                key="OVERVIEW"
+                to={"/"}
+                className={`font-bold py-2 px-4 rounded ${
+                  activeButton === "OVERVIEW"
+                    ? "bg-black"
+                    : "bg-gray-500 hover:bg-black"
+                } text-white`}
+                onClick={() => setActiveButton("OVERVIEW")}
               >
-                {" "}
-                Overview
-              </Button>
-              {buttons.map((button, index) => (
-                <Button
-                  key={index}
-                  variant={activeButton === button ? "filled" : "outlined"}
-                  onClick={() => {
-                    setActiveButton(button);
-                    window.location.href = "/unit";
-                  }}
+                OVERVIEW
+              </Link>
+              {unitCodes.map((unitCode) => (
+                <Link
+                  key={unitCode}
+                  to={`/feedback/${unitCode}`}
+                  className={`font-bold py-2 px-4 rounded ${
+                    activeButton === unitCode
+                      ? "bg-black"
+                      : "bg-gray-500 hover:bg-black"
+                  } text-white`}
+                  onClick={() => setActiveButton(unitCode)}
                 >
-                  {button}
-                </Button>
+                  {unitCode}
+                </Link>
               ))}
             </div>
           </>

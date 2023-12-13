@@ -12,9 +12,27 @@ import {OverviewPage} from "./pages/OverviewPage";
 import SignUpPage from "./pages/SignUpPage";
 import {LoginPage} from "./pages/LoginPage";
 import {UnitSummaryPage} from "./pages/UnitPage";
+import {Feedback} from "./types";
+import UserService from "./services/user.service";
 
 function App() {
   const [unitFeedBacks, setUnitFeedBacks] = useState([]);
+  const [feedbacks, setFeedback] = useState<Feedback[]>([]);
+  const userService = new UserService();
+  useEffect(() => {
+    userService.getUserFeedbacks().then((res) => setFeedback(res));
+  }, []);
+
+  const groupedByUnitCode = feedbacks.reduce((acc, item) => {
+    if (!acc[item.unitCode]) {
+      acc[item.unitCode] = [];
+    }
+    acc[item.unitCode].push(item);
+    return acc;
+  }, {} as {[key: string]: Feedback[]});
+
+  console.log(groupedByUnitCode);
+
   useEffect(() => {
     fetch("http://localhost:8000/api/annotation/all")
       .then((response) => response.json())
@@ -49,13 +67,17 @@ function App() {
   return (
     <div>
       <BrowserRouter>
-        <NavBar></NavBar>
+        <NavBar unitCodes={Object.keys(groupedByUnitCode)}></NavBar>
 
         <Routes>
           <Route path="/" element={<OverviewPage />}></Route>
           <Route path="/signup" element={<SignUpPage />}></Route>
           <Route path="/login" element={<LoginPage />}></Route>
-          <Route path="/unit" element={<UnitSummaryPage />}></Route>
+
+          <Route
+            path="/feedback/:unitCode"
+            element={<UnitSummaryPage groupedByUnitCode={groupedByUnitCode} />}
+          ></Route>
         </Routes>
       </BrowserRouter>
     </div>
