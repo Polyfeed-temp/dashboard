@@ -1,27 +1,74 @@
 import {Feedback} from "../types";
 import {HighlightFeed} from "./HighlightFeed";
 import {Typography, Button} from "@material-tailwind/react";
-import {MultiSectionProgressBar} from "./ProgressBar";
-
+import {ProgressBarSummary} from "./ProgressBar";
+import {ActionItemsSummary} from "../types";
+import {useState} from "react";
 export function AssignmentView({feedback}: {feedback: Feedback}) {
+  const actionItemSummary = feedback?.highlights?.reduce(
+    (acc, item) => {
+      if (item.actionItems) {
+        const completed = item.actionItems.filter(
+          (actionItem) => actionItem.completed
+        );
+        const incomplete = item.actionItems.length - completed.length;
+
+        return {
+          ...acc,
+          completed: acc.completed + completed.length,
+          incomplete: acc.incomplete + incomplete,
+        };
+      }
+      return acc;
+    },
+    {completed: 0, incomplete: 0} as ActionItemsSummary
+  ) || {completed: 0, incomplete: 0};
+  const [actionItemSummaryState, setActionItemSummaryState] =
+    useState<ActionItemsSummary>(actionItemSummary);
+
+  // console.log(feedback, feedback.assessmentName, actionItemSummaryState);
+  const actionItemSummaryFunc = (complete: boolean) => {
+    const updatedState = {
+      ...actionItemSummaryState,
+      completed: complete
+        ? actionItemSummaryState.completed + 1
+        : actionItemSummaryState.completed - 1,
+      incomplete: complete
+        ? actionItemSummaryState.incomplete - 1
+        : actionItemSummaryState.incomplete + 1,
+    };
+    setActionItemSummaryState(updatedState);
+  };
   return (
-    <div className="flex flex-col space-y-4">
-      <div className="w-96 bg-black text-white rounded-md p-1">
+    <div>
+      <div className="w-full bg-black text-white rounded-md p-1">
         <Typography variant="lead" color="white" className="font-normal">
           {feedback.assessmentName}
         </Typography>
       </div>
-
-      {feedback.highlights?.map((highlight) => (
-        <HighlightFeed Highlight={highlight} />
-      ))}
-      <div className="w-96">
-        <MultiSectionProgressBar></MultiSectionProgressBar>
+      <div className="flex flex-wrap">
+        {feedback.highlights?.map((highlight) => (
+          <div key={highlight.annotation.id} className=" p-2">
+            <HighlightFeed
+              Highlight={highlight}
+              setActionItemFunc={actionItemSummaryFunc}
+            />
+          </div>
+        ))}
       </div>
+
+      {actionItemSummaryState.completed + actionItemSummaryState.incomplete >
+        0 && (
+        <div className="w-full">
+          <ProgressBarSummary
+            actionItemSummary={actionItemSummaryState}
+          ></ProgressBarSummary>
+        </div>
+      )}
 
       <Button
         onClick={() => (window.location.href = feedback.url)}
-        className="mt-4 flex items-centermt-4 w-96 bg-black text-white rounded-md p-1 justify-between "
+        className="mt-4 flex items-center mt-4 w-full bg-black text-white rounded-md p-1 justify-between"
       >
         <Typography variant="small" color="white" className="font-normal">
           View Full Feedback
