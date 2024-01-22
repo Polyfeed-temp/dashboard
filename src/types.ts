@@ -7,6 +7,7 @@ export interface Annotation {
     annotationTag: AnnotationTag;
     notes?: string
     gptResponse?: string
+    commonTheme?: string
 }
 export interface AnnotationData {
     annotation: Annotation;
@@ -15,16 +16,20 @@ export interface AnnotationData {
 export type ActionPointCategory =
     | "Further Practice"
     | "Contact Tutor"
-    | "Ask Classmate"
+    | "Ask Classmates"
     | "Refer Learning Resources"
     | "Explore Online"
     | "Other";
+
 export interface AnnotationActionPoint {
+    id?: number;
     action: string;
-    actionpoint: ActionPointCategory;
+    category: ActionPointCategory;
     deadline: Date;
-    completed: boolean;
+    status: boolean;
 }
+
+
 export interface Feedback {
     id?: number
     assessmentId: number
@@ -40,7 +45,7 @@ export interface Feedback {
     url: string
 }
 
-type role = "Student" | "Tutor" | "Admin" | "Chief Examiner"
+export type Role = "Student" | "Tutor" | "Admin" | "Chief Examiner"
 
 export interface User {
     firstName: string;
@@ -49,7 +54,7 @@ export interface User {
     authcate: string
     email: string
     lastName: string;
-    role: role
+    role: Role
     faculty: string;
 }
 
@@ -58,3 +63,11 @@ export interface UserState {
     access_token?: string;
     user: User | null;
 }
+
+export interface ActionItemsSummary {
+    completed: number
+    incomplete: number
+    assessmentName?: string
+}
+
+export type Faculty = "Information Technology" | "Engineering" | "Arts" | "Business and Economics" | "Science" | "Medicine, Nursing and Health Sciences" | "Education" | "Law" | "Pharmacy" | "Art, Design and Architecture" | "Pharmacy and Pharmaceutical Sciences"
