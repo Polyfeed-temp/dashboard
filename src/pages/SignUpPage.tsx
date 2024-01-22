@@ -1,6 +1,9 @@
 import React, {useState} from "react";
-
+import UserService from "../services/user.service";
+import {User, Role, Faculty} from "../types";
 function SignUpPage() {
+  const [message, setMessage] = useState<string | null>(null);
+  const userService = new UserService();
   const [formData, setFormData] = useState({
     // authcate: "",
     email: "",
@@ -8,11 +11,10 @@ function SignUpPage() {
     firstName: "",
     role: "Student",
     password: "",
-    faculty: "Engineering",
+    faculty: "",
   });
 
   const handleChange = (e: {target: {name: any; value: any}}) => {
-    console.log(formData);
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -21,21 +23,36 @@ function SignUpPage() {
 
   const handleSubmit = (e: {preventDefault: () => void}) => {
     e.preventDefault();
-    console.log(formData);
-    fetch("http://localhost:8000/api/user/signup", {
-      method: "POST",
-      mode: "no-cors",
 
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    }).then((response) => {
-      console.log(response);
-    });
+    const user: User = {
+      ...formData,
+      monashObjectId: "",
+      authcate: formData.email.split("@")[0],
+      role: formData.role as Role,
+    };
+
+    userService
+      .register(user)
+      .then((res) => {
+        setMessage("User registered successfully");
+        window.location.href = "/login";
+      })
+      .catch((err) => {
+        setMessage("Unable to register user please try again");
+      });
   };
-
+  const faculty: Faculty[] = [
+    "Arts",
+    "Art, Design and Architecture",
+    "Business and Economics",
+    "Education",
+    "Engineering",
+    "Information Technology",
+    "Law",
+    "Medicine, Nursing and Health Sciences",
+    "Pharmacy and Pharmaceutical Sciences",
+    "Science",
+  ];
   return (
     <div className="flex flex-col items-center ">
       <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
@@ -92,9 +109,14 @@ function SignUpPage() {
             value={formData.faculty}
             onChange={handleChange}
           >
-            <option value="Engineering">Engineering</option>
-            <option value="Science">Science</option>
-            <option value="Arts">Arts</option>
+            <option value="" disabled selected>
+              Select your faculty
+            </option>
+            {faculty.map((f) => (
+              <option key={f} value={f}>
+                {f}
+              </option>
+            ))}
           </select>
           <button
             type="submit"
@@ -103,6 +125,9 @@ function SignUpPage() {
             Sign Up
           </button>
         </form>
+        {message && (
+          <div className="mt-4 w-full text-center py-2 ">{message}</div>
+        )}
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ export function LoginPage() {
   };
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center ">
       <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
         <h1 className="text-4xl font-bold mb-8">Login</h1>
         <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4">
