@@ -1,15 +1,25 @@
-import {Feedback} from "../types";
+import {AnnotationData, Feedback} from "../types";
 import {HighlightFeed} from "./HighlightFeed";
 import {Typography, Button} from "@material-tailwind/react";
 import {ProgressBarSummary} from "./ProgressBar";
 import {ActionItemsSummary} from "../types";
 import {useState} from "react";
-export function AssignmentView({feedback}: {feedback: Feedback}) {
+import {updateActionStatus} from "../services/actionItem.service";
+import {toast} from "react-toastify";
+export function AssignmentView({
+  feedback,
+  deleteHighlightFunc,
+  editFunc,
+}: {
+  feedback: Feedback;
+  deleteHighlightFunc: (id: string) => void;
+  editFunc: (isAction: boolean) => (highlight: AnnotationData) => void;
+}) {
   const actionItemSummary = feedback?.highlights?.reduce(
     (acc, item) => {
       if (item.actionItems) {
         const completed = item.actionItems.filter(
-          (actionItem) => actionItem.completed
+          (actionItem) => actionItem.status
         );
         const incomplete = item.actionItems.length - completed.length;
 
@@ -27,7 +37,16 @@ export function AssignmentView({feedback}: {feedback: Feedback}) {
     useState<ActionItemsSummary>(actionItemSummary);
 
   // console.log(feedback, feedback.assessmentName, actionItemSummaryState);
-  const actionItemSummaryFunc = (complete: boolean) => {
+  const actionItemSummaryFunc = (id: number) => (complete: boolean) => {
+    if (id) {
+      const status = updateActionStatus(id, complete);
+      toast.promise(status, {
+        pending: "Changing status...",
+        success: "Updated",
+        error: "Error when updating",
+      });
+    }
+
     const updatedState = {
       ...actionItemSummaryState,
       completed: complete
@@ -52,6 +71,8 @@ export function AssignmentView({feedback}: {feedback: Feedback}) {
             <HighlightFeed
               Highlight={highlight}
               setActionItemFunc={actionItemSummaryFunc}
+              deleteFunc={() => deleteHighlightFunc(highlight.annotation.id)}
+              editFunc={editFunc}
             />
           </div>
         ))}

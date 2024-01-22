@@ -14,12 +14,14 @@ export function SideMenu({
   list,
 
   listFunc,
+  dropdownFunc,
 }: {
   title: string;
   dropdownValues?: string[];
   list: string[];
 
   listFunc: Array<() => void>;
+  dropdownFunc?: (x: string) => void;
 }) {
   return (
     <Card className="mt-6 w-full md:w-auto border border-solid border-gray-300 relative">
@@ -33,6 +35,7 @@ export function SideMenu({
               id="label-dropdown"
               // value={selectedLabel}
               // onChange={handleLabelChange}
+              onChange={(e) => dropdownFunc && dropdownFunc(e.target.value)}
             >
               {dropdownValues.map((value) => (
                 <option value={value}>{value}</option>

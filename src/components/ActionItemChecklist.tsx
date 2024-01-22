@@ -1,24 +1,28 @@
 import {Checkbox, Typography} from "@material-tailwind/react";
-export type ActionPointCategory =
-  | "Further Practice"
-  | "Contact Tutor"
-  | "Ask Classmate"
-  | "Refer Learning Resources"
-  | "Explore Online"
-  | "Other";
-export interface AnnotationActionPoint {
-  action: string;
-  actionpoint: ActionPointCategory;
-  deadline: Date;
-}
+import React, {useState} from "react";
+import {AnnotationActionPoint} from "../types";
+
 export function ActionItemChecklist({
   actionPointItem,
+  completeActionItemFunc,
 }: {
   actionPointItem: AnnotationActionPoint;
+  completeActionItemFunc: (checked: boolean) => void;
 }) {
+  if (actionPointItem.action == null) {
+    return null;
+  }
+
+  console.log(actionPointItem);
+  const [checked, setChecked] = useState(actionPointItem.status);
   return (
     <Checkbox
       crossOrigin=""
+      checked={checked}
+      onChange={(event) => {
+        setChecked(event.target.checked);
+        completeActionItemFunc(event.target.checked);
+      }}
       label={
         <div className="flex flex-col items-start">
           <Typography variant="small" color="gray" className="font-normal">
@@ -26,10 +30,10 @@ export function ActionItemChecklist({
           </Typography>
           <div className="flex justify-between w-full">
             <Typography variant="small" color="gray" className="font-normal">
-              {actionPointItem.actionpoint}
+              {actionPointItem.action}
             </Typography>
             <Typography variant="small" color="gray" className="font-normal">
-              {actionPointItem.deadline.toLocaleDateString()}
+              {actionPointItem.deadline.toString()}
             </Typography>
           </div>
         </div>
