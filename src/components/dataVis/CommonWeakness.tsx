@@ -1,6 +1,12 @@
 import React, {useEffect} from "react";
 import * as d3 from "d3";
 
+export interface CommonThemeFromGPT {
+  Unit: string;
+  strengths: string[];
+  weakness: string[];
+}
+
 const data = [
   {
     Unit: "FIT2099",
@@ -159,15 +165,17 @@ function createChart(data: any, container: string) {
   svg.append("g").call(d3.axisLeft(y));
 }
 
-export function CommonWeaknessChart() {
+export function CommonWeaknessChart({data}: {data: CommonThemeFromGPT[]}) {
   useEffect(() => {
     createChart(data, "#chart4");
   }, []);
 
   return (
-    <div>
-      <div id="chart4"></div>
-      <div id="tooltip4"></div>
-    </div>
+    <>
+      <div>
+        <div id="chart4"></div>
+        <div id="tooltip4"></div>
+      </div>
+    </>
   );
 }

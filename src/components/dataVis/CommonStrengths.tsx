@@ -1,55 +1,12 @@
 import React, {useEffect} from "react";
 import * as d3 from "d3";
+export interface CommonThemeFromGPT {
+  Unit: string;
+  strengths: string[];
+  weakness: string[];
+}
 
-const data = [
-  {
-    Unit: "FIT2099",
-    strengths: [
-      "Good use of OOP principles",
-      "Good Team Management",
-      "Clear Explanation of Design decisions",
-    ],
-    weakness: [
-      "Lack of comments in code",
-      "Unclear diagrams",
-      "Unclear documents",
-      "Unclear explanations",
-    ],
-  },
-  {
-    Unit: "FIT2094",
-    strengths: ["Good comceptual design of database", "Good Team Management"],
-    weakness: [
-      "Errorness SQL queries",
-      "Lack of understanding on JOIN functions",
-      "Unclear explanations",
-    ],
-  },
-  {
-    Unit: "FIT2002",
-    strengths: [
-      "Good use of Ghantt chart",
-      "Good Risk Analysis",
-      "Good Team Management",
-    ],
-    weakness: [
-      "Unclear presentations",
-      "Unclear diagrams",
-      "Unclear documents",
-    ],
-  },
-  {
-    Unit: "FIT2001",
-    strengths: [
-      "Good use of SDLC",
-      "Good Understanding of agile method",
-      "Good use of OOP principles",
-    ],
-    weakness: ["Unclear documentation", "Missing consultations"],
-  },
-];
-
-function createChart(data: any, container: string) {
+function createChart(data: CommonThemeFromGPT[], container: string) {
   d3.select(container).select("svg").remove();
   const margin = {top: 20, right: 20, bottom: 30, left: 200},
     width = 1000 - margin.left - margin.right,
@@ -156,7 +113,7 @@ function createChart(data: any, container: string) {
   svg.append("g").call(d3.axisLeft(y));
 }
 
-export function CommonStrengthChart() {
+export function CommonStrengthChart({data}: {data: CommonThemeFromGPT[]}) {
   useEffect(() => {
     createChart(data, "#chart3");
   }, []);

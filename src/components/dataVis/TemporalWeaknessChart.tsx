@@ -1,6 +1,10 @@
 import React, {useEffect} from "react";
 import * as d3 from "d3";
-
+export interface CommonThemeFromGPTAssessment {
+  assessmentName: string;
+  strengths: string[];
+  weakness: string[];
+}
 const data: any[] = [
   {
     assessmentName: "Assignment 1",
@@ -147,7 +151,11 @@ function createChart(data: any, container: string) {
   svg.append("g").call(d3.axisLeft(y));
 }
 
-export function TemporalWeaknessChart() {
+export function TemporalWeaknessChart({
+  data,
+}: {
+  data: CommonThemeFromGPTAssessment[];
+}) {
   useEffect(() => {
     createChart(data, "#chart2");
   }, []);
