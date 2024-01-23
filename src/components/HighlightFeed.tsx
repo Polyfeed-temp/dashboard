@@ -11,20 +11,7 @@ import {AnnotationData, AnnotationTag, AnnotationActionPoint} from "../types";
 import {useState} from "react";
 import {Notes} from "./Notes";
 import ToDoCard from "./ToDoCard";
-const getIcons = (tag: AnnotationTag) => {
-  switch (tag) {
-    case "Strength":
-      return "/tag_icons/Strength_Col_Pos.svg";
-    case "Weakness":
-      return "/tag_icons/Weakness_Col_Pos.svg";
-    case "Confused":
-      return "/tag_icons/Confused_Col_Pos.svg";
-    case "Action Item":
-      return "/tag_icons/Action_Col_Pos.svg";
-    case "Other":
-      return "/tag_icons/Other_Col_Pos.svg";
-  }
-};
+import {getIcons} from "../icons/icons";
 
 export function HighlightFeed({
   Highlight,

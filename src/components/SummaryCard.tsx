@@ -2,21 +2,8 @@ import React, {useState, useEffect} from "react";
 import {AnnotationData, AnnotationTag, Feedback} from "../types";
 import {IconButton, Button} from "@material-tailwind/react";
 import {chevronIconDown, chevronIconUp, EditIcon} from "../icons/icons";
+import {getIcons} from "../icons/icons";
 
-const getIcons = (tag: AnnotationTag) => {
-  switch (tag) {
-    case "Strength":
-      return "/tag_icons/Strength_Col_Pos.svg";
-    case "Weakness":
-      return "/tag_icons/Weakness_Col_Pos.svg";
-    case "Confused":
-      return "/tag_icons/Confused_Col_Pos.svg";
-    case "Action Item":
-      return "/tag_icons/Action_Col_Pos.svg";
-    case "Other":
-      return "/tag_icons/Other_Col_Pos.svg";
-  }
-};
 export function UnitAssignmentSummary({feedback}: {feedback: Feedback}) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   console.log(feedback);

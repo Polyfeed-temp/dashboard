@@ -1,3 +1,18 @@
+import {AnnotationTag} from "../types";
+export const getIcons = (tag: AnnotationTag) => {
+  switch (tag) {
+    case "Strength":
+      return `${process.env.PUBLIC_URL}/tag_icons/Strength_Col_Pos.svg`;
+    case "Weakness":
+      return `${process.env.PUBLIC_URL}/tag_icons/Weakness_Col_Pos.svg`;
+    case "Confused":
+      return `${process.env.PUBLIC_URL}/tag_icons/Confused_Col_Pos.svg`;
+    case "Action Item":
+      return `${process.env.PUBLIC_URL}/tag_icons/Action_Col_Pos.svg`;
+    case "Other":
+      return `${process.env.PUBLIC_URL}/tag_icons/Other_Col_Pos.svg`;
+  }
+};
 export const chevronIconDown = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
