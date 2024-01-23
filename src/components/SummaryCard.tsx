@@ -27,7 +27,7 @@ export function UnitAssignmentSummary({feedback}: {feedback: Feedback}) {
     <div className="border rounded-lg">
       <button
         onClick={toggleDropdown}
-        className=" flex justify-between items-center bg-gray-200 font-medium text-xl p-2 w-full text-left"
+        className=" flex justify-between items-center bg-gray-800 font-medium text-xl p-2 w-full text-left"
       >
         {isDropdownOpen
           ? feedback.unitCode

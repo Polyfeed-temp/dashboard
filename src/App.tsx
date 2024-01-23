@@ -46,14 +46,13 @@ function App() {
 
   return (
     <div>
-      (
       <BrowserRouter>
         <NavBar unitCodes={Object.keys(groupedByUnitCode || {})}></NavBar>
 
         <Routes>
           <Route path="/signup" element={<SignUpPage />}></Route>
           <Route path="/login" element={<LoginPage />}></Route>
-          {groupedByUnitCode && (
+          {groupedByUnitCode && user.login && (
             <>
               <Route
                 path="/"
@@ -73,7 +72,7 @@ function App() {
           )}
         </Routes>
       </BrowserRouter>
-      )
+
       <ToastContainer position="bottom-right" />
     </div>
   );

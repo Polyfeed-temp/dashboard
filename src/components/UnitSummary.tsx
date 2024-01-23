@@ -54,12 +54,8 @@ export function UnitSummary({
         <SideMenu
           title={"Select a unit"}
           dropdownValues={unitCodes}
-          list={["Strength Summary", "Weakness Summary", "Action Item"]}
-          listFunc={[
-            () => setTab("strength"),
-            () => setTab("weakness"),
-            () => setTab("actions"),
-          ]}
+          list={["Strength Summary", "Weakness Summary"]}
+          listFunc={[() => setTab("strength"), () => setTab("weakness")]}
           dropdownFunc={(x) => dataFunc(x)}
         />
       )}

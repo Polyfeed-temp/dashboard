@@ -29,7 +29,11 @@ export function NavBar({unitCodes}: {unitCodes: string[] | null}) {
         {user.login ? (
           <>
             <div className="flex items-center justify-between">
-              <img src="/logo.png" alt="Logo" className="h-20 md:h-12" />
+              <img
+                src={process.env.PUBLIC_URL + "/logo.png"}
+                alt="Logo"
+                className="h-20 md:h-12"
+              />
               <div className="flex items-center gap-x-1">
                 <Link
                   key="OVERVIEW"
