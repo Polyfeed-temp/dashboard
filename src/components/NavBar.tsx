@@ -9,33 +9,51 @@ import {
   MenuItem,
   Menu,
   Typography,
+  Select,
+  Option,
 } from "@material-tailwind/react";
-import React, {useState} from "react";
-import {useUserDispatch, useUserState} from "../store/UserContext";
-import {Link} from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+// import {useUserDispatch, useUserState} from "../store/UserContext";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { menuItemsData } from "./MenuItemsData";
+import { UnitSelection } from "./UnitSelection";
+import { UnitContext } from "../store/UnitContext";
+import GoogleSignInButton from "./SigninGoogleButton";
+import { useUserAuth } from "../store/UserAuthContext";
 
-export function NavBar({unitCodes}: {unitCodes: string[] | null}) {
-  const [activeButton, setActiveButton] = useState("OVERVIEW");
+export function NavBar({ unitCodes }: { unitCodes: string[] | null }) {
+  const { unit } = useContext(UnitContext);
+  const [activeButton, setActiveButton] = useState("Overview");
 
-  const user = useUserState();
-  const userDispatch = useUserDispatch();
-  const initial =
-    user.user?.firstName.substring(0, 1) +
-    " " +
-    user.user?.lastName.substring(0, 1);
+  const { user, signInWithGoogle } = useUserAuth() || {}; // Add null check here
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // const user = useUserState();
+  // const userDispatch = useUserDispatch();
+  const initial = user?.displayName?.substring(0, 1); // Update the access to 'user' property
+
+  // useEffect(() => {
+  //   if (unit?.unitId && location.pathname.includes('feedback')) {
+  //     navigate(`/feedback/${unit.unitId}`);
+  //     window.location.reload();
+  //   }
+  // },[unit, location.pathname])
+
   return (
-    <Navbar className="max-w-full">
+    <Navbar
+      className="max-w-full"
+      style={{ position: "relative", zIndex: 9999 }}
+    >
       <div className="container mx-auto flex flex-col">
-        {user.login ? (
+        {user?.emailVerified ? (
           <>
             <div className="flex items-center justify-between">
-              <img
-                src={process.env.PUBLIC_URL + "/logo.png"}
-                alt="Logo"
-                className="h-20 md:h-12"
-              />
+              <img src="/logo.png" alt="Logo" className="h-20 md:h-12 mr-4" />
+
               <div className="flex items-center gap-x-1">
-                <Link
+                {/* <Link
                   key="OVERVIEW"
                   to={"/"}
                   className={`font-bold py-2 px-4 rounded ${
@@ -74,7 +92,38 @@ export function NavBar({unitCodes}: {unitCodes: string[] | null}) {
                   onClick={() => setActiveButton("OTHERUNITS")}
                 >
                   All Units
-                </Link>
+                </Link> */}
+                {/* <div>
+                  {unitCodes && <UnitSelection unitCodes={unitCodes} />}
+                  </div> */}
+                <div className="flex items-center">
+                  <nav className="desktop-nav">
+                    <ul className="menus">
+                      {menuItemsData.map((menu, index) => {
+                        const url = menu.url.replace(
+                          ":unitId",
+                          unit?.unitId || "all"
+                        );
+                        return (
+                          <li className="menu-items" key={index}>
+                            <Link
+                              to={url}
+                              className={`font-bold py-2 px-4 rounded ${
+                                activeButton === menu.title
+                                  ? "bg-black"
+                                  : "bg-gray-500 hover:bg-black"
+                              } text-white`}
+                              onClick={() => setActiveButton(menu.title)}
+                            >
+                              {menu.title}
+                            </Link>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </nav>
+                </div>
+
                 <div className="ml-5">
                   <Menu>
                     <MenuHandler>
@@ -104,7 +153,7 @@ export function NavBar({unitCodes}: {unitCodes: string[] | null}) {
                         </Typography>
                       </MenuItem>
 
-                      <hr className="my-2 border-blue-gray-50" />
+                      {/* <hr className="my-2 border-blue-gray-50" />
                       <MenuItem
                         className="flex items-center gap-2 "
                         onClick={() => {
@@ -129,48 +178,18 @@ export function NavBar({unitCodes}: {unitCodes: string[] | null}) {
                         <Typography variant="small" className="font-medium">
                           Sign Out
                         </Typography>
-                      </MenuItem>
+                      </MenuItem> */}
                     </MenuList>
                   </Menu>
                 </div>
               </div>
             </div>
-
-            {/* Second Row */}
-            {/* <div className="flex items-center justify-end gap-x-2 mt-4">
-              <Link
-                key="OVERVIEW"
-                to={"/"}
-                className={`font-bold py-2 px-4 rounded ${
-                  activeButton === "OVERVIEW"
-                    ? "bg-black"
-                    : "bg-gray-500 hover:bg-black"
-                } text-white`}
-                onClick={() => setActiveButton("OVERVIEW")}
-              >
-                OVERVIEW
-              </Link>
-              {unitCodes.map((unitCode) => (
-                <Link
-                  key={unitCode}
-                  to={`/feedback/${unitCode}`}
-                  className={`font-bold py-2 px-4 rounded ${
-                    activeButton === unitCode
-                      ? "bg-black"
-                      : "bg-gray-500 hover:bg-black"
-                  } text-white`}
-                  onClick={() => setActiveButton(unitCode)}
-                >
-                  {unitCode}
-                </Link>
-              ))}
-            </div> */}
           </>
         ) : (
           <div className="flex items-center justify-between">
             <img src="/logo.png" alt="Logo" className="h-20 md:h-12" />
             <div className="flex items-center gap-x-1">
-              <Link
+              {/* <Link
                 to="/signUp"
                 className="font-bold py-2 px-4 rounded bg-gray-500 hover:bg-black text-white "
               >
@@ -183,7 +202,8 @@ export function NavBar({unitCodes}: {unitCodes: string[] | null}) {
               >
                 {" "}
                 Login
-              </Link>
+              </Link> */}
+              <GoogleSignInButton />
             </div>
           </div>
         )}

@@ -1,3 +1,6 @@
+/**
+ * @deprecated
+ */
 import {
   Card,
   CardHeader,
@@ -6,6 +9,9 @@ import {
   List,
   ListItem,
 } from "@material-tailwind/react";
+/**
+ * @deprecated
+ */
 import {Tab} from "../pages/OverviewPage";
 
 export function SideMenu({
@@ -25,9 +31,11 @@ export function SideMenu({
 }) {
   return (
     <Card className="mt-6 w-full md:w-auto border border-solid border-gray-300 relative">
+      <h1>Select Your Assessment</h1>
       <CardHeader floated={false} shadow={false}>
         {dropdownValues && (
           <>
+
             <label htmlFor="label-dropdown" className="mr-2">
               {title}
             </label>

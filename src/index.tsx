@@ -2,8 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import {ThemeProvider} from "@material-tailwind/react";
-import UserProvider from "./store/UserContext";
+import '@fortawesome/fontawesome-free/css/all.min.css';
+// import UserProvider from "./store/UserContext";
 import "./index.css";
+import { UnitContextProvider } from "./store/UnitContextProvider";
+
+import { Provider } from "react-redux";
+import { UserAuthContextProvider } from "./store/UserAuthContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -11,9 +16,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <ThemeProvider>
-      <UserProvider>
+      <UserAuthContextProvider>
+        <UnitContextProvider>
         <App />
-      </UserProvider>
+        </UnitContextProvider>
+      </UserAuthContextProvider>
     </ThemeProvider>
   </React.StrictMode>
 );

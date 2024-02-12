@@ -29,6 +29,11 @@ export interface AnnotationActionPoint {
     status: boolean;
 }
 
+export interface Assessment {
+    assessmentId: number,
+    assessmentName: string,
+}
+
 
 export interface Feedback {
     id?: number
@@ -57,7 +62,9 @@ export interface User {
     role: Role
     faculty: string;
 }
-
+/**
+ * @deprecated
+ */
 export interface UserState {
     login: boolean;
     access_token?: string;

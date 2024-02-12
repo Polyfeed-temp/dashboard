@@ -1,3 +1,6 @@
+/**
+ * @deprecated
+ */
 import React, {
   createContext,
   useReducer,
@@ -5,27 +8,47 @@ import React, {
   ReactNode,
   useEffect,
 } from "react";
+/**
+ * @deprecated
+ */
 import {User, UserState} from "../types";
-
+/**
+ * @deprecated
+ */
 import UserService from "../services/user.service";
-
+/**
+ * @deprecated
+ */
 interface UserAction {
   type: "LOGIN";
   payload?: {username: string; password: string};
 }
+/**
+ * @deprecated
+ */
 interface LogoutAction {
   type: "LOGOUT";
 }
+/**
+ * @deprecated
+ */
 interface InitializeAction {
   type: "INITIALIZE";
   payload: UserState;
 }
-
+/**
+ * @deprecated
+ */
 type actions = UserAction | InitializeAction | LogoutAction;
+/**
+ * @deprecated
+ */
 const UserContext = createContext<
   {state: UserState; dispatch: React.Dispatch<actions>} | undefined
 >(undefined);
-
+/**
+ * @deprecated
+ */
 function userReducer(state: UserState, action: actions): UserState {
   switch (action.type) {
     case "INITIALIZE":
@@ -46,7 +69,9 @@ function userReducer(state: UserState, action: actions): UserState {
       return state;
   }
 }
-
+/**
+ * @deprecated
+ */
 function UserProvider({children}: {children: ReactNode}) {
   const initialState: UserState = {
     login: false,
@@ -105,9 +130,13 @@ function UserProvider({children}: {children: ReactNode}) {
     </UserContext.Provider>
   );
 }
-
+/**
+ * @deprecated
+ */
 export default UserProvider;
-
+/**
+ * @deprecated
+ */
 export function useUserState() {
   const context = useContext(UserContext);
   if (context === undefined) {
@@ -115,6 +144,9 @@ export function useUserState() {
   }
   return context.state;
 }
+/**
+ * @deprecated
+ */
 export function useUserDispatch() {
   const context = useContext(UserContext);
   if (context === undefined) {

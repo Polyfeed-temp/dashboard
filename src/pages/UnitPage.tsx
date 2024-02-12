@@ -1,46 +1,52 @@
-import {AssignmentView} from "../components/AssignmentView";
-import {Feedback, AnnotationData} from "../types";
-import {useEffect, useState} from "react";
+import { AssignmentView } from "../components/AssignmentView";
+import { Feedback, AnnotationData, Assessment } from "../types";
+import { useContext, useEffect, useState } from "react";
 import UserService from "../services/user.service";
-import {useParams} from "react-router-dom";
-import {SideMenu} from "../components/SideMenu";
+import { useParams } from "react-router-dom";
+import { SideMenu } from "../components/SideMenu";
 import {
   getFeedbackByAssessmentId,
   deleteHighlight,
   updateHighlightNotes,
 } from "../services/feedback.service";
-import {toast} from "react-toastify";
-import {updateHighlightActionItem} from "../services/actionItem.service";
+import { toast } from "react-toastify";
+import { updateHighlightActionItem } from "../services/actionItem.service";
+import { UnitContext } from "../store/UnitContext";
+import { UnitSelection } from "../components/UnitSelection";
 export function UnitSummaryPage({
   groupedByUnitCode,
 }: {
-  groupedByUnitCode: {[key: string]: Feedback[]};
+  groupedByUnitCode: { [key: string]: Feedback[] };
 }) {
-  const {unitCode} = useParams();
-  const feedbacks = unitCode ? groupedByUnitCode[unitCode] : null;
-  const assessmentDetails =
-    feedbacks
-      ?.map((feedback) => ({
-        assessmentId: feedback.assessmentId,
-        assessmentName: feedback.assessmentName,
-      }))
-      .sort((a, b) => a.assessmentId - b.assessmentId) || [];
-
-  const [selectedAssessment, setSelectedAssessment] = useState<{
-    assessmentId: number;
-    assessmentName: string;
-  }>(assessmentDetails[0]);
-
+  // const {unitCode} = useParams();
+  const { unit } = useContext(UnitContext);
   const [selectedFeedback, setSelectedFeedback] = useState<Feedback>();
+  const [selectedAssessment, setSelectedAssessment] = useState<Assessment>();
+  const [assessmentDetails, setAssessmentDetails] = useState<Assessment[]>([]);
+
   useEffect(() => {
-    const status = getFeedbackByAssessmentId(selectedAssessment.assessmentId);
-    toast.promise(status, {
-      pending: "Loading...",
-      success: "Loaded!",
-      error: "Error when loading",
-    });
-    status.then((res) => setSelectedFeedback(res.data as Feedback));
-  }, [selectedAssessment]);
+    if (unit) {
+      const unitCode = unit?.unitId;
+      const feedbacks = unitCode ? groupedByUnitCode[unitCode] : null;
+      const temp_data =
+        feedbacks
+          ?.map((feedback) => ({
+            assessmentId: feedback.assessmentId,
+            assessmentName: feedback.assessmentName,
+          }))
+          .sort((a, b) => a.assessmentId - b.assessmentId) || [];
+          setAssessmentDetails(temp_data);
+    }
+    if (unit && selectedAssessment) {
+      const status = getFeedbackByAssessmentId(selectedAssessment.assessmentId);
+      toast.promise(status, {
+        pending: "Loading...",
+        success: "Loaded!",
+        error: "Error when loading",
+      });
+      status.then((res) => setSelectedFeedback(res.data as Feedback));
+    }
+  }, [unit, selectedAssessment]);
 
   const deleteHighlightFunc = (id: string) => {
     const status = deleteHighlight(id);
@@ -98,6 +104,7 @@ export function UnitSummaryPage({
   return (
     <div className="flex flex-wrap">
       <div className="w-full sm:w-1/4  flex-shrink-0">
+        <UnitSelection unitCodes={Object.keys(groupedByUnitCode)} disabled={false} />
         <SideMenu
           title="Assessment"
           list={assessmentDetails.map(

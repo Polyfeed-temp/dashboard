@@ -6,6 +6,10 @@
   button {
     @apply bg-gray-500 text-white hover:bg-black;
   }
+
+  button.active {
+    @apply bg-black;
+  }
 }
 
 .card {
@@ -22,3 +26,28 @@
   transform: scale(1.05); /* Optional: Scale up the card slightly */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Add a shadow for more emphasis */
 }
+
+.collapsible .content {
+  padding: 6px;
+  background-color: #eeeeee;
+}
+
+.collapsible .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #dddddd;
+  padding: 6px;
+  cursor: pointer;
+}
+
+.menus {
+  display: flex;
+  list-style: none;
+  padding: 0;
+}
+
+.menu-items {
+  margin-right: 10px; /* Adjust this value to your desired spacing */
+}
+

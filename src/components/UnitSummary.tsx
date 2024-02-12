@@ -9,6 +9,9 @@ import {
 import {useState} from "react";
 import {SideMenu} from "./SideMenu";
 import {Tab} from "../pages/OverviewPage";
+/**
+ * @deprecated
+ */
 export function UnitSummary({
   unitCodes,
   tab,
@@ -42,7 +45,7 @@ export function UnitSummary({
         }`}
         onClick={() => {
           setSelected("UnitSummary");
-          setTab("strength");
+          setTab("strengthAU");
           dataFunc(unitCodes[0]);
         }}
       >
@@ -54,8 +57,12 @@ export function UnitSummary({
         <SideMenu
           title={"Select a unit"}
           dropdownValues={unitCodes}
-          list={["Strength Summary", "Weakness Summary"]}
-          listFunc={[() => setTab("strength"), () => setTab("weakness")]}
+          list={["Strength Summary", "Weakness Summary", "Action Item"]}
+          listFunc={[
+            () => setTab("strengthAA"),
+            () => setTab("weaknessAA"),
+            () => setTab("actions"),
+          ]}
           dropdownFunc={(x) => dataFunc(x)}
         />
       )}

@@ -1,7 +1,18 @@
+/**
+ * @deprecated
+ */
 import {Feedback} from "../types";
+/**
+ * @deprecated
+ */
 import {ProgressBarSummary} from "./ProgressBar";
+/**
+ * @deprecated
+ */
 import {ActionItemsSummary} from "../types";
-
+/**
+ * @deprecated
+ */
 export function UnitOverallProgressBar({feedbacks}: {feedbacks: Feedback[]}) {
   //   const actionItemSummaryList = feedbacks.map((feedback) => {
   //     return (
