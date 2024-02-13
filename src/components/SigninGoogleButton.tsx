@@ -1,12 +1,10 @@
-import { signInWithGoogle } from "../services/firebase.service";
+import {signInWithGoogle} from "../services/firebase.service";
 
 const GoogleSignInButton = () => {
-    const googleSignIn = async () => {
-        await signInWithGoogle();
-}
-    return (
-        <button onClick={googleSignIn}>Sign in with Google</button>
-    );
-}
+  const googleSignIn = async () => {
+    await signInWithGoogle();
+  };
+  return <button onClick={googleSignIn}>Login</button>;
+};
 
 export default GoogleSignInButton;

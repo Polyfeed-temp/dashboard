@@ -12,7 +12,7 @@ import UserService from "./services/user.service";
 import "react-toastify/dist/ReactToastify.css";
 import {ToastContainer} from "react-toastify";
 import {AllUnitsPage} from "./pages/AllUnitsPage";
-import { useUserAuth } from "./store/UserAuthContext";
+import {useUserAuth} from "./store/UserAuthContext";
 function App() {
   const [unitFeedBacks, setUnitFeedBacks] = useState([]);
   const [feedbacks, setFeedback] = useState<Feedback[]>([]);
@@ -25,13 +25,13 @@ function App() {
 
   useEffect(() => {
     async function fetchData() {
-      if (!user?.emailVerified ) {
+      if (!user?.emailVerified) {
         console.log("User not verified");
         return;
       }
-      if (!await userService.checkUserExists(user?.email || " ")) {
+      if (!(await userService.checkUserExists(user?.email || " "))) {
         console.log("User exists from app");
-      return;
+        return;
       }
       console.log(user);
       userService.getUserFeedbacks().then((res) => setFeedback(res));
@@ -56,10 +56,8 @@ function App() {
 
   //iterate grouped by unit code then each highlight and only get the common theme
 
-
   return (
     <div>
-      (
       <BrowserRouter>
         <NavBar unitCodes={Object.keys(groupedByUnitCode || {})}></NavBar>
 
@@ -84,10 +82,9 @@ function App() {
               ></Route>
             </>
           )}
-          
         </Routes>
       </BrowserRouter>
-      )
+
       <ToastContainer position="bottom-right" />
     </div>
   );
