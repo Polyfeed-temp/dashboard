@@ -12,20 +12,20 @@ import {
   Select,
   Option,
 } from "@material-tailwind/react";
-import React, { useContext, useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 // import {useUserDispatch, useUserState} from "../store/UserContext";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { menuItemsData } from "./MenuItemsData";
-import { UnitSelection } from "./UnitSelection";
-import { UnitContext } from "../store/UnitContext";
+import {Link, useLocation, useNavigate} from "react-router-dom";
+import {menuItemsData} from "./MenuItemsData";
+import {UnitSelection} from "./UnitSelection";
+import {UnitContext} from "../store/UnitContext";
 import GoogleSignInButton from "./SigninGoogleButton";
-import { useUserAuth } from "../store/UserAuthContext";
+import {useUserAuth} from "../store/UserAuthContext";
 
-export function NavBar({ unitCodes }: { unitCodes: string[] | null }) {
-  const { unit } = useContext(UnitContext);
+export function NavBar({unitCodes}: {unitCodes: string[] | null}) {
+  const {unit} = useContext(UnitContext);
   const [activeButton, setActiveButton] = useState("Overview");
 
-  const { user, signInWithGoogle } = useUserAuth() || {}; // Add null check here
+  const {user, signInWithGoogle} = useUserAuth() || {}; // Add null check here
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -42,15 +42,16 @@ export function NavBar({ unitCodes }: { unitCodes: string[] | null }) {
   // },[unit, location.pathname])
 
   return (
-    <Navbar
-      className="max-w-full"
-      style={{ position: "relative", zIndex: 9999 }}
-    >
+    <Navbar className="max-w-full" style={{position: "relative", zIndex: 9999}}>
       <div className="container mx-auto flex flex-col">
         {user?.emailVerified ? (
           <>
             <div className="flex items-center justify-between">
-              <img src="/logo.png" alt="Logo" className="h-20 md:h-12 mr-4" />
+              <img
+                src={`${process.env.PUBLIC_URL}/logo.png`}
+                alt="Logo"
+                className="h-20 md:h-12 mr-4"
+              />
 
               <div className="flex items-center gap-x-1">
                 {/* <Link
