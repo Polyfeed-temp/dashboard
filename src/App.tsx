@@ -55,7 +55,7 @@ function App() {
   }, [feedbacks]);
 
   //iterate grouped by unit code then each highlight and only get the common theme
-
+  
   return (
     <div>
       <BrowserRouter>
@@ -67,7 +67,7 @@ function App() {
           {groupedByUnitCode && (
             <>
               <Route
-                path="/"
+                path="/dashboard"
                 element={<OverviewPage groupedByUnitCode={groupedByUnitCode} />}
               ></Route>
               <Route
