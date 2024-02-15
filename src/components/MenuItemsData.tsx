@@ -1,7 +1,7 @@
 export const menuItemsData = [
   {
     title: "Overview",
-    url: "/",
+    url: "/dashboard",
   },
   // {
   //   title: "Highlights",
