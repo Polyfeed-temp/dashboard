@@ -7,11 +7,12 @@ import interactionPlugin from '@fullcalendar/interaction';
 
 export function CalendarView({}) {
   const [events, setEvents] = useState([
-    { title: 'Event 1', date: '2023-11-07' },
-    { title: 'Event 2', date: '2023-11-10' },
+    { title: 'Event 1', date: '2024-03-07' , backgroundColor: 'red'},
+    { title: 'Event 2', date: '2024-03-10' },
+    { title: 'Event with Stripes', date: '2024-03-15', classNames: 'striped-event' }
   ]);
 
-  const handleDateClick = (clickInfo) => {
+  const handleDateClick = (clickInfo: { dateStr: string; }) => {
     alert('Clicked on: ' + clickInfo.dateStr);
   };
 

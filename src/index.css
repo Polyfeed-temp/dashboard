@@ -51,3 +51,10 @@
   margin-right: 10px; /* Adjust this value to your desired spacing */
 }
 
+/* Simple Striped pattern */
+.striped-event {
+  background: linear-gradient(45deg, blue 25%, transparent 25%, 
+               transparent 50%, blue 50%, blue 75%, transparent 75%, transparent); 
+  background-size: 8px 8px; /* Adjust size of stripes */
+}
+
