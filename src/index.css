@@ -12,6 +12,21 @@
   }
 }
 
+.container {
+  display: flex;
+  flex-direction: row; /* Use 'column' to stack components vertically */
+  overflow: hidden; 
+}
+
+.left-content {
+  flex: 2;  /* Twice the space as the right content */
+  margin-right: 20px; 
+}
+
+.right-content {
+  flex: 1;
+}
+
 .card {
   transition: all 0.3s ease;
   /* other styles for your card */
@@ -52,9 +67,9 @@
 }
 
 /* Simple Striped pattern */
-.striped-event {
-  background: linear-gradient(45deg, blue 25%, transparent 25%, 
-               transparent 50%, blue 50%, blue 75%, transparent 75%, transparent); 
-  background-size: 8px 8px; /* Adjust size of stripes */
+.striped-event > *  {
+  background: linear-gradient(45deg, #3a70b7 25%, transparent 25%, 
+               transparent 50%, #3a70b7 50%, #3a70b7 75%, transparent 75%); 
+  background-size: 8px 8px; /* Adjust size of stripes */;
 }
 

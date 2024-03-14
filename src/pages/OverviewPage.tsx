@@ -18,6 +18,7 @@ import { UnitOverallProgressBar } from "../components/OverallProgressBar";
 import { Feedback } from "../types";
 import Sidebar from "../components/SideBar";
 import { CalendarView } from "../components/dataVis/CalendarView";
+// import { CalendarList } from "../components/dataVis/CalendarList";
 import { UnitSelection } from "../components/UnitSelection";
 import { useUserAuth } from "../store/UserAuthContext";
 import { onChange } from "react-toastify/dist/core/store";

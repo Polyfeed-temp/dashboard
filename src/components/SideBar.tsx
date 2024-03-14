@@ -46,6 +46,14 @@ const Sidebar: React.FC<SidebarProps> = ({ onTabChange }) => {
             >
               Weakness Across Units
             </button>
+            <br></br>
+            <br></br>
+            <button
+              className={isButtonActive("calendarList") ? "active" : ""}
+              onClick={() => handleButtonClick("calendarList")}
+            >
+              Weakness Across Units
+            </button>
           </p>
         </Collapsible>
         <br></br>
