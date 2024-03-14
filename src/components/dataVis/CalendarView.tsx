@@ -9,9 +9,18 @@ import EventDetailsModal from './EventDetailsModal';
 
 export function CalendarView({}) {
   const [events, setEvents] = useState([
-    { id:  '1', title: 'Event 1', date: '2024-03-07' , backgroundColor: 'red', checked: false },
-    { id:  '2', title: 'Event 2', date: '2024-03-10', checked: false  },
-    { id:  '3', title: 'Event with Stripes', date: '2024-03-15', checked: false  }
+    { id:  '1', title: 'Redo Design', date: '2024-03-07' , backgroundColor: '#ef5975', checked: false },
+    { id:  '2', title: 'Look at Design', date: '2024-03-10', backgroundColor: '##3a70b7', checked: false  },
+    { id:  '3', title: 'Review Code', date: '2024-03-15', checked: false  },
+    { id:  '4', title: 'Revise Report', date: '2024-03-04' , backgroundColor: '#ef5975', checked: false },
+    { id:  '5', title: 'Revise Report', date: '2024-03-19', checked: false  },
+    { id:  '6', title: 'Discuss with TA', date: '2024-03-22', backgroundColor: '#23bfc6', checked: false  },
+    { id:  '7', title: 'Review Feedback', date: '2024-03-25' , backgroundColor: '#8960aa', checked: false },
+    { id:  '8', title: 'Review Feedback', date: '2024-03-26', backgroundColor: '#8960aa', checked: false  },
+    { id:  '9', title: 'Look at Results', date: '2024-03-27', backgroundColor:'#23bfc6', checked: false  },
+    { id:  '10', title: 'Review Feedback', date: '2024-03-27' , backgroundColor: '#ef5975', checked: false },
+    { id:  '11', title: 'Review Feedback', date: '2024-03-29', backgroundColor: '#ef5975', checked: false  },
+    { id:  '12', title: 'Review Code', date: '2024-03-15', backgroundColor:'#f79633', checked: false  },
   ]);
 
   const handleCheckboxChange = (eventInfo: aa) => {
@@ -64,11 +73,11 @@ export function CalendarView({}) {
             events={events}
             eventContent={(arg) => (
               <div> 
-                <input 
+                {/* <input 
                   type="checkbox" 
                   checked={arg.event.extendedProps.checked}
                   onChange={() => handleCheckboxChange(arg)} 
-                />
+                /> */}
                 {' '} {arg.event.title} 
               </div>
             )}

@@ -12,6 +12,53 @@
   }
 }
 
+/* Menu */
+.card {
+  transition: all 0.3s ease;
+  /* other styles for your card */
+}
+
+.card-container:hover .card {
+  opacity: 0.6; /* Dim other cards when any card is hovered */
+}
+
+.card:hover {
+  opacity: 1; /* Highlight the hovered card */
+  transform: scale(1.05); /* Optional: Scale up the card slightly */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Add a shadow for more emphasis */
+}
+
+.collapsible .content {
+  padding: 6px;
+  background-color: #ffffff;
+}
+
+.collapsible .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #000000;
+  border: #000000;
+  padding: 6px;
+  cursor: pointer;
+  -webkit-text-fill-color: #ffffff;
+}
+
+.menus {
+  display: flex;
+  list-style: none;
+  padding: 0;
+}
+
+.menu-items {
+  margin-right: 10px; /* Adjust this value to your desired spacing */
+}
+
+.UnitDrodown{
+  position: relative;
+  z-index: 9999;
+}
+/* ====================== */
 .container {
   display: flex;
   flex-direction: row; /* Use 'column' to stack components vertically */

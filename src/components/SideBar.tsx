@@ -8,7 +8,7 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ onTabChange }) => {
-  const [activeButton, setActiveButton] = useState<string>("Calendar View");
+  const [activeButton, setActiveButton] = useState<string>("To-do list Calendar");
 
   const handleButtonClick = (tab: string) => {
     onTabChange(tab);
@@ -24,10 +24,10 @@ const Sidebar: React.FC<SidebarProps> = ({ onTabChange }) => {
         <Collapsible label="Overall Summary">
           <p>
             <button
-              className={isButtonActive("Calendar View") ? "active" : ""}
-              onClick={() => handleButtonClick("Calendar View")}
+              className={isButtonActive("To-do list Calendar") ? "active" : ""}
+              onClick={() => handleButtonClick("To-do list Calendar")}
             >
-              Calendar View
+              To-do list Calendar
             </button>
             <br></br>
             <br></br>
