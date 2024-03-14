@@ -5,6 +5,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
 import { aa } from '@fullcalendar/core/internal-common';
+import EventDetailsModal from './EventDetailsModal'; 
 
 export function CalendarView({}) {
   const [events, setEvents] = useState([
@@ -24,6 +25,18 @@ export function CalendarView({}) {
   //   alert('Clicked on: ' + clickInfo.dateStr);
   // };
 
+  const [showModal, setShowModal] = useState(false);
+    const [clickedEvent, setClickedEvent] = useState(null);
+
+    const handleEventClick = (clickInfo: { event: any; }) => {
+        setClickedEvent(clickInfo.event);
+        setShowModal(true); 
+    };
+
+    const closeModal = () => {
+        setShowModal(false);
+    };
+
   return (
     <div className="calendar-container container">
       <div className="left-content">
@@ -32,7 +45,15 @@ export function CalendarView({}) {
           initialView="dayGridMonth"
           events={events}
           // dateClick={handleDateClick}
+          eventClick={handleEventClick}
         />
+        {showModal && (
+        <> {/* Using a React Fragment for multiple elements*/}
+                <div className="overlay" onClick={closeModal}></div>  
+                <EventDetailsModal event={clickedEvent} onClose={closeModal} />
+        </>    
+            )}
+        
       </div>
        
 
