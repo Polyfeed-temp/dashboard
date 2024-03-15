@@ -18,6 +18,7 @@ import { UnitOverallProgressBar } from "../components/OverallProgressBar";
 import { Feedback } from "../types";
 import Sidebar from "../components/SideBar";
 import { CalendarView } from "../components/dataVis/CalendarView";
+// import { CalendarList } from "../components/dataVis/CalendarList";
 import { UnitSelection } from "../components/UnitSelection";
 import { useUserAuth } from "../store/UserAuthContext";
 import { onChange } from "react-toastify/dist/core/store";
@@ -251,7 +252,7 @@ import { UnitContext } from "../store/UnitContext";
 //   },
 // ];
 
-export type Tab = "overview" | "actions" | "Calendar View" | "strengthAA" | "weaknessAA" | "strengthAU" | "weaknessAU";
+export type Tab = "overview" | "actions" | "To-do list Calendar" | "strengthAA" | "weaknessAA" | "strengthAU" | "weaknessAU";
 const commonThemesByUnitFunc = (unitsData: { [key: string]: Feedback[] }) => {
   return Object.keys(unitsData).map((unitCode) => {
     const feedbacks = unitsData[unitCode];
@@ -309,7 +310,7 @@ export function OverviewPage({
   console.log(groupedByUnitCode);
   // const user = useUserState();
   const { user } = useUserAuth() || {};
-  const [selectedTab, setSelectedTab] = useState("Calendar View" as Tab);
+  const [selectedTab, setSelectedTab] = useState("To-do list Calendar" as Tab);
   const [selectedUnit, setSelectedUnit] = useState("Overview" as string);
   const [selectedUnitData, setSelectedUnitData] = useState(
     [] as CommonThemeFromGPTAssessment[]
@@ -440,10 +441,10 @@ function Graphs({
           <CommonWeaknessChart data={unitsData} />
         </>
       );
-    case "Calendar View":
+    case "To-do list Calendar":
       return (
         <>
-          <h1>Calendar View</h1>
+          <h1>To-do list Calendar</h1>
           <CalendarView/>
         </>
       );
