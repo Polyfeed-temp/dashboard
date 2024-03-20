@@ -1,50 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
-import { aa } from '@fullcalendar/core/internal-common';
-import EventDetailsModal from './EventDetailsModal'; 
+import GetUserFeedback from '../GetUserFeedback';
+import EventDetailsModal from './EventDetailsModal';
 
-export function CalendarView({}) {
-  const [events, setEvents] = useState([
-    { id:  '1', title: 'Redo Design', date: '2024-03-07' , backgroundColor: '#ef5975', checked: false },
-    { id:  '2', title: 'Look at Design', date: '2024-03-10', backgroundColor: '##3a70b7', checked: false  },
-    { id:  '3', title: 'Review Code', date: '2024-03-15', checked: false  },
-    { id:  '4', title: 'Revise Report', date: '2024-03-04' , backgroundColor: '#ef5975', checked: false },
-    { id:  '5', title: 'Revise Report', date: '2024-03-19', checked: false  },
-    { id:  '6', title: 'Discuss with TA', date: '2024-03-22', backgroundColor: '#23bfc6', checked: false  },
-    { id:  '7', title: 'Review Feedback', date: '2024-03-25' , backgroundColor: '#8960aa', checked: false },
-    { id:  '8', title: 'Review Feedback', date: '2024-03-26', backgroundColor: '#8960aa', checked: false  },
-    { id:  '9', title: 'Look at Results', date: '2024-03-27', backgroundColor:'#23bfc6', checked: false  },
-    { id:  '10', title: 'Review Feedback', date: '2024-03-27' , backgroundColor: '#ef5975', checked: false },
-    { id:  '11', title: 'Review Feedback', date: '2024-03-29', backgroundColor: '#ef5975', checked: false  },
-    { id:  '12', title: 'Review Code', date: '2024-03-15', backgroundColor:'#f79633', checked: false  },
-  ]);
+export function CalendarView() {
+  const Feedbacks = GetUserFeedback();
 
-  const handleCheckboxChange = (eventInfo: aa) => {
-    // const newEvents = [...events];  // Duplicate the events array
-    // const updatedEvent = newEvents.find((e) => e.id === eventInfo.event.id);
-    // updatedEvent?.checked = !updatedEvent?.checked; 
-    // setEvents(newEvents); // Update React state
+  const extractActionItemsAndUnitCode = (data: any[]) => {
+    const actionItems: {
+      id: any; // Ensure each event has a unique id
+      title: any; // Use action as the event title
+      start: any; // Use deadline as the event start date
+      unitCode: any; annotationTag: any; commonTheme: any; text: any; actionItem: any;
+    }[] = [];
+    data.forEach((assessment: { unitCode: any; highlights: any[]; }) => {
+      const unitCode = assessment.unitCode;
+      assessment.highlights.forEach((highlight: { actionItems: any[]; annotation: { annotationTag: any; commonTheme: any; text: any; }; }) => {
+        highlight.actionItems.forEach((actionItem: { id: any; action: any; deadline: any; }) => {
+          actionItems.push({
+            id: actionItem.id, // Ensure each event has a unique id
+            title: actionItem.action, // Use action as the event title
+            start: actionItem.deadline, // Use deadline as the event start date
+            unitCode: unitCode,
+            annotationTag: highlight.annotation.annotationTag,
+            commonTheme: highlight.annotation.commonTheme,
+            text: highlight.annotation.text,
+            actionItem: actionItem,
+          });
+        });
+      });
+    });
+    return actionItems;
   };
 
-  // const handleDateClick = (clickInfo: { dateStr: string; }) => {
-  //   alert('Clicked on: ' + clickInfo.dateStr);
-  // };
+  const ActionItems = extractActionItemsAndUnitCode(Feedbacks);
+
+  console.log('ActionItems:', ActionItems);
 
   const [showModal, setShowModal] = useState(false);
-    const [clickedEvent, setClickedEvent] = useState(null);
+  const [clickedEvent, setClickedEvent] = useState(null);
 
-    const handleEventClick = (clickInfo: { event: any; }) => {
-        setClickedEvent(clickInfo.event);
-        setShowModal(true); 
-    };
+  const handleEventClick = (clickInfo: { event: React.SetStateAction<null>; }) => {
+    setClickedEvent(clickInfo.event);
+    setShowModal(true);
+  };
 
-    const closeModal = () => {
-        setShowModal(false);
-    };
+  const closeModal = () => {
+    setShowModal(false);
+  };
 
   return (
     <div className="calendar-container container">
@@ -52,40 +59,25 @@ export function CalendarView({}) {
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
-          events={events}
-          // dateClick={handleDateClick}
-          eventClick={handleEventClick}
+          events={ActionItems}
+          // eventClick={handleEventClick}
         />
         {showModal && (
-        <> {/* Using a React Fragment for multiple elements*/}
-                <div className="overlay" onClick={closeModal}></div>  
-                <EventDetailsModal event={clickedEvent} onClose={closeModal} />
-        </>    
-            )}
-        
+          <>
+            <div className="overlay" onClick={closeModal}></div>
+            <EventDetailsModal event={clickedEvent} onClose={closeModal} />
+          </>
+        )}
       </div>
-       
 
       <div className="right-content">
         <FullCalendar
-            plugins={[listPlugin]}
-            initialView="listWeek"
-            events={events}
-            eventContent={(arg) => (
-              <div> 
-                {/* <input 
-                  type="checkbox" 
-                  checked={arg.event.extendedProps.checked}
-                  onChange={() => handleCheckboxChange(arg)} 
-                /> */}
-                {' '} {arg.event.title} 
-              </div>
-            )}
+          plugins={[listPlugin]}
+          initialView="listWeek"
+          events={ActionItems}
+          eventContent={(arg) => <div>{arg.event.title}</div>}
         />
       </div>
-        
-  
-      
     </div>
   );
-};
+}
