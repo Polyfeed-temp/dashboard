@@ -1,15 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
 import GetUserFeedback from '../GetUserFeedback';
 import EventDetailsModal from './EventDetailsModal';
-import interactionPlugin from '@fullcalendar/interaction'; // Import EventClickArg
-
 
 export function CalendarView() {
   const Feedbacks = GetUserFeedback();
+
+  const colorMapping = {
+    "Strength": "#a70b7",
+    "Weakness": "#ef5975",
+    "Action Item" : "#23bfc6",
+    "Confused": "#f7633",
+    "Other": "#8960aa"
+  };
 
   const extractActionItemsAndUnitCode = (data: any[]) => {
     const actionItems: {
@@ -18,46 +25,55 @@ export function CalendarView() {
       start: any;
       unitCode: any;
       annotationTag: any;
-      actionCategory: any; // New field for action item category
-      notes: any; // New field for notes
+      actionCategory: any;
+      notes: any;
       commonTheme: any;
       text: any;
       actionItem: any;
+      backgroundColor?: string;
+      textColor?: string;
+      borderColor?: string; // Add borderColor field
     }[] = [];
-  
+
+    const today = new Date();
+
     data.forEach((assessment: { unitCode: any; highlights: any[]; }) => {
       const unitCode = assessment.unitCode;
-      
+
       assessment.highlights.forEach((highlight: { actionItems: any[]; annotation: { annotationTag: any; commonTheme: any; text: any; notes: any; }; }) => {
         highlight.actionItems.forEach((actionItem: { id: any; action: any; category: any; deadline: any; }) => {
+          const deadlineDate = new Date(actionItem.deadline);
+
+          const isOverdue = today > deadlineDate;
+
           actionItems.push({
             id: actionItem.id,
             title: actionItem.action,
             start: actionItem.deadline,
             unitCode: unitCode,
             annotationTag: highlight.annotation.annotationTag,
-            actionCategory: actionItem.category, // Assign action item category
-            notes: highlight.annotation.notes, // Assign notes
+            actionCategory: actionItem.category,
+            notes: highlight.annotation.notes,
             commonTheme: highlight.annotation.commonTheme,
             text: highlight.annotation.text,
             actionItem: actionItem,
+            backgroundColor: isOverdue ? 'white' : colorMapping[highlight.annotation.annotationTag as keyof typeof colorMapping] || '#dddddd',
+            textColor: isOverdue ? 'black' : 'white',
+            borderColor: colorMapping[highlight.annotation.annotationTag as keyof typeof colorMapping] || 'black' // Set borderColor to colorMapping value
           });
         });
       });
     });
-    
+
     return actionItems;
   };
-  
 
   const ActionItems = extractActionItemsAndUnitCode(Feedbacks);
-
-  console.log('ActionItems:', ActionItems);
 
   const [showModal, setShowModal] = useState(false);
   const [clickedEvent, setClickedEvent] = useState(null);
 
-  const handleEventClick = (clickInfo : any) => { // Adjust type of clickInfo
+  const handleEventClick = (clickInfo : any) => {
     setClickedEvent(clickInfo.event);
     setShowModal(true);
   };
@@ -70,10 +86,11 @@ export function CalendarView() {
     <div className="calendar-container container">
       <div className="left-content">
         <FullCalendar
-          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]} // Add interactionPlugin here
+          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
           events={ActionItems}
           eventClick={handleEventClick}
+          eventContent={renderEventContent} // Use custom event rendering
         />
         {showModal && (
           <>
@@ -94,3 +111,14 @@ export function CalendarView() {
     </div>
   );
 }
+
+const renderEventContent = (eventInfo: any) => {
+  return (
+    <div style={{ backgroundColor: eventInfo.backgroundColor, borderColor: eventInfo.borderColor, color: eventInfo.textColor, borderWidth: '2px', borderStyle: 'solid' }}>
+      {eventInfo.timeText && (
+        <div className="fc-event-time">{eventInfo.timeText}</div>
+      )}
+      <div className="fc-event-title">{eventInfo.event.extendedProps.unitCode} - {eventInfo.event.title}</div>
+    </div>
+  );
+};
