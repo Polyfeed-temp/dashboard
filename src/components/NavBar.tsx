@@ -46,60 +46,17 @@ export function NavBar({ unitCodes }: { unitCodes: string[] | null }) {
       className="max-w-full"
       style={{ position: "relative", zIndex: 9999 }}
     >
-      <div className="container mx-auto flex flex-col">
+      <div className="container-fluid">
         {user?.emailVerified ? (
           <>
-            <div className="flex items-center justify-between">
+            <div className="flex items-left justify-between">
               <img
                 src={`${process.env.PUBLIC_URL}/logo.png`}
                 alt="Logo"
-                className="h-20 md:h-12 mr-4"
+                className="h-20 md:h-12"
               />
 
               <div className="flex items-center gap-x-1">
-                {/* <Link
-                  key="OVERVIEW"
-                  to={"/"}
-                  className={`font-bold py-2 px-4 rounded ${
-                    activeButton === "OVERVIEW"
-                      ? "bg-black"
-                      : "bg-gray-500 hover:bg-black"
-                  } text-white`}
-                  onClick={() => setActiveButton("OVERVIEW")}
-                >
-                  OVERVIEW
-                </Link>
-                {unitCodes &&
-                  unitCodes.slice(0, 4).map((unitCode) => (
-                    <Link
-                      key={unitCode}
-                      to={`/feedback/${unitCode}`}
-                      className={`font-bold py-2 px-4 rounded ${
-                        activeButton === unitCode
-                          ? "bg-black"
-                          : "bg-gray-500 hover:bg-black"
-                      } text-white`}
-                      onClick={() => setActiveButton(unitCode)}
-                    >
-                      {unitCode}
-                    </Link>
-                  ))}
-
-                <Link
-                  key="All"
-                  to={"/All"}
-                  className={`font-bold py-2 px-4 rounded ${
-                    activeButton === "OTHERUNITS"
-                      ? "bg-black"
-                      : "bg-gray-500 hover:bg-black"
-                  } text-white`}
-                  onClick={() => setActiveButton("OTHERUNITS")}
-                >
-                  All Units
-                </Link> */}
-                {/* <div>
-                  {unitCodes && <UnitSelection unitCodes={unitCodes} />}
-                  </div> */}
                 <div className="flex items-center">
                   <nav className="desktop-nav">
                     <ul className="menus">
@@ -128,7 +85,7 @@ export function NavBar({ unitCodes }: { unitCodes: string[] | null }) {
                   </nav>
                 </div>
 
-                <div className="ml-5">
+                <div className="ml-6">
                   <Menu>
                     <MenuHandler>
                       <button className="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-500 rounded-full dark:bg-gray-600">

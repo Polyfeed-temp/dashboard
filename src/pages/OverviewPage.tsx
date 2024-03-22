@@ -9,6 +9,7 @@ import {
   CommonThemeFromGPTAssessment,
 } from "../components/dataVis/TemporalWeaknessChart";
 import { CommonStrengthChart } from "../components/dataVis/CommonStrengths";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import {
   CommonThemeFromGPT,
   CommonWeaknessChart,
@@ -24,233 +25,6 @@ import { useUserAuth } from "../store/UserAuthContext";
 import { onChange } from "react-toastify/dist/core/store";
 import { UnitContext } from "../store/UnitContext";
 
-
-// const testSet: Action[] = [
-//   {
-//     action: "tes",
-//     status: "1",
-//     deadline: "2024-01-01",
-//     annotationTag: "Weakness",
-//     assessmentName: "Project 2",
-//     unitId: "BIO2011_2024_S1",
-//   },
-//   {
-//     action: "tes",
-//     status: "1",
-//     deadline: "2024-01-01",
-//     annotationTag: "Strength",
-//     assessmentName: "Project 2",
-//     unitId: "BIO2011_2024_S1",
-//   },
-//   {
-//     action: "tes",
-//     status: "1",
-//     deadline: "2024-01-01",
-//     annotationTag: "ActionPoint",
-//     assessmentName: "Project 2",
-//     unitId: "BIO2011_2024_S1",
-//   },
-//   {
-//     action: "tes",
-//     status: "1",
-//     deadline: "2024-01-01",
-//     annotationTag: "Confused",
-//     assessmentName: "Project 2",
-//     unitId: "BIO2011_2024_S1",
-//   },
-//   {
-//     action: "tes",
-//     status: "1",
-//     deadline: "2024-01-01",
-//     annotationTag: "Other",
-//     assessmentName: "Project 2",
-//     unitId: "BIO2011_2024_S1",
-//   },
-//   {
-//     action: "testse",
-//     status: "0",
-//     deadline: "2024-01-10",
-//     annotationTag: "Strength",
-//     assessmentName: "Project 2",
-//     unitId: "BIO2011_2024_S1",
-//   },
-//   {
-//     action: "testse",
-//     status: "1",
-//     deadline: "2024-01-10",
-//     annotationTag: "Weakness",
-//     assessmentName: "Project 2",
-//     unitId: "BIO2011_2024_S1",
-//   },
-//   {
-//     action: "testse",
-//     status: "0",
-//     deadline: "2024-01-11",
-//     annotationTag: "Strength",
-//     assessmentName: "Project 2",
-//     unitId: "BIO2011_2024_S1",
-//   },
-//   {
-//     action: "testse",
-//     status: "1",
-//     deadline: "2024-01-11",
-//     annotationTag: "ActionPoint",
-//     assessmentName: "Project 2",
-//     unitId: "BIO2011_2024_S1",
-//   },
-//   {
-//     action: "testse",
-//     status: "1",
-//     deadline: "2024-01-23",
-//     annotationTag: "Confused",
-//     assessmentName: "Project 2",
-//     unitId: "BIO2011_2024_S1",
-//   },
-//   {
-//     action: "testse",
-//     status: "0",
-//     deadline: "2024-01-23",
-//     annotationTag: "Strength",
-//     assessmentName: "Project 2",
-//     unitId: "BIO2011_2024_S1",
-//   },
-//   {
-//     action: "test",
-//     status: "0",
-//     deadline: "2024-01-30",
-//     annotationTag: "ActionPoint",
-//     assessmentName: "Project 2",
-//     unitId: "BIO2011_2024_S1",
-//   },
-//   {
-//     action: "tsetseset",
-//     status: "0",
-//     deadline: "2024-01-30",
-//     annotationTag: "Confused",
-//     assessmentName: "Project 2",
-//     unitId: "BIO2011_2024_S1",
-//   },
-//   {
-//     action: "testsetse",
-//     status: "1",
-//     deadline: "2024-01-24",
-//     annotationTag: "Weakness",
-//     assessmentName: "Project 2",
-//     unitId: "BIO2011_2024_S1",
-//   },
-//   {
-//     action: "fds",
-//     status: "0",
-//     deadline: "2024-01-25",
-//     annotationTag: "Strength",
-//     assessmentName: "Project 2",
-//     unitId: "BIO2011_2024_S1",
-//   },
-//   {
-//     action: "new items",
-//     status: "1",
-//     deadline: "2024-01-25",
-//     annotationTag: "Other",
-//     assessmentName: "Project 2",
-//     unitId: "BIO2011_2024_S1",
-//   },
-//   {
-//     action: "xcv",
-//     status: "0",
-//     deadline: "2024-01-24",
-//     annotationTag: "Strength",
-//     assessmentName: "Project 2",
-//     unitId: "BIO2011_2024_S1",
-//   },
-//   {
-//     action: "sdfds",
-//     status: "0",
-//     deadline: "2024-01-25",
-//     annotationTag: "Weakness",
-//     assessmentName: "Project 2",
-//     unitId: "BIO2011_2024_S1",
-//   },
-//   {
-//     action: "tes",
-//     status: "1",
-//     deadline: "2024-01-29",
-//     annotationTag: "Weakness",
-//     assessmentName: "Project 2",
-//     unitId: "BIO2011_2024_S1",
-//   },
-//   {
-//     action: "tes",
-//     status: "0",
-//     deadline: "2024-01-29",
-//     annotationTag: "Strength",
-//     assessmentName: "Project 2",
-//     unitId: "BIO2011_2024_S1",
-//   },
-//   {
-//     action: "tes",
-//     status: "1",
-//     deadline: "2024-01-29",
-//     annotationTag: "ActionPoint",
-//     assessmentName: "Project 2",
-//     unitId: "BIO2011_2024_S1",
-//   },
-//   {
-//     action: "tes",
-//     status: "0",
-//     deadline: "2024-01-29",
-//     annotationTag: "Confused",
-//     assessmentName: "Project 2",
-//     unitId: "BIO2011_2024_S1",
-//   },
-//   {
-//     action: "tes",
-//     status: "1",
-//     deadline: "2024-01-29",
-//     annotationTag: "Other",
-//     assessmentName: "Project 2",
-//     unitId: "BIO2011_2024_S1",
-//   },
-//   {
-//     action: "tes",
-//     status: "0",
-//     deadline: "2024-01-31",
-//     annotationTag: "Weakness",
-//     assessmentName: "Project 2",
-//     unitId: "BIO2011_2024_S1",
-//   },
-//   {
-//     action: "tes",
-//     status: "0",
-//     deadline: "2024-01-31",
-//     annotationTag: "Strength",
-//     assessmentName: "Project 2",
-//     unitId: "BIO2011_2024_S1",
-//   },
-//   {
-//     action: "tes",
-//     status: "0",
-//     deadline: "2024-01-31",
-//     annotationTag: "ActionPoint",
-//     assessmentName: "Project 2",
-//     unitId: "BIO2011_2024_S1",
-//   },
-//   {
-//     action: "tes",
-//     status: "0",
-//     deadline: "2024-01-31",
-//     annotationTag: "Confused",
-//     assessmentName: "Project 2",
-//     unitId: "BIO2011_2024_S1",
-//   },
-//   {
-//     action: "tes",
-//     status: "0",
-//     deadline: "2024-01-31",
-//     annotationTag: "Other",
-//     assessmentName: "Project 2",
-//     unitId: "BIO2011_2024_S1",
-//   },
-// ];
 
 export type Tab = "overview" | "actions" | "To-do list Calendar" | "strengthAA" | "weaknessAA" | "strengthAU" | "weaknessAU";
 const commonThemesByUnitFunc = (unitsData: { [key: string]: Feedback[] }) => {
@@ -351,39 +125,36 @@ export function OverviewPage({
   return (
     <>
       {user?.emailVerified ? (
-        <div className="grid grid-cols-6 gap-4">
-          <div className="pl-4 col-span-1">
-            {/* <UnitSummary
-              unitCodes={Object.keys(groupedByUnitCode)}
-              tab={tab}
-              setTab={setTab}
-              dataFunc={(x) => commonThemesByAssessment(x)}
-            /> */}
-            {selectedTab === "strengthAU" || selectedTab === "weaknessAU" ? (
-              <>
-              <UnitSelection unitCodes={Object.keys(groupedByUnitCode)} disabled={true} />
-              <br></br>
-            </>
-            ) : (
-              <>
-                <UnitSelection unitCodes={Object.keys(groupedByUnitCode)} disabled={false} />
+        <div className="container-fluid mt-3">
+          <div className="row">
+            <div className="col-2 mr-1" 
+              style={{paddingRight: '0px', marginRight: '0px'}}>
+              {selectedTab === "strengthAU" || selectedTab === "weaknessAU" ? (
+                <>
+                <UnitSelection unitCodes={Object.keys(groupedByUnitCode)} disabled={true} />
                 <br></br>
               </>
-            )}
-            {/* <UnitSelection unitCodes={Object.keys(groupedByUnitCode)} /> */}
-            <br></br>
-            <Sidebar onTabChange={handleTabChange}></Sidebar>
+              ) : (
+                <>
+                  <UnitSelection unitCodes={Object.keys(groupedByUnitCode)} disabled={false} />
+                  <br></br>
+                </>
+              )}
+              <br></br>
+              <Sidebar onTabChange={handleTabChange}></Sidebar>
+            </div>
+            <div className="col-10">
+              {
+                <Graphs
+                  key={selectedUnit}
+                  unitsData={commonThemesByUnit}
+                  assessmentData={selectedUnitData}
+                  tab={selectedTab}
+                ></Graphs>
+              }
+            </div>
           </div>
-          <div className="col-span-4">
-            {
-              <Graphs
-                key={selectedUnit}
-                unitsData={commonThemesByUnit}
-                assessmentData={selectedUnitData}
-                tab={selectedTab}
-              ></Graphs>
-            }
-          </div>
+          
         </div>
       ) : (
         <div>Please Login </div>
@@ -444,7 +215,6 @@ function Graphs({
     case "To-do list Calendar":
       return (
         <>
-          <h1>To-do list Calendar</h1>
           <CalendarView/>
         </>
       );

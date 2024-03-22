@@ -3,6 +3,8 @@ import {NavBar} from "./components/NavBar";
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 
 import {OverviewPage} from "./pages/OverviewPage";
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 import SignUpPage from "./pages/SignUpPage";
 import {LoginPage} from "./pages/LoginPage";
 import {UnitSummaryPage} from "./pages/UnitPage";

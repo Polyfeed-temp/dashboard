@@ -6,6 +6,9 @@ import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
 import GetUserFeedback from '../GetUserFeedback';
 import EventDetailsModal from './EventDetailsModal';
+import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
+import '../styling/Calendar.css'
+
 
 export function CalendarView() {
   const Feedbacks = GetUserFeedback();
@@ -102,52 +105,83 @@ export function CalendarView() {
   }, []); 
 
   return (
-    <div className="calendar-container container">
-      <div className="left-content">
-        <FullCalendar
-          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-          initialView="dayGridMonth"
-          events={ActionItems}
-          eventClick={handleEventClick}
-          eventContent={renderEventContent} // Use custom event rendering
-        />
-        {showModal && (
-          <>
-            <div className="overlay" onClick={closeModal}></div>
-            <EventDetailsModal event={clickedEvent} onClose={closeModal} />
-          </>
-        )}
-      </div>
-
-      <div className="right-content">
-        <FullCalendar
-          plugins={[listPlugin]}
-          initialView="listWeek"
-          events={ActionItems}
-          eventContent={(arg) => (
-            <div>
-              {/* Display unit code before event title */}
-              {arg.event.extendedProps.unitCode && (
-                <span>{arg.event.extendedProps.unitCode.split('_')[0]}: </span>
-              )}
-              {arg.event.title}
-            </div>
+    <div className="container">
+      <div className='row'>
+        <div className="col-md-9">
+          <FullCalendar
+            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+            initialView="dayGridMonth"
+            events={ActionItems}
+            eventClick={handleEventClick}
+            eventContent={renderEventContent} // Use custom event rendering
+            headerToolbar={{ // Customize header toolbar with custom buttons and default navigation buttons
+              start: 'prev', // Include customPrev button and prev button
+              center: 'title',
+              end: 'next' // Include customNext button and next button
+          
+            }}
+            
+            
+          />
+          {showModal && (
+            <>
+              <div className="overlay" onClick={closeModal}></div>
+              <EventDetailsModal event={clickedEvent} onClose={closeModal} />
+            </>
           )}
-          eventClick={handleEventClick}
-          eventTimeFormat={{ // Hide event times
-            hour: 'numeric',
-            minute: '2-digit',
-            omitZeroMinute: false,
-            meridiem: 'narrow'
-          }}
-        />
-        {showModal && (
-          <>
-            <div className="overlay" onClick={closeModal}></div>
-            <EventDetailsModal event={clickedEvent} onClose={closeModal} />
-          </>
-        )}
+        </div>
+
+        <div className="col-md-3">
+          <FullCalendar
+            
+
+            plugins={[listPlugin]}
+            initialView="listWeek"
+            events={ActionItems}
+            eventContent={(arg) => (
+              
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                {/* Display unit code before event title */}
+                <div>
+                  {arg.event.extendedProps.unitCode && (
+                    <span>{arg.event.extendedProps.unitCode.split('_')[0]}: </span>
+                  )}
+                  {arg.event.title}
+                </div>
+                <div>
+                  <span>{renderStatus(arg.event.extendedProps.actionItem)}</span>
+                </div>
+              </div>
+
+        
+            )}
+            eventClick={handleEventClick}
+            displayEventTime={false}
+            headerToolbar={{ // Customize header toolbar with custom buttons and default navigation buttons
+              start: 'prev', // Include customPrev button and prev button
+              center: 'title',
+              end: 'next' // Include customNext button and next button
+            }}
+              // Custom style for the title
+            titleFormat={{
+              month: 'short', // Display the full month name
+              day: 'numeric', // Display the day of the month
+            }}
+            buttonIcons={{
+              prev: 'chevron-left',
+              next: 'chevron-right',
+            }}
+
+          />
+          {showModal && (
+            <>
+              <div className="overlay" onClick={closeModal}></div>
+              <EventDetailsModal event={clickedEvent} onClose={closeModal} />
+            </>
+          )}
+        </div>
       </div>
+ 
     </div>
   );
 }
@@ -158,7 +192,22 @@ const renderEventContent = (eventInfo: any) => {
       {eventInfo.timeText && (
         <div className="fc-event-time">{eventInfo.timeText}</div>
       )}
-      <div className="fc-event-title">{eventInfo.event.extendedProps.unitCode.split('_')[0]} - {eventInfo.event.title}</div>
+      <div className="fc-event-title">{eventInfo.event.title}</div>
     </div>
   );
 };
+
+const renderStatus = (actionItem: any) => {
+  const today = new Date();
+  const eventDeadline = new Date(actionItem.deadline);
+
+  if (actionItem.status === 0 && eventDeadline < today) {
+    return "Overdue";
+  } else if (actionItem.status === 1) {
+    return "Completed";
+  } else if (actionItem.status === 0) {
+    return "Incomplete";
+  } else {
+    return "Unknown Status";
+  }
+}

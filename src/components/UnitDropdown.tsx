@@ -52,7 +52,7 @@ export function UnitDropdown({unitCodes, disabled}:{unitCodes: string[], disable
           React.cloneElement(element, {
             disabled: true,
             className:
-              "flex items-center opacity-100 px-0 gap-2 pointer-events-none",
+              "items-center opacity-100 px-0 gap-2 pointer-events-none",
           })
         }
         onChange={handleOptionChange}

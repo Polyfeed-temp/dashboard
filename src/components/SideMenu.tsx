@@ -9,10 +9,6 @@ import {
   List,
   ListItem,
 } from "@material-tailwind/react";
-/**
- * @deprecated
- */
-import {Tab} from "../pages/OverviewPage";
 
 export function SideMenu({
   title,
