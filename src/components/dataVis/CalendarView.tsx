@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -82,6 +82,25 @@ export function CalendarView() {
     setShowModal(false);
   };
 
+  useEffect(() => {
+    const removeTimeFromList = () => {
+      const timeElements = document.querySelectorAll('.fc-list-event-time');
+      timeElements.forEach((element) => {
+        (element as HTMLElement).style.display = 'none'; // Type assertion
+      });
+    };
+
+    removeTimeFromList();
+
+    return () => {
+      // Cleanup function to restore original state when component unmounts
+      const timeElements = document.querySelectorAll('.fc-list-event-time');
+      timeElements.forEach((element) => {
+        (element as HTMLElement).style.display = ''; // Type assertion
+      });
+    };
+  }, []); 
+
   return (
     <div className="calendar-container container">
       <div className="left-content">
@@ -105,8 +124,23 @@ export function CalendarView() {
           plugins={[listPlugin]}
           initialView="listWeek"
           events={ActionItems}
-          eventContent={(arg) => <div>{arg.event.title}</div>}
+          eventContent={(arg) => (
+            <div>
+              {/* Display unit code before event title */}
+              {arg.event.extendedProps.unitCode && (
+                <span>{arg.event.extendedProps.unitCode.split('_')[0]}: </span>
+              )}
+              {arg.event.title}
+            </div>
+          )}
+          eventClick={handleEventClick}
         />
+        {showModal && (
+          <>
+            <div className="overlay" onClick={closeModal}></div>
+            <EventDetailsModal event={clickedEvent} onClose={closeModal} />
+          </>
+        )}
       </div>
     </div>
   );
@@ -118,7 +152,7 @@ const renderEventContent = (eventInfo: any) => {
       {eventInfo.timeText && (
         <div className="fc-event-time">{eventInfo.timeText}</div>
       )}
-      <div className="fc-event-title">{eventInfo.event.extendedProps.unitCode} - {eventInfo.event.title}</div>
+      <div className="fc-event-title">{eventInfo.event.extendedProps.unitCode.split('_')[0]} - {eventInfo.event.title}</div>
     </div>
   );
 };
