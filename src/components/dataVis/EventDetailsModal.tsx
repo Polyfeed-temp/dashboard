@@ -23,9 +23,8 @@ const EventDetailsModal: React.FC<EventDetailsModalProps> = ({ event, onClose })
         <h3 className="text-lg font-medium mb-2">Action Item</h3>
         {event.extendedProps?.actionItem && ( 
           <>
-            <p><strong>Action:</strong> {event.extendedProps.actionItem.action}</p>
+            <p><strong>Highlighted text:</strong> {event.extendedProps.text}</p>
             <p><strong>Category:</strong> {event.extendedProps.actionItem.category}</p>
-            <p><strong>Deadline:</strong> {new Date(event.extendedProps.actionItem.deadline).toLocaleDateString('en-US', {month: "long", day: "numeric", year: "numeric"})}</p>
             <p><strong>Status:</strong> {renderStatus(event.extendedProps.actionItem)}</p> 
           </>
         )} 
