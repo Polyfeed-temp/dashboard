@@ -1,0 +1,41 @@
+/* Sidebar styles */
+.sidebar {
+  width: 100%; /* Adjust the width as needed */
+  background-color: #f0f0f0; /* Change the background color as needed */
+}
+
+/* Collapsible header styles */
+.collapsible .header {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #ddd;
+}
+
+/* Collapsible content styles */
+.collapsible .content {
+  padding: 10px;
+  background-color: #eee;
+}
+
+/* Active button styles */
+button.active {
+  background-color: #333;
+  color: #fff;
+}
+
+/* Button styles */
+button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  background-color: #fff; /* Set default background color */
+  color: #333; /* Set default text color */
+}
+
+button:hover {
+  background-color: #ddd; /* Change the hover color as needed */
+}

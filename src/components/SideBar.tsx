@@ -1,7 +1,7 @@
 // Sidebar.js
 import React, { useState } from "react";
 import Collapsible from "./Collapsible";
-// import './Sidebar.css'; // Import your styles if needed
+import './styling/Sidebar.css'; // Import your styles if needed
 
 interface SidebarProps {
   onTabChange: (tab: string) => void;
@@ -30,7 +30,6 @@ const Sidebar: React.FC<SidebarProps> = ({ onTabChange }) => {
               To-do list Calendar
             </button>
             <br></br>
-            <br></br>
             <button
               className={isButtonActive("strengthAU") ? "active" : ""}
               onClick={() => handleButtonClick("strengthAU")}
@@ -39,14 +38,12 @@ const Sidebar: React.FC<SidebarProps> = ({ onTabChange }) => {
             </button>
             {/* AU refers to the meaning of "Across Units" */}
             <br></br>
-            <br></br>
             <button
               className={isButtonActive("weaknessAU") ? "active" : ""}
               onClick={() => handleButtonClick("weaknessAU")}
             >
               Weakness Across Units
             </button>
-            <br></br>
             <br></br>
             <button
               className={isButtonActive("calendarList") ? "active" : ""}
@@ -66,7 +63,6 @@ const Sidebar: React.FC<SidebarProps> = ({ onTabChange }) => {
               Strength Across Assessments
             </button>
             {/* AU refers to the meaning of "Across Assessments" */}
-            <br></br>
             <br></br>
             <button
               className={isButtonActive("weaknessAA") ? "active" : ""}

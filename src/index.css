@@ -15,33 +15,33 @@
 /* Menu */
 .card {
   transition: all 0.3s ease;
-  /* other styles for your card */
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .card-container:hover .card {
-  opacity: 0.6; /* Dim other cards when any card is hovered */
+  opacity: 0.9; /* Dim other cards when any card is hovered */
 }
 
 .card:hover {
   opacity: 1; /* Highlight the hovered card */
-  transform: scale(1.05); /* Optional: Scale up the card slightly */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Add a shadow for more emphasis */
+  transform: scale(1.02); /* Scale up the card slightly */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a shadow for more emphasis */
 }
 
 .collapsible .content {
-  padding: 6px;
-  background-color: #ffffff;
+  padding: 12px;
+  background-color: #f3f4f6;
 }
 
 .collapsible .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #000000;
-  border: #000000;
-  padding: 6px;
+  background-color: #e5e7eb;
+  padding: 12px;
   cursor: pointer;
-  -webkit-text-fill-color: #ffffff;
+  border-radius: 8px;
 }
 
 .menus {
@@ -51,84 +51,39 @@
 }
 
 .menu-items {
-  margin-right: 10px; /* Adjust this value to your desired spacing */
+  margin-right: 12px; /* Adjust this value to your desired spacing */
 }
 
-.UnitDrodown{
+.UnitDrodown {
   position: relative;
   z-index: 9999;
 }
-/* Menu */
+
+/* Calendar */
 .calendar-container {
   display: flex;
   flex-direction: row; /* Use 'column' to stack components vertically */
-  overflow: hidden; 
+  overflow: hidden;
 }
 
 .left-content {
-  flex: 2;  /* Twice the space as the right content */
-  margin-right: 20px; 
+  flex: 2; /* Twice the space as the right content */
+  margin-right: 20px;
 }
 
 .right-content {
   flex: 1;
 }
 
-.card {
-  transition: all 0.3s ease;
-  /* other styles for your card */
-}
-
-.card-container:hover .card {
-  opacity: 0.6; /* Dim other cards when any card is hovered */
-}
-
-.card:hover {
-  opacity: 1; /* Highlight the hovered card */
-  transform: scale(1.05); /* Optional: Scale up the card slightly */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Add a shadow for more emphasis */
-}
-
-.collapsible .content {
-  padding: 6px;
-  background-color: #eeeeee;
-}
-
-.collapsible .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #dddddd;
-  padding: 6px;
-  cursor: pointer;
-}
-
-.menus {
-  display: flex;
-  list-style: none;
-  padding: 0;
-}
-
-.menu-items {
-  margin-right: 10px; /* Adjust this value to your desired spacing */
-}
-
-/* Simple Striped pattern */
-.striped-event > *  {
-  background: linear-gradient(45deg, #3a70b7 25%, transparent 25%, 
-               transparent 50%, #3a70b7 50%, #3a70b7 75%, transparent 75%); 
-  background-size: 8px 8px; /* Adjust size of stripes */;
-}
-
 .event-modal {
-  position: fixed; 
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: white; 
+  background-color: white;
   padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 1000; /* Ensure the modal is on top */
 }
 
@@ -137,7 +92,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%; 
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.5); /* Black with 50% opacity */
   z-index: 900; /* Below the modal, but above everything else */
 }

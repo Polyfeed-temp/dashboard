@@ -1,0 +1,12 @@
+.custom-title {
+    font-size: 14px; /* Adjust the font size as per your requirement */
+    /* Add any other styles you want */
+  }
+
+  .fc-toolbar-title {
+    font-size: 14px;
+  }
+
+  .fc-list-item-time {
+    display:none;
+  }
