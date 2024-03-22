@@ -134,6 +134,12 @@ export function CalendarView() {
             </div>
           )}
           eventClick={handleEventClick}
+          eventTimeFormat={{ // Hide event times
+            hour: 'numeric',
+            minute: '2-digit',
+            omitZeroMinute: false,
+            meridiem: 'narrow'
+          }}
         />
         {showModal && (
           <>
