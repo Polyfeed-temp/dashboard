@@ -31,7 +31,7 @@ export function UnitDropdown({unitCodes, disabled}:{unitCodes: string[], disable
 
 
   return (
-    <div style={{position: 'relative', zIndex: 9999}}>
+    <div style={{position: 'relative', zIndex: 9999, listStyleType: 'none'}}>
       <style>
         {`
           #dropdown:hover {

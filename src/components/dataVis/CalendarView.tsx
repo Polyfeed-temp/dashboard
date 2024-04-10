@@ -14,10 +14,10 @@ export function CalendarView() {
   const Feedbacks = GetUserFeedback();
 
   const colorMapping = {
-    "Strength": "#a70b7",
+    "Strength": "#3a70b7",
     "Weakness": "#ef5975",
     "Action Item" : "#23bfc6",
-    "Confused": "#f7633",
+    "Confused": "#f79633",
     "Other": "#8960aa"
   };
 
@@ -34,6 +34,7 @@ export function CalendarView() {
       text: any;
       actionItem: any;
       backgroundColor?: string;
+      //backgroundImage: string;
       textColor?: string;
       borderColor?: string; // Add borderColor field
     }[] = [];
@@ -44,10 +45,22 @@ export function CalendarView() {
       const unitCode = assessment.unitCode;
 
       assessment.highlights.forEach((highlight: { actionItems: any[]; annotation: { annotationTag: any; commonTheme: any; text: any; notes: any; }; }) => {
-        highlight.actionItems.forEach((actionItem: { id: any; action: any; category: any; deadline: any; }) => {
+        highlight.actionItems.forEach((actionItem: { id: any; action: any; category: any; deadline: any; status: any }) => {
           const deadlineDate = new Date(actionItem.deadline);
-
+          const status = actionItem.status;
           const isOverdue = today > deadlineDate;
+
+          var bgColor = 'white';
+          var brColor = 'white';
+          var txtColor = 'white';
+
+          if (status ==1) {
+            bgColor = colorMapping[highlight.annotation.annotationTag as keyof typeof colorMapping];
+            brColor = colorMapping[highlight.annotation.annotationTag as keyof typeof colorMapping];
+          }else{
+            brColor = colorMapping[highlight.annotation.annotationTag as keyof typeof colorMapping];
+            txtColor = 'black';
+          }
 
           actionItems.push({
             id: actionItem.id,
@@ -60,19 +73,22 @@ export function CalendarView() {
             commonTheme: highlight.annotation.commonTheme,
             text: highlight.annotation.text,
             actionItem: actionItem,
-            backgroundColor: isOverdue ? 'white' : colorMapping[highlight.annotation.annotationTag as keyof typeof colorMapping] || '#dddddd',
-            textColor: isOverdue ? 'black' : 'white',
-            borderColor: colorMapping[highlight.annotation.annotationTag as keyof typeof colorMapping] || 'black' // Set borderColor to colorMapping value
+            //backgroundColor: isOverdue ? '#878787' : colorMapping[highlight.annotation.annotationTag as keyof typeof colorMapping] || '#dddddd',
+            backgroundColor: isOverdue? '#878787' : bgColor,
+            //textColor: 'white',
+            textColor: txtColor,
+            //borderColor: isOverdue ? '#878787' : colorMapping[highlight.annotation.annotationTag as keyof typeof colorMapping] || 'black' // Set borderColor to colorMapping value
+            borderColor: isOverdue? '#878787' : brColor
           });
+          //console.log(actionItems);
         });
       });
     });
-
     return actionItems;
   };
 
   const ActionItems = extractActionItemsAndUnitCode(Feedbacks);
-
+  
   const [showModal, setShowModal] = useState(false);
   const [clickedEvent, setClickedEvent] = useState(null);
 
@@ -107,7 +123,7 @@ export function CalendarView() {
   return (
     <div className="container">
       <div className='row'>
-        <div className="col-md-9">
+        <div className="col-md-8 col-lg-8 col-xl-8">
           <FullCalendar
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
             initialView="dayGridMonth"
@@ -131,7 +147,7 @@ export function CalendarView() {
           )}
         </div>
 
-        <div className="col-md-3">
+        <div className="col-md-4 col-lg-4 col-xl-4">
           <FullCalendar
             
 
@@ -148,7 +164,7 @@ export function CalendarView() {
                   )}
                   {arg.event.title}
                 </div>
-                <div>
+                <div style={{fontStyle: "italic", fontSize: "12px"}}>
                   <span>{renderStatus(arg.event.extendedProps.actionItem)}</span>
                 </div>
               </div>
@@ -179,6 +195,85 @@ export function CalendarView() {
               <EventDetailsModal event={clickedEvent} onClose={closeModal} />
             </>
           )}
+          <br/>
+          {/* Adding Legend*/}
+          <table className="Legendtable" style={{fontSize: '12px'}}>
+            <thead>
+                <tr>
+                    <th scope="col">Legend</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div style={{backgroundColor:'#3a70b7',width:'50px',height:'25px',borderColor:'#3a70b7'}}></div>
+                </td>
+                <td>Completed to-do list item labelled for strength </td>
+              </tr>
+              <tr>
+              <td>
+                  <div style={{backgroundColor:'white',width:'50px',height:'25px', border:'2px solid #3a70b7'}}></div>
+                </td>
+                <td>Incomplete to-do list item labelled for strength </td>
+              </tr>
+              <tr>
+                <td>
+                  <div style={{backgroundColor:'#ef5975',width:'50px',height:'25px'}}></div>
+                </td>
+                <td>Completed to-do list item labelled for weakness </td>
+              </tr>
+              <tr>
+              <td>
+                  <div style={{backgroundColor:'white',width:'50px',height:'25px', border:' 2px solid #ef5975'}}></div>
+                </td>
+                <td>Incomplete to-do list item labelled for weakness </td>
+              </tr>
+              <tr>
+                <td>
+                  <div style={{backgroundColor:'#23bfc6',width:'50px',height:'25px'}}></div>
+                </td>
+                <td>Completed to-do list item labelled for action point </td>
+              </tr>
+              <tr>
+              <td>
+                  <div style={{backgroundColor:'white',width:'50px',height:'25px', border:'2px solid #23bfc6'}}></div>
+                </td>
+                <td>Incomplete to-do list item labelled for action point </td>
+              </tr>
+              <tr>
+                <td>
+                  <div style={{backgroundColor:'#f79633',width:'50px',height:'25px'}}></div>
+                </td>
+                <td>Completed to-do list item labelled for confused </td>
+              </tr>
+              <tr>
+              <td>
+                  <div style={{backgroundColor:'white',width:'50px',height:'25px', border:'2px solid #f79633'}}></div>
+                </td>
+                <td>Incomplete to-do list item labelled for confused </td>
+              </tr>
+              <tr>
+                <td>
+                  <div style={{backgroundColor:'#8960aa',width:'50px',height:'25px'}}></div>
+                </td>
+                <td>Completed to-do list item labelled for other </td>
+              </tr>
+              <tr>
+              <td>
+                  <div style={{backgroundColor:'white',width:'50px',height:'25px', border:'2px solid #8960aa'}}></div>
+                </td>
+                <td>Incomplete to-do list item labelled for other </td>
+              </tr>
+              <tr>
+              <td>
+                  <div style={{backgroundColor:'#878787',width:'50px',height:'25px', border:'2px solid #878787'}}></div>
+                </td>
+                <td>Overdue to-do list items</td>
+              </tr>
+              
+            </tbody>
+        </table>
         </div>
       </div>
  

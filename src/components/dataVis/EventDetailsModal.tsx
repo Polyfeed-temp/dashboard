@@ -9,18 +9,14 @@ const EventDetailsModal: React.FC<EventDetailsModalProps> = ({ event, onClose })
 
   return (
      <div className="event-modal fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-xl p-6 z-1000">  
-      <h2 className="text-lg font-large mb-1">Event Details</h2>
+      <h2 className="text-lg font-large mb-1">To-do List Description</h2>
 
       <div className="event-details-section flex flex-col items-start mb-4">
-        <h3 className="text-lg font-medium mb-2">Basic Information</h3>
-        <p><strong>Title:</strong> {event.title}</p>
-        <p><strong>Date:</strong> {new Date(event.start).toLocaleDateString('en-US', {month: "long", day: "numeric", year: "numeric"})}</p>
+        <p><strong>To-do Item:</strong> {event.title}</p>
+        <p><strong>Date:</strong> {new Date(event.start).toLocaleDateString('en-US', {month: "long", day: "numeric", year: "numeric"})}
+        </p>
         <p><strong>Unit Code:</strong> {event.extendedProps?.unitCode || "No unit code"}</p> 
         <p><strong>Annotation Tag:</strong> {event.extendedProps?.annotationTag}</p> 
-      </div>
-
-      <div className="event-details-section flex flex-col items-start mb-4">
-        <h3 className="text-lg font-medium mb-2">Action Item</h3>
         {event.extendedProps?.actionItem && ( 
           <>
             <p><strong>Highlighted text:</strong> {event.extendedProps.text}</p>
