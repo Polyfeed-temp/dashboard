@@ -57,6 +57,10 @@ export function CalendarView() {
           if (status ==1) {
             bgColor = colorMapping[highlight.annotation.annotationTag as keyof typeof colorMapping];
             brColor = colorMapping[highlight.annotation.annotationTag as keyof typeof colorMapping];
+          }else if (status == 0 && isOverdue){
+            bgColor = '#878787';
+            brColor = '#878787';
+            txtColor = 'white';
           }else{
             brColor = colorMapping[highlight.annotation.annotationTag as keyof typeof colorMapping];
             txtColor = 'black';
@@ -73,12 +77,9 @@ export function CalendarView() {
             commonTheme: highlight.annotation.commonTheme,
             text: highlight.annotation.text,
             actionItem: actionItem,
-            //backgroundColor: isOverdue ? '#878787' : colorMapping[highlight.annotation.annotationTag as keyof typeof colorMapping] || '#dddddd',
-            backgroundColor: isOverdue? '#878787' : bgColor,
-            //textColor: 'white',
+            backgroundColor: bgColor,
             textColor: txtColor,
-            //borderColor: isOverdue ? '#878787' : colorMapping[highlight.annotation.annotationTag as keyof typeof colorMapping] || 'black' // Set borderColor to colorMapping value
-            borderColor: isOverdue? '#878787' : brColor
+            borderColor: brColor
           });
           //console.log(actionItems);
         });
