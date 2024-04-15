@@ -1,7 +1,3 @@
-import { UnitSummary } from "../components/UnitSummary";
-import { AssignmentView } from "../components/AssignmentView";
-import StackedBarChart from "../components/dataVis/BarChart";
-import { useUserState } from "../store/UserContext";
 import { ActionItemBarChart } from "../components/dataVis/ActionItemBarChart";
 import { TemporalStrengthChart } from "../components/dataVis/TemporalStrenghtChart";
 import {
@@ -9,24 +5,29 @@ import {
   CommonThemeFromGPTAssessment,
 } from "../components/dataVis/TemporalWeaknessChart";
 import { CommonStrengthChart } from "../components/dataVis/CommonStrengths";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 import {
   CommonThemeFromGPT,
   CommonWeaknessChart,
 } from "../components/dataVis/CommonWeakness";
 import { useContext, useEffect, useState } from "react";
-import { UnitOverallProgressBar } from "../components/OverallProgressBar";
 import { Feedback } from "../types";
 import Sidebar from "../components/SideBar";
 import { CalendarView } from "../components/dataVis/CalendarView";
-// import { CalendarList } from "../components/dataVis/CalendarList";
 import { UnitSelection } from "../components/UnitSelection";
 import { useUserAuth } from "../store/UserAuthContext";
-import { onChange } from "react-toastify/dist/core/store";
 import { UnitContext } from "../store/UnitContext";
+import { Button, Spinner } from "@material-tailwind/react";
+import { getCommonThemeFromChatGpt } from "../services/chatgpt-service";
 
-
-export type Tab = "overview" | "actions" | "To-do list Calendar" | "strengthAA" | "weaknessAA" | "strengthAU" | "weaknessAU";
+export type Tab =
+  | "overview"
+  | "actions"
+  | "To-do list Calendar"
+  | "strengthAA"
+  | "weaknessAA"
+  | "strengthAU"
+  | "weaknessAU";
 const commonThemesByUnitFunc = (unitsData: { [key: string]: Feedback[] }) => {
   return Object.keys(unitsData).map((unitCode) => {
     const feedbacks = unitsData[unitCode];
@@ -97,7 +98,7 @@ export function OverviewPage({
     setSelectedTab(tab as Tab);
   };
 
-  const {unit} = useContext(UnitContext)
+  const { unit } = useContext(UnitContext);
 
   useEffect(() => {
     if (!user?.emailVerified) {
@@ -120,23 +121,30 @@ export function OverviewPage({
     }
   }, [unit?.unitId]);
 
-  
   console.log(selectedUnitData);
   return (
     <>
       {user?.emailVerified ? (
         <div className="container-fluid mt-3">
           <div className="row">
-            <div className="col-2 mr-1" 
-              style={{paddingRight: '0px', marginRight: '0px'}}>
+            <div
+              className="col-2 mr-1"
+              style={{ paddingRight: "0px", marginRight: "0px" }}
+            >
               {selectedTab === "strengthAU" || selectedTab === "weaknessAU" ? (
                 <>
-                <UnitSelection unitCodes={Object.keys(groupedByUnitCode)} disabled={true} />
-                <br></br>
-              </>
+                  <UnitSelection
+                    unitCodes={Object.keys(groupedByUnitCode)}
+                    disabled={true}
+                  />
+                  <br></br>
+                </>
               ) : (
                 <>
-                  <UnitSelection unitCodes={Object.keys(groupedByUnitCode)} disabled={false} />
+                  <UnitSelection
+                    unitCodes={Object.keys(groupedByUnitCode)}
+                    disabled={false}
+                  />
                   <br></br>
                 </>
               )}
@@ -154,7 +162,6 @@ export function OverviewPage({
               }
             </div>
           </div>
-          
         </div>
       ) : (
         <div>Please Login </div>
@@ -172,6 +179,8 @@ function Graphs({
   assessmentData: CommonThemeFromGPTAssessment[];
   tab: Tab;
 }) {
+  const [loading, setLoading] = useState(false);
+
   switch (tab) {
     case "actions":
       return <ActionItemBarChart />;
@@ -191,17 +200,29 @@ function Graphs({
           <TemporalStrengthChart data={assessmentData} />
         </>
       );
-      case "weaknessAA":
+    case "weaknessAA":
       return (
         <>
           <h1>Weakness Across Assessments</h1>
           <TemporalWeaknessChart data={assessmentData} />
         </>
       );
-      case "strengthAU":
+    case "strengthAU":
       return (
         <>
-          <h1>Strength Across Units</h1>
+          <div className="flex flex-row items-center">
+            <h1>Strength Across Units</h1>
+            <Button
+              className="w-[250px] ml-4"
+              onClick={async () => {
+                setLoading(true);
+                const result = await getCommonThemeFromChatGpt();
+                setLoading(false);
+              }}
+            >
+              {loading ? <Spinner /> : "Sync common strength tag"}
+            </Button>
+          </div>
           <CommonStrengthChart data={unitsData} />
         </>
       );
@@ -215,7 +236,7 @@ function Graphs({
     case "To-do list Calendar":
       return (
         <>
-          <CalendarView/>
+          <CalendarView />
         </>
       );
     default:

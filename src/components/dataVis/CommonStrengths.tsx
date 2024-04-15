@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import * as d3 from "d3";
 export interface CommonThemeFromGPT {
   Unit: string;
@@ -8,9 +8,10 @@ export interface CommonThemeFromGPT {
 
 function createChart(data: CommonThemeFromGPT[], container: string) {
   d3.select(container).select("svg").remove();
-  const margin = {top: 20, right: 20, bottom: 30, left: 200},
+  const margin = { top: 20, right: 20, bottom: 30, left: 200 },
     width = 1000 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+    height =
+      100 * (data.length < 4 ? 4 : data.length) - margin.top - margin.bottom;
 
   // Append the svg object to the body of the page
   const svg = d3
@@ -20,7 +21,7 @@ function createChart(data: CommonThemeFromGPT[], container: string) {
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", `translate(${margin.left},${margin.top})`);
-  const units = data.map((d: {Unit: any}) => d.Unit);
+  const units = data.map((d: { Unit: any }) => d.Unit);
 
   // Set up x-axis scale
   const x = d3.scaleBand().domain(units).range([0, width]).padding(0.01); // Adjust padding as needed
@@ -28,7 +29,7 @@ function createChart(data: CommonThemeFromGPT[], container: string) {
   // Create a map to count the frequency of each strength
   let strengthFrequency = new Map();
 
-  data.forEach((d: {strengths: any[]}) => {
+  data.forEach((d: { strengths: any[] }) => {
     d.strengths.forEach((strength: any) => {
       if (strengthFrequency.has(strength)) {
         strengthFrequency.set(strength, strengthFrequency.get(strength) + 1);
@@ -45,7 +46,7 @@ function createChart(data: CommonThemeFromGPT[], container: string) {
     .padding(0.95);
 
   // Add circles for strengths
-  data.forEach((d: {strengths: any[]; Unit: string}, index: any) => {
+  data.forEach((d: { strengths: any[]; Unit: string }, index: any) => {
     d.strengths.forEach((strength: string) => {
       const xValue = x(d.Unit);
       if (xValue !== undefined) {
@@ -67,8 +68,8 @@ function createChart(data: CommonThemeFromGPT[], container: string) {
     .attr("text-anchor", "start")
     .selectAll("g")
     .data([
-      {size: 5, text: "Unique Strength (shown only in a particular unit)"},
-      {size: 10, text: "Common Strength (shown across units)"},
+      { size: 5, text: "Unique Strength (shown only in a particular unit)" },
+      { size: 10, text: "Common Strength (shown across units)" },
     ])
     .enter()
     .append("g")
@@ -113,7 +114,7 @@ function createChart(data: CommonThemeFromGPT[], container: string) {
   svg.append("g").call(d3.axisLeft(y));
 }
 
-export function CommonStrengthChart({data}: {data: CommonThemeFromGPT[]}) {
+export function CommonStrengthChart({ data }: { data: CommonThemeFromGPT[] }) {
   useEffect(() => {
     createChart(data, "#chart3");
   }, []);
