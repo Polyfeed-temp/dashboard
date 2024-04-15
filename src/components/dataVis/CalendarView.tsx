@@ -28,6 +28,7 @@ export function CalendarView() {
       start: any;
       unitCode: any;
       annotationTag: any;
+      annotationId : any;
       actionCategory: any;
       notes: any;
       commonTheme: any;
@@ -44,7 +45,7 @@ export function CalendarView() {
     data.forEach((assessment: { unitCode: any; highlights: any[]; }) => {
       const unitCode = assessment.unitCode;
 
-      assessment.highlights.forEach((highlight: { actionItems: any[]; annotation: { annotationTag: any; commonTheme: any; text: any; notes: any; }; }) => {
+      assessment.highlights.forEach((highlight: { actionItems: any[]; annotation: { id: any; annotationTag: any; commonTheme: any; text: any; notes: any; }; }) => {
         highlight.actionItems.forEach((actionItem: { id: any; action: any; category: any; deadline: any; status: any }) => {
           const deadlineDate = new Date(actionItem.deadline);
           const status = actionItem.status;
@@ -72,6 +73,7 @@ export function CalendarView() {
             start: actionItem.deadline,
             unitCode: unitCode,
             annotationTag: highlight.annotation.annotationTag,
+            annotationId: highlight.annotation.id,
             actionCategory: actionItem.category,
             notes: highlight.annotation.notes,
             commonTheme: highlight.annotation.commonTheme,
@@ -81,7 +83,7 @@ export function CalendarView() {
             textColor: txtColor,
             borderColor: brColor
           });
-          //console.log(actionItems);
+         // console.log(actionItems);
         });
       });
     });
@@ -100,6 +102,7 @@ export function CalendarView() {
 
   const closeModal = () => {
     setShowModal(false);
+    window.location.reload(); // Reload the page upon closing the modal
   };
 
   useEffect(() => {
