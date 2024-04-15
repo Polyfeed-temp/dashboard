@@ -28,6 +28,7 @@ const EventDetailsModal: React.FC<EventDetailsModalProps> = ({
   const [editedStatus, setEditedStatus] = useState(
     event.extendedProps?.actionItem?.status
   );
+  
 
   // Handler to toggle date edit mode
   const editDate = () => {
@@ -118,6 +119,7 @@ const EventDetailsModal: React.FC<EventDetailsModalProps> = ({
             title="edit"
             ripple={true}
             className="ml-2" // Add margin-left
+            hidden={(renderStatus(event.extendedProps.actionItem)==="Completed")}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -193,8 +195,10 @@ const EventDetailsModal: React.FC<EventDetailsModalProps> = ({
           </div>
         )}
       </div>
-      <button onClick={finalizeUpdate}>Update</button>
-      <br />
+      {event.extendedProps.actionItem.status? (!"Complete"):(
+        <button onClick={finalizeUpdate}>Update</button>
+      )}
+      <br/>
       <button onClick={onClose}>Close</button>
     </div>
   );
