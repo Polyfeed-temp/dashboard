@@ -19,6 +19,7 @@ import { useUserAuth } from "../store/UserAuthContext";
 import { UnitContext } from "../store/UnitContext";
 import { Button, Spinner } from "@material-tailwind/react";
 import { getCommonThemeFromChatGpt } from "../services/chatgpt-service";
+import { toast } from "react-toastify";
 
 export type Tab =
   | "overview"
@@ -79,10 +80,11 @@ const commonThemesByAssessmentFunc =
 
 export function OverviewPage({
   groupedByUnitCode,
+  fetchData,
 }: {
   groupedByUnitCode: { [key: string]: Feedback[] };
+  fetchData: Function;
 }) {
-  console.log(groupedByUnitCode);
   // const user = useUserState();
   const { user } = useUserAuth() || {};
   const [selectedTab, setSelectedTab] = useState("To-do list Calendar" as Tab);
@@ -105,10 +107,9 @@ export function OverviewPage({
       return;
     }
     setCommonThemesByUnit(commonThemesByUnitFunc(groupedByUnitCode));
-  }, [user?.emailVerified]);
+  }, [user?.emailVerified, groupedByUnitCode]);
 
   const commonThemesByAssessment = (unitCode: string) => {
-    console.log(unitCode);
     setSelectedUnit(unitCode);
     const val = commonThemesByAssessmentFunc(groupedByUnitCode)(unitCode);
     setSelectedUnitData(val);
@@ -121,7 +122,6 @@ export function OverviewPage({
     }
   }, [unit?.unitId]);
 
-  console.log(selectedUnitData);
   return (
     <>
       {user?.emailVerified ? (
@@ -158,6 +158,7 @@ export function OverviewPage({
                   unitsData={commonThemesByUnit}
                   assessmentData={selectedUnitData}
                   tab={selectedTab}
+                  fetchData={fetchData}
                 ></Graphs>
               }
             </div>
@@ -174,12 +175,25 @@ function Graphs({
   unitsData,
   assessmentData,
   tab,
+  fetchData,
 }: {
   unitsData: CommonThemeFromGPT[];
   assessmentData: CommonThemeFromGPTAssessment[];
   tab: Tab;
+  fetchData: Function;
 }) {
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {}, [unitsData]);
+
+  const updateCommonTheme = async () => {
+    setLoading(true);
+    await getCommonThemeFromChatGpt();
+    await fetchData();
+    setLoading(false);
+
+    toast("Updated Common Theme");
+  };
 
   switch (tab) {
     case "actions":
@@ -212,14 +226,7 @@ function Graphs({
         <>
           <div className="flex flex-row items-center">
             <h1>Strength Across Units</h1>
-            <Button
-              className="w-[250px] ml-4"
-              onClick={async () => {
-                setLoading(true);
-                const result = await getCommonThemeFromChatGpt();
-                setLoading(false);
-              }}
-            >
+            <Button className="w-[250px] ml-4" onClick={updateCommonTheme}>
               {loading ? <Spinner /> : "Sync common strength tag"}
             </Button>
           </div>

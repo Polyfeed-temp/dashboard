@@ -117,7 +117,7 @@ function createChart(data: CommonThemeFromGPT[], container: string) {
 export function CommonStrengthChart({ data }: { data: CommonThemeFromGPT[] }) {
   useEffect(() => {
     createChart(data, "#chart3");
-  }, []);
+  }, [data]);
 
   return (
     <div>
