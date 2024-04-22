@@ -35,7 +35,7 @@ export function UnitSummaryPage({
             assessmentName: feedback.assessmentName,
           }))
           .sort((a, b) => a.assessmentId - b.assessmentId) || [];
-          setAssessmentDetails(temp_data);
+      setAssessmentDetails(temp_data);
     }
     if (unit && selectedAssessment) {
       const status = getFeedbackByAssessmentId(selectedAssessment.assessmentId);
@@ -104,7 +104,10 @@ export function UnitSummaryPage({
   return (
     <div className="flex flex-wrap">
       <div className="w-full sm:w-1/4  flex-shrink-0">
-        <UnitSelection unitCodes={Object.keys(groupedByUnitCode)} disabled={false} />
+        <UnitSelection
+          unitCodes={Object.keys(groupedByUnitCode)}
+          disabled={false}
+        />
         <SideMenu
           title="Assessment"
           list={assessmentDetails.map(

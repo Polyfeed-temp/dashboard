@@ -5,11 +5,9 @@ import {
   Typography,
   IconButton,
 } from "@material-tailwind/react";
-import {ActionItemChecklist} from "./ActionItemChecklist";
-import {ProgressBarSummary} from "./ProgressBar";
-import {AnnotationData, AnnotationTag, AnnotationActionPoint} from "../types";
-import {useState} from "react";
-import {Notes} from "./Notes";
+import { AnnotationData, AnnotationTag, AnnotationActionPoint } from "../types";
+import { useState } from "react";
+import { Notes } from "./Notes";
 import ToDoCard from "./ToDoCard";
 const getIcons = (tag: AnnotationTag) => {
   switch (tag) {
@@ -52,12 +50,12 @@ export function HighlightFeed({
         <div className="flex items-center">
           <img
             src={getIcons(Highlight.annotation.annotationTag)}
-            style={{width: 20, height: 20}}
+            style={{ width: 20, height: 20 }}
           />
           <h3 className="ml-2">{Highlight.annotation.annotationTag}</h3>
         </div>
       </CardHeader>
-      <hr style={{borderTop: "2px solid #bbb"}}></hr>
+      <hr style={{ borderTop: "2px solid #bbb" }}></hr>
       <CardBody className="relative">
         <div className="flex flex-col justify-between h-full">
           <p className="text text-gray-700 italic">
@@ -75,7 +73,7 @@ export function HighlightFeed({
                   setNote={(input) => {
                     editFunc(false)({
                       ...Highlight,
-                      annotation: {...Highlight.annotation, notes: input},
+                      annotation: { ...Highlight.annotation, notes: input },
                     });
                     setEditing(false);
                   }}

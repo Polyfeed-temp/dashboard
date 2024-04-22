@@ -1,12 +1,12 @@
-import React, {useState, useRef, useEffect} from "react";
-import {AnnotationActionPoint, ActionPointCategory} from "../types";
-import {Button, Typography, IconButton} from "@material-tailwind/react";
-import {EditIcon, DeleteIcon} from "../icons/icons";
+import React, { useState, useRef, useEffect } from "react";
+import { AnnotationActionPoint, ActionPointCategory } from "../types";
+import { Button, Typography, IconButton } from "@material-tailwind/react";
+import { EditIcon, DeleteIcon } from "../icons/icons";
 import {
   updateActionStatus,
   deleteActionItem,
 } from "../services/actionItem.service";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 const ToDoActions: ActionPointCategory[] = [
   "Further Practice",
   "Contact Tutor",
@@ -172,7 +172,6 @@ function TodoCard({
             key={selectedActionItem.action}
             hideFunc={() => setSelectedActionItem(null)}
             saveFunc={(actionItem) => {
-              console.log(actionItem);
               const newActionItems = [...actionItems];
               const index = newActionItems.findIndex(
                 (item) => item === selectedActionItem
@@ -203,7 +202,6 @@ function ToDoForm({
   cancelFunc: () => void;
   defaultActionItem?: AnnotationActionPoint;
 }) {
-  console.log(defaultActionItem);
   const [todoText, setTodoText] = useState<string>(
     defaultActionItem?.action ?? ""
   );
@@ -223,6 +221,7 @@ function ToDoForm({
     event.preventDefault();
 
     saveFunc({
+      ...defaultActionItem,
       action: todoText,
       category: selectedCategory,
       deadline: new Date(dueDate),
@@ -270,7 +269,7 @@ function ToDoForm({
         htmlFor="dueDate"
         className="block text-sm font-medium text-gray-700 mt-4 mb-2"
       >
-        Expected to comptete by:
+        Expected to completed by:
       </label>
       <input
         type="date"
@@ -290,7 +289,6 @@ function ToDoForm({
             cancelFunc();
           }}
         >
-          {" "}
           Cancel
         </Button>
       </div>
