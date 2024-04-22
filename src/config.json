@@ -1,4 +1,4 @@
 {
-    "backend": "https://www.polyfeed.com.au/",
-    "dashboard": "http://localhost:3000"
+  "backend": "https://www.polyfeed.com.au/prod/",
+  "dashboard": "http://localhost:3000"
 }
