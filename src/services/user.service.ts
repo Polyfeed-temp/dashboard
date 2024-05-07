@@ -1,5 +1,6 @@
 import axios, { TOKEN_KEY } from "./api.service";
 import { UserState, User, Feedback, Role, Faculty } from "../types";
+import { addLogs, eventType, eventSource } from "./logs.serivce";
 
 const USER_KEY = "user";
 
@@ -97,7 +98,7 @@ class UserService {
 
   public async getUserFeedbacks() {
     const response = await axios.get("api/feedback/all");
-    console.log(response.data)
+    console.log(response.data);
 
     return response.data as Feedback[];
   }
