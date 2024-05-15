@@ -79,9 +79,10 @@ export function NavBar({ unitCodes }: { unitCodes: string[] | null }) {
                                 addLogs({
                                   eventType: eventType[13],
                                   content: JSON.stringify({
+                                    current: activeButton,
                                     target: menu.title,
                                   }),
-                                  eventSource: eventSource[6],
+                                  eventSource: eventSource[13],
                                 });
                                 setActiveButton(menu.title);
                               }}
