@@ -67,11 +67,10 @@ const EventDetailsModal: React.FC<EventDetailsModalProps> = ({
       status: !!editedStatus,
     };
 
-    console.log("AnnotationActionPoint type array :", action_item);
-
     const status = updateHighlightActionItem(
       event.extendedProps?.annotationId,
-      [action_item]
+      [action_item],
+      event.extendedProps?.actionItem
     );
 
     toast.promise(status, {
