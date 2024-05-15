@@ -1,7 +1,8 @@
-import React, {useState, useEffect} from "react";
-import {AnnotationData, AnnotationTag, Feedback} from "../types";
-import {IconButton, Button} from "@material-tailwind/react";
-import {chevronIconDown, chevronIconUp, EditIcon} from "../icons/icons";
+import React, { useState, useEffect } from "react";
+import { AnnotationData, AnnotationTag, Feedback } from "../types";
+import { IconButton, Button } from "@material-tailwind/react";
+import { chevronIconDown, chevronIconUp, EditIcon } from "../icons/icons";
+import { addLogs, eventType, eventSource } from "../services/logs.serivce";
 
 const getIcons = (tag: AnnotationTag) => {
   switch (tag) {
@@ -17,10 +18,14 @@ const getIcons = (tag: AnnotationTag) => {
       return `${process.env.PUBLIC_URL}/tag_icons/Other_Col_Pos.svg`;
   }
 };
-export function UnitAssignmentSummary({feedback}: {feedback: Feedback}) {
+export function UnitAssignmentSummary({ feedback }: { feedback: Feedback }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  console.log(feedback);
   const toggleDropdown = () => {
+    addLogs({
+      eventType: eventType[9],
+      content: JSON.stringify({ isDropdownOpen: !isDropdownOpen }),
+      eventSource: isDropdownOpen ? eventSource[5] : eventSource[4],
+    });
     setIsDropdownOpen(!isDropdownOpen);
   };
   return (
@@ -45,9 +50,17 @@ export function UnitAssignmentSummary({feedback}: {feedback: Feedback}) {
           <Button
             fullWidth
             className="bg-black"
-            onClick={() => (window.location.href = feedback.url)}
+            onClick={() => {
+              addLogs({
+                eventType: eventType[9],
+                content: JSON.stringify({
+                  target: feedback.url,
+                }),
+                eventSource: eventType[6],
+              });
+              window.location.href = feedback.url;
+            }}
           >
-            {" "}
             Go to Feedback
           </Button>
         </>
@@ -60,8 +73,8 @@ interface Props {
   annotationData: AnnotationData[];
 }
 
-export const SummaryCard: React.FC<Props> = ({annotationData}) => {
-  const annotationTagCount: {[key in AnnotationTag]: number} = {
+export const SummaryCard: React.FC<Props> = ({ annotationData }) => {
+  const annotationTagCount: { [key in AnnotationTag]: number } = {
     Strength: 0,
     Weakness: 0,
     "Action Item": 0,
@@ -70,7 +83,7 @@ export const SummaryCard: React.FC<Props> = ({annotationData}) => {
   };
   console.log(annotationData[0]);
 
-  annotationData.forEach(({annotation}) => {
+  annotationData.forEach(({ annotation }) => {
     annotationTagCount[annotation.annotationTag] += 1;
   });
 
@@ -83,7 +96,7 @@ export const SummaryCard: React.FC<Props> = ({annotationData}) => {
             <img
               src={getIcons(category as AnnotationTag)}
               alt={category}
-              style={{width: 20, height: 20, marginRight: 8}}
+              style={{ width: 20, height: 20, marginRight: 8 }}
             />
             {category + ": " + counter}
           </div>

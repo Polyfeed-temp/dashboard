@@ -1,11 +1,11 @@
-import {AnnotationData, Feedback} from "../types";
-import {HighlightFeed} from "./HighlightFeed";
-import {Typography, Button} from "@material-tailwind/react";
-import {ProgressBarSummary} from "./ProgressBar";
-import {ActionItemsSummary} from "../types";
-import {useState} from "react";
-import {updateActionStatus} from "../services/actionItem.service";
-import {toast} from "react-toastify";
+import { AnnotationData, Feedback, AnnotationActionPoint } from "../types";
+import { HighlightFeed } from "./HighlightFeed";
+import { Typography, Button } from "@material-tailwind/react";
+import { ProgressBarSummary } from "./ProgressBar";
+import { ActionItemsSummary } from "../types";
+import { useState } from "react";
+import { updateActionStatus } from "../services/actionItem.service";
+import { toast } from "react-toastify";
 export function AssignmentView({
   feedback,
   deleteHighlightFunc,
@@ -13,7 +13,12 @@ export function AssignmentView({
 }: {
   feedback: Feedback;
   deleteHighlightFunc: (id: string) => void;
-  editFunc: (isAction: boolean) => (highlight: AnnotationData) => void;
+  editFunc: (
+    isAction: boolean
+  ) => (
+    highlight: AnnotationData,
+    originalActionItems?: AnnotationActionPoint[]
+  ) => void;
 }) {
   const actionItemSummary = feedback?.highlights?.reduce(
     (acc, item) => {
@@ -31,8 +36,8 @@ export function AssignmentView({
       }
       return acc;
     },
-    {completed: 0, incomplete: 0} as ActionItemsSummary
-  ) || {completed: 0, incomplete: 0};
+    { completed: 0, incomplete: 0 } as ActionItemsSummary
+  ) || { completed: 0, incomplete: 0 };
   const [actionItemSummaryState, setActionItemSummaryState] =
     useState<ActionItemsSummary>(actionItemSummary);
 
@@ -88,7 +93,9 @@ export function AssignmentView({
       )}
 
       <Button
-        onClick={() => (window.location.href = feedback.url)}
+        onClick={() => {
+          window.location.href = feedback.url;
+        }}
         className="mt-4 flex items-center mt-4 w-full bg-black text-white rounded-md p-1 justify-between"
       >
         <Typography variant="small" color="white" className="font-normal">

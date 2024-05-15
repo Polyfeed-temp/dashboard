@@ -1,5 +1,10 @@
 import { AssignmentView } from "../components/AssignmentView";
-import { Feedback, AnnotationData, Assessment } from "../types";
+import {
+  Feedback,
+  AnnotationData,
+  Assessment,
+  AnnotationActionPoint,
+} from "../types";
 import { useContext, useEffect, useState } from "react";
 import UserService from "../services/user.service";
 import { useParams } from "react-router-dom";
@@ -71,35 +76,43 @@ export function UnitSummaryPage({
     );
   };
 
-  const editFunc = (isAction: boolean) => (highlight: AnnotationData) => {
-    const status = isAction
-      ? updateHighlightActionItem(
-          highlight.annotation.id,
-          highlight.actionItems || []
-        )
-      : updateHighlightNotes(
-          highlight.annotation.id,
-          highlight.annotation.notes || ""
-        );
-    toast.promise(status, {
-      pending: "Saving...",
-      success: "Saved",
-      error: "Error when saving",
-    });
-    status.then(() =>
-      setSelectedFeedback((feedback) => {
-        if (feedback) {
-          return {
-            ...feedback,
-            highlights: feedback.highlights?.map((item) =>
-              item.annotation.id === highlight.annotation.id ? highlight : item
-            ),
-          };
-        }
-        return feedback;
-      })
-    );
-  };
+  const editFunc =
+    (isAction: boolean) =>
+    (
+      highlight: AnnotationData,
+      originalActionItems?: AnnotationActionPoint[]
+    ) => {
+      const status = isAction
+        ? updateHighlightActionItem(
+            highlight.annotation.id,
+            highlight.actionItems || [],
+            originalActionItems
+          )
+        : updateHighlightNotes(
+            highlight.annotation.id,
+            highlight.annotation.notes || ""
+          );
+      toast.promise(status, {
+        pending: "Saving...",
+        success: "Saved",
+        error: "Error when saving",
+      });
+      status.then(() =>
+        setSelectedFeedback((feedback) => {
+          if (feedback) {
+            return {
+              ...feedback,
+              highlights: feedback.highlights?.map((item) =>
+                item.annotation.id === highlight.annotation.id
+                  ? highlight
+                  : item
+              ),
+            };
+          }
+          return feedback;
+        })
+      );
+    };
 
   return (
     <div className="flex flex-wrap">

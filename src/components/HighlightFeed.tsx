@@ -33,14 +33,25 @@ export function HighlightFeed({
   Highlight: AnnotationData;
   setActionItemFunc: (id: number) => (complete: boolean) => void;
   deleteFunc: () => void;
-  editFunc: (isActionItem: boolean) => (highlight: AnnotationData) => void;
+  editFunc: (
+    isActionItem: boolean
+  ) => (
+    highlight: AnnotationData,
+    originalActionItems?: AnnotationActionPoint[]
+  ) => void;
 }) {
   const [editing, setEditing] = useState(false);
-  const savActionItemsFunc = (actionItems: AnnotationActionPoint[]) => {
-    editFunc(true)({
-      ...Highlight,
-      actionItems: actionItems,
-    });
+  const savActionItemsFunc = (
+    actionItems: AnnotationActionPoint[],
+    originalActionItems: AnnotationActionPoint[]
+  ) => {
+    editFunc(true)(
+      {
+        ...Highlight,
+        actionItems: actionItems,
+      },
+      originalActionItems
+    );
     setEditing(false);
   };
 

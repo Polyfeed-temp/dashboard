@@ -7,6 +7,8 @@ import {
   deleteActionItem,
 } from "../services/actionItem.service";
 import { toast } from "react-toastify";
+import { addLogs, eventType, eventSource } from "../services/logs.serivce";
+
 const ToDoActions: ActionPointCategory[] = [
   "Further Practice",
   "Contact Tutor",
@@ -123,7 +125,10 @@ function TodoCard({
   viewOnly,
   cancelFunc,
 }: {
-  saveFunc: (actionItems: AnnotationActionPoint[]) => void;
+  saveFunc: (
+    actionItems: AnnotationActionPoint[],
+    originalActionItems: AnnotationActionPoint[]
+  ) => void;
   todoitems?: AnnotationActionPoint[];
   viewOnly?: boolean;
   cancelFunc: () => void;
@@ -131,6 +136,10 @@ function TodoCard({
   const [actionItems, setActionItems] = useState<AnnotationActionPoint[]>(
     todoitems ? todoitems : []
   );
+
+  const [originalActionItems, setOriginalActionItems] = useState<
+    AnnotationActionPoint[]
+  >(todoitems ? todoitems : []);
   const [addToDo, setAddToDo] = useState<boolean>(false);
   const [selectedActionItem, setSelectedActionItem] =
     useState<AnnotationActionPoint | null>(null);
@@ -151,7 +160,10 @@ function TodoCard({
           <Button className="bg-black" onClick={() => setAddToDo(true)}>
             Add Another item
           </Button>
-          <Button className="bg-black" onClick={() => saveFunc(actionItems)}>
+          <Button
+            className="bg-black"
+            onClick={() => saveFunc(actionItems, originalActionItems)}
+          >
             Done
           </Button>
         </div>
@@ -286,6 +298,11 @@ function ToDoForm({
         </Button>
         <Button
           onClick={() => {
+            addLogs({
+              eventType: eventType[3],
+              content: "",
+              eventSource: eventSource[8],
+            });
             cancelFunc();
           }}
         >

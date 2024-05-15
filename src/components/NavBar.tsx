@@ -20,6 +20,7 @@ import { UnitSelection } from "./UnitSelection";
 import { UnitContext } from "../store/UnitContext";
 import GoogleSignInButton from "./SigninGoogleButton";
 import { useUserAuth } from "../store/UserAuthContext";
+import { addLogs, eventType, eventSource } from "../services/logs.serivce";
 
 export function NavBar({ unitCodes }: { unitCodes: string[] | null }) {
   const { unit } = useContext(UnitContext);
@@ -74,7 +75,16 @@ export function NavBar({ unitCodes }: { unitCodes: string[] | null }) {
                                   ? "bg-black"
                                   : "bg-gray-500 hover:bg-black"
                               } text-white`}
-                              onClick={() => setActiveButton(menu.title)}
+                              onClick={() => {
+                                addLogs({
+                                  eventType: eventType[13],
+                                  content: JSON.stringify({
+                                    target: menu.title,
+                                  }),
+                                  eventSource: eventSource[6],
+                                });
+                                setActiveButton(menu.title);
+                              }}
                             >
                               {menu.title}
                             </Link>

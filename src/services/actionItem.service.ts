@@ -25,11 +25,12 @@ export async function deleteActionItem(actionId: number) {
 
 export async function updateHighlightActionItem(
   highlightId: string,
-  actionItem: AnnotationActionPoint[]
+  actionItem: AnnotationActionPoint[],
+  originalActionItems?: AnnotationActionPoint[]
 ) {
   addLogs({
     eventType: eventType[2],
-    content: JSON.stringify({ highlightId, actionItem }),
+    content: JSON.stringify({ highlightId, originalActionItems, actionItem }),
     eventSource: eventSource[3],
   });
 

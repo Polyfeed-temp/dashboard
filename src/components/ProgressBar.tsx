@@ -1,6 +1,6 @@
-import React, {useState} from "react";
-import {ActionItemsSummary} from "../types";
-import {Progress} from "@material-tailwind/react";
+import React, { useState } from "react";
+import { ActionItemsSummary } from "../types";
+import { Progress } from "@material-tailwind/react";
 
 export function ProgressBarSummary({
   actionItemSummary,
@@ -8,7 +8,6 @@ export function ProgressBarSummary({
   actionItemSummary: ActionItemsSummary;
 }) {
   const total = actionItemSummary.completed + actionItemSummary.incomplete;
-  console.log("totoal", total);
   const percentage = (actionItemSummary.completed / total) * 100;
   // const fixed = percentage.toFixed(2);
   console.log(actionItemSummary.completed / total);

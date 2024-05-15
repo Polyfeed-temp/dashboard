@@ -24,11 +24,12 @@ const EventDetailsModal: React.FC<EventDetailsModalProps> = ({
   // State for tracking edit modes and values
   const [isEditingDate, setIsEditingDate] = useState(false);
   const [isEditingStatus, setIsEditingStatus] = useState(false);
-  const [editedDate, setEditedDate] = useState(event.extendedProps?.actionItem?.deadline);
+  const [editedDate, setEditedDate] = useState(
+    event.extendedProps?.actionItem?.deadline
+  );
   const [editedStatus, setEditedStatus] = useState(
     event.extendedProps?.actionItem?.status
   );
-  
 
   // Handler to toggle date edit mode
   const editDate = () => {
@@ -51,20 +52,19 @@ const EventDetailsModal: React.FC<EventDetailsModalProps> = ({
 
   // Finalize the update
   const finalizeUpdate = () => {
-   /*
+    /*
     console.log("Updated Date:", editedDate);
     console.log("Updated Status:", editedStatus);
     console.log("action item id:", event.extendedProps?.actionItem?.id);
     console.log("annotation id :", event.extendedProps?.annotationId);
     console.log("action item as an single element array:", [event.extendedProps?.actionItem]);
    */
-    const action_item={
-        id: event.extendedProps?.actionItem?.id,
-        action: event.extendedProps?.actionItem?.action,
-        category: event.extendedProps?.actionItem?.category,
-        deadline: new Date(editedDate),
-        status: !!editedStatus
-
+    const action_item = {
+      id: event.extendedProps?.actionItem?.id,
+      action: event.extendedProps?.actionItem?.action,
+      category: event.extendedProps?.actionItem?.category,
+      deadline: new Date(editedDate),
+      status: !!editedStatus,
     };
 
     console.log("AnnotationActionPoint type array :", action_item);
@@ -79,9 +79,7 @@ const EventDetailsModal: React.FC<EventDetailsModalProps> = ({
       success: "updated",
       error: "Error when updating",
     });
-
-
-    };
+  };
 
   return (
     <div className="event-modal fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-xl p-6 z-1000">
@@ -92,7 +90,6 @@ const EventDetailsModal: React.FC<EventDetailsModalProps> = ({
           <strong>To-do Item:</strong> {event.title}
         </p>
         <div className="flex items-center mb-2">
-          {" "}
           {/* Use flex container */}
           <strong>Date:</strong> {/* Remove <p> tag */}
           {isEditingDate ? (
@@ -119,7 +116,9 @@ const EventDetailsModal: React.FC<EventDetailsModalProps> = ({
             title="edit"
             ripple={true}
             className="ml-2" // Add margin-left
-            hidden={(renderStatus(event.extendedProps.actionItem)==="Completed")}
+            hidden={
+              renderStatus(event.extendedProps.actionItem) === "Completed"
+            }
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -154,7 +153,7 @@ const EventDetailsModal: React.FC<EventDetailsModalProps> = ({
         {event.extendedProps?.actionItem && (
           <div className="flex items-center mb-2">
             <strong>Status:</strong>{" "}
-            { isEditingStatus ? (
+            {isEditingStatus ? (
               <select
                 value={editedStatus}
                 onChange={handleStatusChange}
@@ -175,7 +174,9 @@ const EventDetailsModal: React.FC<EventDetailsModalProps> = ({
               title="edit"
               ripple={true}
               className="ml-2" // Add margin-left
-              hidden={!(renderStatus(event.extendedProps.actionItem)==="Incomplete")}
+              hidden={
+                !(renderStatus(event.extendedProps.actionItem) === "Incomplete")
+              }
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -195,10 +196,12 @@ const EventDetailsModal: React.FC<EventDetailsModalProps> = ({
           </div>
         )}
       </div>
-      {event.extendedProps.actionItem.status? (!"Complete"):(
+      {event.extendedProps.actionItem.status ? (
+        !"Complete"
+      ) : (
         <button onClick={finalizeUpdate}>Update</button>
       )}
-      <br/>
+      <br />
       <button onClick={onClose}>Close</button>
     </div>
   );

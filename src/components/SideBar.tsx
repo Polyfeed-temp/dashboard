@@ -1,16 +1,26 @@
 // Sidebar.js
 import React, { useState } from "react";
 import Collapsible from "./Collapsible";
-import './styling/Sidebar.css'; // Import your styles if needed
+import "./styling/Sidebar.css"; // Import your styles if needed
+import { addLogs, eventType, eventSource } from "../services/logs.serivce";
 
 interface SidebarProps {
   onTabChange: (tab: string) => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ onTabChange }) => {
-  const [activeButton, setActiveButton] = useState<string>("To-do list Calendar");
+  const [activeButton, setActiveButton] = useState<string>(
+    "To-do list Calendar"
+  );
 
-  const handleButtonClick = (tab: string) => {
+  const handleButtonClick = (tab: string, logSources = 18) => {
+    addLogs({
+      eventType: eventType[6],
+      content: JSON.stringify({
+        target: tab,
+      }),
+      eventSource: eventSource[logSources],
+    });
     onTabChange(tab);
     setActiveButton(tab);
   };
@@ -25,14 +35,14 @@ const Sidebar: React.FC<SidebarProps> = ({ onTabChange }) => {
           <p>
             <button
               className={isButtonActive("To-do list Calendar") ? "active" : ""}
-              onClick={() => handleButtonClick("To-do list Calendar")}
+              onClick={() => handleButtonClick("To-do list Calendar", 17)}
             >
               To-do list Calendar
             </button>
             <br></br>
             <button
               className={isButtonActive("strengthAU") ? "active" : ""}
-              onClick={() => handleButtonClick("strengthAU")}
+              onClick={() => handleButtonClick("strengthAU", 17)}
             >
               Strength Across Units
             </button>
@@ -40,7 +50,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onTabChange }) => {
             <br></br>
             <button
               className={isButtonActive("weaknessAU") ? "active" : ""}
-              onClick={() => handleButtonClick("weaknessAU")}
+              onClick={() => handleButtonClick("weaknessAU", 17)}
             >
               Weakness Across Units
             </button>

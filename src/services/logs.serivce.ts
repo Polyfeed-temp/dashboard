@@ -9,6 +9,8 @@ export const eventType: string[] = [
   "close", //5
   "navigate", //6
   "rate", //7
+  "cancel", //8
+  "selection", // 9
 ];
 
 export const eventSource: string[] = [
@@ -25,6 +27,12 @@ export const eventSource: string[] = [
   "annotation", // 10
   "chatgpt", //11
   "action", //12
+  "navBar", //13
+  "sideBar", //14
+  "unitSummary", //15
+  "unit_dropdown", // 16
+  "overall_summary", // 17
+  "unit_summary", // 18
 ];
 
 export async function addLogs(params: {
