@@ -10,7 +10,7 @@ import {
   CommonThemeFromGPT,
   CommonWeaknessChart,
 } from "../components/dataVis/CommonWeakness";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { Feedback } from "../types";
 import Sidebar from "../components/SideBar";
 import { CalendarView } from "../components/dataVis/CalendarView";
@@ -195,6 +195,14 @@ function Graphs({
     toast("Updated Common Theme");
   };
 
+  const renderSyncCommonThemeButton = useMemo(() => {
+    return (
+      <Button className="w-[250px] ml-4" onClick={updateCommonTheme}>
+        {loading ? <Spinner /> : "Sync common strength tag"}
+      </Button>
+    );
+  }, [loading, updateCommonTheme]);
+
   switch (tab) {
     case "actions":
       return <ActionItemBarChart />;
@@ -210,14 +218,22 @@ function Graphs({
     case "strengthAA":
       return (
         <>
-          <h1>Strength Across Assessments</h1>
+          <div className="flex flex-row items-center">
+            <h1>Strength Across Assessments</h1>
+            {renderSyncCommonThemeButton}
+          </div>
+
           <TemporalStrengthChart data={assessmentData} />
         </>
       );
     case "weaknessAA":
       return (
         <>
-          <h1>Weakness Across Assessments</h1>
+          <div className="flex flex-row items-center">
+            <h1>Weakness Across Assessments</h1>
+            {renderSyncCommonThemeButton}
+          </div>
+
           <TemporalWeaknessChart data={assessmentData} />
         </>
       );
@@ -226,9 +242,7 @@ function Graphs({
         <>
           <div className="flex flex-row items-center">
             <h1>Strength Across Units</h1>
-            <Button className="w-[250px] ml-4" onClick={updateCommonTheme}>
-              {loading ? <Spinner /> : "Sync common strength tag"}
-            </Button>
+            {renderSyncCommonThemeButton}
           </div>
           <CommonStrengthChart data={unitsData} />
         </>
@@ -236,7 +250,10 @@ function Graphs({
     case "weaknessAU":
       return (
         <>
-          <h1>Weaknesses Across Units</h1>
+          <div className="flex flex-row items-center">
+            <h1>Weaknesses Across Units</h1>
+            {renderSyncCommonThemeButton}
+          </div>
           <CommonWeaknessChart data={unitsData} />
         </>
       );
