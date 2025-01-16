@@ -73,9 +73,15 @@ export const useFileStore = create<FileStore>((set) => ({
   fetchFilesByFeedbackId: async (feedbackId: number) => {
     try {
       set({ fetchingListLoading: true });
-      const response = await axios.get(`/api/file/list/${feedbackId}`);
+      const response = await axios.get(`/api/feedback/${feedbackId}/files`);
       set({ fileList: response.data, fetchingListLoading: false });
-    } catch (error) {
+    } catch (error: any) {
+      // If it's a 404, just set an empty file list
+      if (error.response?.status === 404) {
+        set({ fileList: [], fetchingListLoading: false });
+        return;
+      }
+      // For other errors, maintain existing error handling
       set({ fetchingListLoading: false });
       console.error("Error fetching files:", error);
       throw error;
