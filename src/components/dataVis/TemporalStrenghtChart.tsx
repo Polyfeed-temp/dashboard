@@ -1,6 +1,5 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import * as d3 from "d3";
-
 
 export interface CommonThemeFromGPTAssessment {
   assessmentName: string;
@@ -8,11 +7,9 @@ export interface CommonThemeFromGPTAssessment {
   weakness: string[];
 }
 
-
-
 function createChart(data: any, container: string) {
   d3.select(container).select("svg").remove();
-  const margin = {top: 20, right: 20, bottom: 50, left: 150},
+  const margin = { top: 20, right: 20, bottom: 50, left: 150 },
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
@@ -25,7 +22,7 @@ function createChart(data: any, container: string) {
     .append("g")
     .attr("transform", `translate(${margin.left},${margin.top})`);
 
-  const units = data.map((d: {assessmentName: any}) => d.assessmentName);
+  const units = data.map((d: { assessmentName: any }) => d.assessmentName);
 
   // Set up x-axis scale
   const x = d3.scaleBand().domain(units).range([0, width]).padding(0.01); // Adjust padding as needed
@@ -50,16 +47,18 @@ function createChart(data: any, container: string) {
     .padding(0.95);
 
   // Add faces for strengths
-data.forEach((d: any, index: any) => {
-  d.strengths.forEach((strength: any) => {
-    const xValue = x(d.assessmentName);
-    const yValue = y(strength);
-    if (xValue !== undefined && yValue !== undefined) {
-      const group = svg.append("g")
-        .attr("transform", `translate(${xValue + x.bandwidth() / 2}, ${yValue})`);
+  data.forEach((d: any, index: any) => {
+    d.strengths.forEach((strength: any) => {
+      const xValue = x(d.assessmentName);
+      const yValue = y(strength);
+      if (xValue !== undefined && yValue !== undefined) {
+        const group = svg
+          .append("g")
+          .attr(
+            "transform",
+            `translate(${xValue + x.bandwidth() / 2}, ${yValue})`
+          );
 
-      
-     
         // Configuration for the smaller face with blinking eyes
         const faceRadiusX = 25;
         const faceRadiusY = 25;
@@ -67,48 +66,49 @@ data.forEach((d: any, index: any) => {
         const eyeOffsetX = 7.5;
         const eyeOffsetY = -5;
         const blinkDuration = 3000; // Duration in milliseconds for one blink cycle
-        
-      
 
-      // Add the main circle (face)
-      group.append("ellipse")
-        .attr("cx", 0)
-        .attr("cy", 0)
-        .attr("rx", faceRadiusX)
-        .attr("ry", faceRadiusY)
-        .attr("fill", "none")
-        .attr("stroke", "#3a70b7")
-        .attr("stroke-width", 2);
+        // Add the main circle (face)
+        group
+          .append("ellipse")
+          .attr("cx", 0)
+          .attr("cy", 0)
+          .attr("rx", faceRadiusX)
+          .attr("ry", faceRadiusY)
+          .attr("fill", "none")
+          .attr("stroke", "#3a70b7")
+          .attr("stroke-width", 2);
 
-      // Adding blinking eyes
-      const addEyeWithBlink = (eyeXOffset: any) => {
-        const eye = group.append("circle")
-          .attr("cx", eyeXOffset)
-          .attr("cy", eyeOffsetY)
-          .attr("r", eyeRadius)
-          .attr("fill", "#3a70b7");
+        // Adding blinking eyes
+        const addEyeWithBlink = (eyeXOffset: any) => {
+          const eye = group
+            .append("circle")
+            .attr("cx", eyeXOffset)
+            .attr("cy", eyeOffsetY)
+            .attr("r", eyeRadius)
+            .attr("fill", "#3a70b7");
 
-        eye.append("animate")
-          .attr("attributeName", "r")
-          .attr("values", `${eyeRadius};0;${eyeRadius}`) // From full size to 0 to full size
-          .attr("dur", `${blinkDuration}ms`)
-          .attr("repeatCount", "indefinite");
-      };
+          eye
+            .append("animate")
+            .attr("attributeName", "r")
+            .attr("values", `${eyeRadius};0;${eyeRadius}`) // From full size to 0 to full size
+            .attr("dur", `${blinkDuration}ms`)
+            .attr("repeatCount", "indefinite");
+        };
 
-      // Create both eyes with blink animation
-      addEyeWithBlink(-eyeOffsetX);
-      addEyeWithBlink(eyeOffsetX);
+        // Create both eyes with blink animation
+        addEyeWithBlink(-eyeOffsetX);
+        addEyeWithBlink(eyeOffsetX);
 
-      // Adding the mouth
-      group.append("path")
-        .attr("d", "M -12.5,10 Q 0,17.5 12.5,10")
-        .attr("fill", "#3a70b7")
-        .attr("stroke", "#3a70b7")
-        .attr("stroke-width", 1.5);
-    }
+        // Adding the mouth
+        group
+          .append("path")
+          .attr("d", "M -12.5,10 Q 0,17.5 12.5,10")
+          .attr("fill", "#3a70b7")
+          .attr("stroke", "#3a70b7")
+          .attr("stroke-width", 1.5);
+      }
+    });
   });
-});
-
 
   // Add X axis label
   svg
@@ -133,7 +133,6 @@ data.forEach((d: any, index: any) => {
 
   svg.append("g").call(d3.axisLeft(y));
 }
-  
 
 export function TemporalStrengthChart({
   data,

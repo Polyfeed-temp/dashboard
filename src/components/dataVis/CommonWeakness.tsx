@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import * as d3 from "d3";
 
 export interface CommonThemeFromGPT {
@@ -57,7 +57,7 @@ const data = [
 
 function createChart(data: any, container: string) {
   d3.select(container).select("svg").remove();
-  const margin = {top: 20, right: 20, bottom: 30, left: 200},
+  const margin = { top: 20, right: 20, bottom: 30, left: 200 },
     width = 1000 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
 
@@ -69,7 +69,7 @@ function createChart(data: any, container: string) {
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", `translate(${margin.left},${margin.top})`);
-  const units = data.map((d: {Unit: any}) => d.Unit);
+  const units = data.map((d: { Unit: any }) => d.Unit);
 
   // Set up x-axis scale
   const x = d3.scaleBand().domain(units).range([0, width]).padding(0.01); // Adjust padding as needed
@@ -77,7 +77,7 @@ function createChart(data: any, container: string) {
   // Create a map to count the frequency of each strength
   let weaknessFrequency = new Map();
 
-  data.forEach((d: {weakness: any[]}) => {
+  data.forEach((d: { weakness: any[] }) => {
     d.weakness.forEach((weakness: any) => {
       if (weaknessFrequency.has(weakness)) {
         weaknessFrequency.set(weakness, weaknessFrequency.get(weakness) + 1);
@@ -94,7 +94,7 @@ function createChart(data: any, container: string) {
     .padding(0.95);
 
   // Add circles for strengths
-  data.forEach((d: {weakness: any[]; Unit: string}, index: any) => {
+  data.forEach((d: { weakness: any[]; Unit: string }, index: any) => {
     d.weakness.forEach((weakness: string) => {
       const xValue = x(d.Unit);
       if (xValue !== undefined) {
@@ -119,8 +119,8 @@ function createChart(data: any, container: string) {
     .attr("text-anchor", "start")
     .selectAll("g")
     .data([
-      {size: 5, text: "Unique Weaknesses (shown only in a particular unit)"},
-      {size: 10, text: "Common Wekanesses (shown across units)"},
+      { size: 5, text: "Unique Weaknesses (shown only in a particular unit)" },
+      { size: 10, text: "Common Wekanesses (shown across units)" },
     ])
     .enter()
     .append("g")
@@ -165,7 +165,7 @@ function createChart(data: any, container: string) {
   svg.append("g").call(d3.axisLeft(y));
 }
 
-export function CommonWeaknessChart({data}: {data: CommonThemeFromGPT[]}) {
+export function CommonWeaknessChart({ data }: { data: CommonThemeFromGPT[] }) {
   useEffect(() => {
     createChart(data, "#chart4");
   }, []);

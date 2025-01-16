@@ -197,8 +197,8 @@ function Graphs({
 
   const renderSyncCommonThemeButton = useMemo(() => {
     return (
-      <Button className="w-[250px] ml-4" onClick={updateCommonTheme}>
-        {loading ? <Spinner /> : "Sync common strength tag"}
+      <Button className="w-[200px] ml-4" onClick={updateCommonTheme}>
+        {loading ? <Spinner /> : "Referesh Graph"}
       </Button>
     );
   }, [loading, updateCommonTheme]);

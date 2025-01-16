@@ -10,8 +10,11 @@ function createChart(data: CommonThemeFromGPT[], container: string) {
   d3.select(container).select("svg").remove();
   const margin = { top: 20, right: 20, bottom: 30, left: 200 },
     width = 1000 - margin.left - margin.right,
-    height =
-      100 * (data.length < 4 ? 4 : data.length) - margin.top - margin.bottom;
+    // Set the height dynamically based on data length, but limit the maximum height
+    height = Math.min(
+      600, // Maximum height limit
+      100 * (data.length < 4 ? 4 : data.length) - margin.top - margin.bottom
+    );
 
   // Append the svg object to the body of the page
   const svg = d3
@@ -21,6 +24,7 @@ function createChart(data: CommonThemeFromGPT[], container: string) {
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", `translate(${margin.left},${margin.top})`);
+
   const units = data.map((d: { Unit: any }) => d.Unit);
 
   // Set up x-axis scale
@@ -38,6 +42,7 @@ function createChart(data: CommonThemeFromGPT[], container: string) {
       }
     });
   });
+
   // Set up y-axis scale
   const y = d3
     .scaleBand()
