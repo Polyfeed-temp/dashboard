@@ -17,7 +17,7 @@ import { AllUnitsPage } from "./pages/AllUnitsPage";
 import { useUserAuth } from "./store/UserAuthContext";
 
 function App() {
-  const [unitFeedBacks, setUnitFeedBacks] = useState([]);
+  const [, setUnitFeedBacks] = useState([]);
   const [feedbacks, setFeedback] = useState<Feedback[]>([]);
   // const user = useUserState();
   const { user } = useUserAuth() || {};
