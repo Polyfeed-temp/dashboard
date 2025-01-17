@@ -64,58 +64,104 @@ export function AssignmentView({
     setActionItemSummaryState(updatedState);
   };
   return (
-    <div>
-      <div className="w-full bg-black text-white rounded-md p-1">
-        <Typography variant="lead" color="white" className="font-normal">
+    <div className="bg-white rounded-xl shadow-sm border border-gray-100">
+      <div className="bg-gradient-to-r from-gray-900 to-gray-800 p-4 sticky top-0 z-10">
+        <Typography variant="lead" color="white" className="font-medium">
           {feedback.assessmentName}
         </Typography>
       </div>
-      <div className="flex flex-wrap">
-        {feedback.highlights?.map((highlight) => (
-          <div key={highlight.annotation.id} className=" p-2">
-            <HighlightFeed
-              Highlight={highlight}
-              setActionItemFunc={actionItemSummaryFunc}
-              deleteFunc={() => deleteHighlightFunc(highlight.annotation.id)}
-              editFunc={editFunc}
-            />
+
+      <div className="p-6">
+        {actionItemSummaryState.completed + actionItemSummaryState.incomplete >
+          0 && (
+          <div className="mb-8 bg-blue-50 p-5 rounded-xl border border-blue-100">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-sm font-semibold text-blue-900">
+                Progress Overview
+              </h3>
+              <span className="px-2.5 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
+                {actionItemSummaryState.completed} of{" "}
+                {actionItemSummaryState.completed +
+                  actionItemSummaryState.incomplete}{" "}
+                completed
+              </span>
+            </div>
+            <ProgressBarSummary
+              actionItemSummary={actionItemSummaryState}
+            ></ProgressBarSummary>
           </div>
-        ))}
-      </div>
+        )}
 
-      {actionItemSummaryState.completed + actionItemSummaryState.incomplete >
-        0 && (
-        <div className="w-full">
-          <ProgressBarSummary
-            actionItemSummary={actionItemSummaryState}
-          ></ProgressBarSummary>
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-sm font-semibold text-gray-900">
+              Feedback Highlights
+            </h3>
+            <span className="px-2.5 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium">
+              {feedback.highlights?.length || 0} items
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[calc(100vh-24rem)] overflow-y-auto pr-2">
+            {feedback.highlights?.map((highlight) => (
+              <div
+                key={highlight.annotation.id}
+                className="bg-gray-50 rounded-xl p-4 hover:bg-gray-100 transition-all duration-200 border border-gray-200/50"
+              >
+                <HighlightFeed
+                  Highlight={highlight}
+                  setActionItemFunc={actionItemSummaryFunc}
+                  deleteFunc={() =>
+                    deleteHighlightFunc(highlight.annotation.id)
+                  }
+                  editFunc={editFunc}
+                />
+              </div>
+            ))}
+          </div>
         </div>
-      )}
 
-      <Button
-        onClick={() => {
-          window.location.href = feedback.url;
-        }}
-        className="mt-4 flex items-center mt-4 w-full bg-black text-white rounded-md p-1 justify-between"
-      >
-        <Typography variant="small" color="white" className="font-normal">
-          View Full Feedback
-        </Typography>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="w-6 h-6"
+        <Button
+          onClick={() => {
+            window.location.href = feedback.url;
+          }}
+          className="w-full bg-gray-900 hover:bg-gray-800 text-white rounded-xl p-4 transition-all duration-200 flex items-center justify-between group"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M12.75 15l3-3m0 0l-3-3m3 3h-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
-      </Button>
+          <div className="flex items-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+              className="w-4 h-4"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
+              />
+            </svg>
+            <Typography variant="small" color="white" className="font-medium">
+              View Full Feedback
+            </Typography>
+          </div>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2}
+            stroke="currentColor"
+            className="w-5 h-5 transform group-hover:translate-x-1 transition-transform"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M8.25 4.5l7.5 7.5-7.5 7.5"
+            />
+          </svg>
+        </Button>
+      </div>
     </div>
   );
 }
