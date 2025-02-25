@@ -10,7 +10,7 @@ import {
   CommonThemeFromGPT,
   CommonWeaknessChart,
 } from "../components/dataVis/CommonWeakness";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState, useRef } from "react";
 import { Feedback } from "../types";
 import Sidebar from "../components/SideBar";
 import { CalendarView } from "../components/dataVis/CalendarView";
@@ -334,6 +334,7 @@ function GraphsContainer({
   isTablet: boolean;
 }) {
   const [loading, setLoading] = useState(false);
+  const initialLoadRef = useRef(false);
 
   const updateCommonTheme = async () => {
     setLoading(true);
@@ -342,6 +343,13 @@ function GraphsContainer({
     setLoading(false);
     toast.success("Common Theme Updated Successfully");
   };
+
+  useEffect(() => {
+    if (!initialLoadRef.current) {
+      initialLoadRef.current = true;
+      updateCommonTheme();
+    }
+  }, []);
 
   const renderHeader = (title: string) => (
     <motion.div

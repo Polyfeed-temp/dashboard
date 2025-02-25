@@ -33,6 +33,7 @@ export const eventSource: string[] = [
   "unit_dropdown", // 16
   "overall_summary", // 17
   "unit_summary", // 18
+  "pdf_viewer", // 19
 ];
 
 export async function addLogs(params: {

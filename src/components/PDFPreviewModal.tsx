@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "@material-tailwind/react";
+import { addLogs, eventType, eventSource } from "../services/logs.serivce";
 
 interface PDFPreviewModalProps {
   fileContent: string;
@@ -14,12 +15,38 @@ export function PDFPreviewModal({
   onClose,
   feedbackUrl,
 }: PDFPreviewModalProps) {
+  React.useEffect(() => {
+    addLogs({
+      eventType: eventType[4],
+      eventSource: eventSource[19],
+      content: `Opened PDF: ${fileName}`,
+    });
+  }, [fileName]);
+
+  const handleFeedbackClick = () => {
+    addLogs({
+      eventType: eventType[6],
+      eventSource: eventSource[19],
+      content: `Navigated to feedback from PDF: ${fileName}`,
+    });
+    window.open(feedbackUrl, "_blank");
+  };
+
+  const handleClose = () => {
+    addLogs({
+      eventType: eventType[5],
+      eventSource: eventSource[19],
+      content: `Closed PDF: ${fileName}`,
+    });
+    onClose();
+  };
+
   return (
     <>
       {/* Modal Overlay */}
       <div
         className="fixed inset-0 bg-black bg-opacity-60 z-[9999] backdrop-blur-sm"
-        onClick={onClose}
+        onClick={handleClose}
       />
 
       {/* Modal Content */}
@@ -50,7 +77,7 @@ export function PDFPreviewModal({
                 variant="filled"
                 color="blue"
                 className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 transition-colors"
-                onClick={() => window.open(feedbackUrl, "_blank")}
+                onClick={handleFeedbackClick}
               >
                 <span>Go to Feedback</span>
                 {/* External Link Icon */}
@@ -74,7 +101,7 @@ export function PDFPreviewModal({
               variant="text"
               color="gray"
               className="flex items-center gap-2"
-              onClick={onClose}
+              onClick={handleClose}
             >
               <span>Close</span>
               {/* Close Icon */}
