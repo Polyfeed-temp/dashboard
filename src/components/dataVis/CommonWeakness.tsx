@@ -7,54 +7,6 @@ export interface CommonThemeFromGPT {
   weakness: string[];
 }
 
-const data = [
-  {
-    Unit: "FIT2099",
-    strengths: [
-      "Good use of OOP principles",
-      "Good Team Management",
-      "Clear Explanation of Design decisions",
-    ],
-    weakness: [
-      "Lack of comments in code",
-      "Unclear diagrams",
-      "Unclear documents",
-      "Unclear explanations",
-    ],
-  },
-  {
-    Unit: "FIT2094",
-    strengths: ["Good comceptual design of database", "Good Team Management"],
-    weakness: [
-      "Errorness SQL queries",
-      "Lack of understanding on JOIN functions",
-      "Unclear explanations",
-    ],
-  },
-  {
-    Unit: "FIT2002",
-    strengths: [
-      "Good use of Ghantt chart",
-      "Good Risk Analysis",
-      "Good Team Management",
-    ],
-    weakness: [
-      "Unclear presentations",
-      "Unclear diagrams",
-      "Unclear documents",
-    ],
-  },
-  {
-    Unit: "FIT2001",
-    strengths: [
-      "Good use of SDLC",
-      "Good Understanding of agile method",
-      "Good use of OOP principles",
-    ],
-    weakness: ["Unclear documentation", "Missing consultations"],
-  },
-];
-
 function createChart(data: any, container: string) {
   d3.select(container).select("svg").remove();
   const margin = { top: 20, right: 20, bottom: 30, left: 200 },
@@ -160,7 +112,12 @@ function createChart(data: any, container: string) {
   svg
     .append("g")
     .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x));
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+    .style("text-anchor", "end")
+    .attr("transform", "rotate(-90)")
+    .attr("dx", "-0.8em")
+    .attr("dy", "-0.6em");
 
   svg.append("g").call(d3.axisLeft(y));
 }

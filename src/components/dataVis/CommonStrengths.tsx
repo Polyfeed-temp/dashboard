@@ -114,7 +114,12 @@ function createChart(data: CommonThemeFromGPT[], container: string) {
   svg
     .append("g")
     .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x));
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+    .style("text-anchor", "end")
+    .attr("transform", "rotate(-90)")
+    .attr("dx", "-0.8em")
+    .attr("dy", "-0.6em");
 
   svg.append("g").call(d3.axisLeft(y));
 }

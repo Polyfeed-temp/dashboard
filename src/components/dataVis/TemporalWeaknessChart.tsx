@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import * as d3 from "d3";
 export interface CommonThemeFromGPTAssessment {
   assessmentName: string;
@@ -6,10 +6,9 @@ export interface CommonThemeFromGPTAssessment {
   weakness: string[];
 }
 
-
 function createChart(data: any, container: string) {
   d3.select(container).select("svg").remove();
-  const margin = {top: 20, right: 20, bottom: 50, left: 250},
+  const margin = { top: 20, right: 20, bottom: 50, left: 250 },
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
@@ -23,7 +22,7 @@ function createChart(data: any, container: string) {
     .attr("transform", `translate(${margin.left},${margin.top})`);
 
   // Extract unit names for the x-axis
-  const units = data.map((d: {assessmentName: any}) => d.assessmentName);
+  const units = data.map((d: { assessmentName: any }) => d.assessmentName);
 
   // Set up x-axis scale
   const x = d3.scaleBand().domain(units).range([0, width]).padding(0.01); // Adjust padding as needed
@@ -31,7 +30,7 @@ function createChart(data: any, container: string) {
   // Create a map to count the frequency of each weakness
   let wekanessFrequency = new Map();
 
-  data.forEach((d: {weakness: any[]}) => {
+  data.forEach((d: { weakness: any[] }) => {
     d.weakness.forEach((weakness: any) => {
       if (wekanessFrequency.has(weakness)) {
         wekanessFrequency.set(weakness, wekanessFrequency.get(weakness) + 1);
@@ -46,63 +45,70 @@ function createChart(data: any, container: string) {
     .domain(Array.from(wekanessFrequency.keys()))
     .range([0, height])
     .padding(0.95);
-  
-   // Add faces for weakness
-data.forEach((d: any, index: any) => {
-  d.weakness.forEach((weakness: any) => {
-    const xValue = x(d.assessmentName);
-    const yValue = y(weakness);
-    if (xValue !== undefined && yValue !== undefined) {
-      const group = svg.append("g")
-        .attr("transform", `translate(${xValue + x.bandwidth() / 2}, ${yValue})`);
 
-      // Configuration for the smaller face with blinking eyes
-      const faceRadiusX = 25;
-      const faceRadiusY = 25;
-      const eyeRadius = 4; // Original eye radius
-      const eyeOffsetX = 7.5;
-      const eyeOffsetY = -5;
-      const blinkDuration = 3000; // Duration in milliseconds for one blink cycle
+  // Add faces for weakness
+  data.forEach((d: any, index: any) => {
+    d.weakness.forEach((weakness: any) => {
+      const xValue = x(d.assessmentName);
+      const yValue = y(weakness);
+      if (xValue !== undefined && yValue !== undefined) {
+        const group = svg
+          .append("g")
+          .attr(
+            "transform",
+            `translate(${xValue + x.bandwidth() / 2}, ${yValue})`
+          );
 
-      // Add the main circle (face)
-      group.append("ellipse")
-        .attr("cx", 0)
-        .attr("cy", 0)
-        .attr("rx", faceRadiusX)
-        .attr("ry", faceRadiusY)
-        .attr("fill", "none")
-        .attr("stroke", "#ef5975")
-        .attr("stroke-width", 2);
+        // Configuration for the smaller face with blinking eyes
+        const faceRadiusX = 25;
+        const faceRadiusY = 25;
+        const eyeRadius = 4; // Original eye radius
+        const eyeOffsetX = 7.5;
+        const eyeOffsetY = -5;
+        const blinkDuration = 3000; // Duration in milliseconds for one blink cycle
 
-      // Adding blinking eyes
-      const addEyeWithBlink = (eyeXOffset: any) => {
-        const eye = group.append("circle")
-          .attr("cx", eyeXOffset)
-          .attr("cy", eyeOffsetY)
-          .attr("r", eyeRadius)
-          .attr("fill", "#ef5975");
+        // Add the main circle (face)
+        group
+          .append("ellipse")
+          .attr("cx", 0)
+          .attr("cy", 0)
+          .attr("rx", faceRadiusX)
+          .attr("ry", faceRadiusY)
+          .attr("fill", "none")
+          .attr("stroke", "#ef5975")
+          .attr("stroke-width", 2);
 
-        eye.append("animate")
-          .attr("attributeName", "r")
-          .attr("values", `${eyeRadius};0;${eyeRadius}`) // From full size to 0 to full size
-          .attr("dur", `${blinkDuration}ms`)
-          .attr("repeatCount", "indefinite");
-      };
+        // Adding blinking eyes
+        const addEyeWithBlink = (eyeXOffset: any) => {
+          const eye = group
+            .append("circle")
+            .attr("cx", eyeXOffset)
+            .attr("cy", eyeOffsetY)
+            .attr("r", eyeRadius)
+            .attr("fill", "#ef5975");
 
-      // Create both eyes with blink animation
-      addEyeWithBlink(-eyeOffsetX);
-      addEyeWithBlink(eyeOffsetX);
+          eye
+            .append("animate")
+            .attr("attributeName", "r")
+            .attr("values", `${eyeRadius};0;${eyeRadius}`) // From full size to 0 to full size
+            .attr("dur", `${blinkDuration}ms`)
+            .attr("repeatCount", "indefinite");
+        };
 
-      // Adding the mouth
-      group.append("path")
-        .attr("d", "M -12.5,10 Q 0,2.5 12.5,10")
-        .attr("fill", "none")
-        .attr("stroke", "#ef5975")
-        .attr("stroke-width", 1.5);
-    }
+        // Create both eyes with blink animation
+        addEyeWithBlink(-eyeOffsetX);
+        addEyeWithBlink(eyeOffsetX);
+
+        // Adding the mouth
+        group
+          .append("path")
+          .attr("d", "M -12.5,10 Q 0,2.5 12.5,10")
+          .attr("fill", "none")
+          .attr("stroke", "#ef5975")
+          .attr("stroke-width", 1.5);
+      }
+    });
   });
-});
-
 
   // Add X axis label
   svg
@@ -124,7 +130,12 @@ data.forEach((d: any, index: any) => {
   svg
     .append("g")
     .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x));
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+    .style("text-anchor", "end")
+    .attr("transform", "rotate(-90)")
+    .attr("dx", "-0.8em")
+    .attr("dy", "-0.6em");
 
   svg.append("g").call(d3.axisLeft(y));
 }

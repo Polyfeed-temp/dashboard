@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import * as d3 from "d3";
 
 const data: any[] = [
@@ -51,7 +51,7 @@ const data: any[] = [
         category: "Contact Tutor",
         status: "N",
       },
-      {action: "Improve Storytelling Skills", category: "Other", status: "N"},
+      { action: "Improve Storytelling Skills", category: "Other", status: "N" },
       {
         action: "Enroll in an Online Course on Presentation Skills",
         category: "Explore Online",
@@ -69,7 +69,7 @@ const data: any[] = [
 
 function createChart(data: any, container: string) {
   d3.select(container).select("svg").remove();
-  const margin = {top: 20, right: 20, bottom: 30, left: 200},
+  const margin = { top: 20, right: 20, bottom: 30, left: 200 },
     width = 1000 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
 
@@ -85,7 +85,7 @@ function createChart(data: any, container: string) {
   // Create scales
   const y = d3
     .scaleBand()
-    .domain(data.map((d: {label: any}) => d.label))
+    .domain(data.map((d: { label: any }) => d.label))
     .range([0, height])
     .padding(0.1);
 
@@ -129,8 +129,8 @@ function createChart(data: any, container: string) {
         .html(
           "Yet to be completed:<br/>" +
             d.actionPoints
-              .filter((ap: {status: string}) => ap.status === "N")
-              .map((ap: {action: any}) => ap.action)
+              .filter((ap: { status: string }) => ap.status === "N")
+              .map((ap: { action: any }) => ap.action)
               .join("<br/>")
         )
         .style("left", event.pageX + "px")
@@ -154,7 +154,7 @@ function createChart(data: any, container: string) {
       "width",
       (d: any) =>
         x(
-          d.actionPoints.filter((ap: {status: string}) => ap.status === "Y")
+          d.actionPoints.filter((ap: { status: string }) => ap.status === "Y")
             .length
         ) as number
     )
@@ -167,8 +167,8 @@ function createChart(data: any, container: string) {
         .html(
           "Completed:<br/>" +
             d.actionPoints
-              .filter((ap: {status: string}) => ap.status === "Y")
-              .map((ap: {action: any}) => ap.action)
+              .filter((ap: { status: string }) => ap.status === "Y")
+              .map((ap: { action: any }) => ap.action)
               .join("<br/>")
         )
         .style("left", event.pageX + "px")
@@ -217,9 +217,9 @@ function createChart(data: any, container: string) {
     .attr("text-anchor", "start") // Change text-anchor to "start"
     .selectAll("g")
     .data([
-      {color: "#f6f6f6", text: "Total to-do list items created"},
-      {color: "#3a70b7", text: "Completed to-do list items of strengths"},
-      {color: "#ef5975", text: "Completed to-do list items of weaknesses"},
+      { color: "#f6f6f6", text: "Total to-do list items created" },
+      { color: "#3a70b7", text: "Completed to-do list items of strengths" },
+      { color: "#ef5975", text: "Completed to-do list items of weaknesses" },
     ])
     .enter()
     .append("g")
