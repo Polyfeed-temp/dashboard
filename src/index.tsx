@@ -10,7 +10,7 @@ import "./index.css";
 import { UnitContextProvider } from "./store/UnitContextProvider";
 
 import { Provider } from "react-redux";
-import { UserAuthContextProvider } from "./store/UserAuthContext";
+import { AuthProvider } from "./store/AuthContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -18,11 +18,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <ThemeProvider>
-      <UserAuthContextProvider>
+      <AuthProvider>
         <UnitContextProvider>
         <App />
         </UnitContextProvider>
-      </UserAuthContextProvider>
+      </AuthProvider>
     </ThemeProvider>
   </React.StrictMode>
 );

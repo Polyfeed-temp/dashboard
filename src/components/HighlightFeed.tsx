@@ -17,7 +17,7 @@ const getIcons = (tag: AnnotationTag) => {
       return `${process.env.PUBLIC_URL}/tag_icons/Weakness_Col_Pos.svg`;
     case "Confused":
       return `${process.env.PUBLIC_URL}/tag_icons/Confused_Col_Pos.svg`;
-    case "Action Item":
+    case "Suggestion":
       return `${process.env.PUBLIC_URL}/tag_icons/Action_Col_Pos.svg`;
     case "Other":
       return `${process.env.PUBLIC_URL}/tag_icons/Other_Col_Pos.svg`;
@@ -129,7 +129,7 @@ export function HighlightFeed({
           </p>
         </div>
 
-        {/* Notes or Action Items */}
+        {/* Notes or Suggestions */}
         <div className="mt-auto">
           {editing && (Highlight.actionItems?.length ?? 0) === 0 ? (
             <Notes
@@ -165,7 +165,7 @@ export function HighlightFeed({
               </div>
             )}
 
-          {/* Display Action Items */}
+          {/* Display Suggestions */}
           {!editing &&
             Highlight.actionItems &&
             Highlight.actionItems.length > 0 && (

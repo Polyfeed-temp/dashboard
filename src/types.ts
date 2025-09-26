@@ -1,4 +1,4 @@
-export type AnnotationTag = "Strength" | "Weakness" | "Action Item" | "Confused" | "Other"
+export type AnnotationTag = "Strength" | "Weakness" | "Suggestion" | "Confused" | "Other"
 
 export interface Annotation {
     feedbackId: number;

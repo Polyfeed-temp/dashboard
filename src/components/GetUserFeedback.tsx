@@ -6,13 +6,13 @@ import UserService from "../services/user.service";
 // import {useUserState} from "./store/UserContext";
 import "react-toastify/dist/ReactToastify.css";
 import {ToastContainer} from "react-toastify";
-import { useUserAuth } from "../store/UserAuthContext";
+import { useAuth } from "../store/AuthContext";
 
 
 function GetUserFeedback() {
   const [feedbacks, setFeedback] = useState<Feedback[]>([]);
   // const user = useUserState();
-  const {user} = useUserAuth() || {};
+  const {user, isAuthenticated} = useAuth();
   const userService = new UserService();
   const [groupedByUnitCode, setGroupedByUnitCode] = useState<{
     [key: string]: Feedback[];
@@ -20,12 +20,12 @@ function GetUserFeedback() {
 
   useEffect(() => {
     async function fetchData() {
-      if (!user?.emailVerified) {
-        console.log("User not verified");
+      if (!isAuthenticated || !user) {
+        console.log("User not authenticated");
         return;
       }
       if (!(await userService.checkUserExists(user?.email || " "))) {
-        console.log("User exists from app");
+        console.log("User does not exist");
         return;
       }
       console.log(user);
@@ -33,7 +33,7 @@ function GetUserFeedback() {
     }
 
     fetchData();
-  }, [user]);
+  }, [user, isAuthenticated]);
 
   
   useEffect(() => {

@@ -15,7 +15,7 @@ import { Feedback } from "../types";
 import Sidebar from "../components/SideBar";
 import { CalendarView } from "../components/dataVis/CalendarView";
 import { UnitSelection } from "../components/UnitSelection";
-import { useUserAuth } from "../store/UserAuthContext";
+import { useAuth } from "../store/AuthContext";
 import { UnitContext } from "../store/UnitContext";
 import { Button, Spinner } from "@material-tailwind/react";
 import { getCommonThemeFromChatGpt } from "../services/chatgpt-service";
@@ -87,7 +87,7 @@ export function OverviewPage({
   groupedByUnitCode: { [key: string]: Feedback[] };
   fetchData: Function;
 }) {
-  const { user } = useUserAuth() || {};
+  const { user, isAuthenticated } = useAuth();
   const [selectedTab, setSelectedTab] = useState("To-do list Calendar" as Tab);
   const [selectedUnit, setSelectedUnit] = useState("Overview" as string);
   const [selectedUnitData, setSelectedUnitData] = useState(
@@ -107,11 +107,11 @@ export function OverviewPage({
   const { unit } = useContext(UnitContext);
 
   useEffect(() => {
-    if (!user?.emailVerified) {
+    if (!isAuthenticated) {
       return;
     }
     setCommonThemesByUnit(commonThemesByUnitFunc(groupedByUnitCode));
-  }, [user?.emailVerified, groupedByUnitCode]);
+  }, [isAuthenticated, groupedByUnitCode]);
 
   const commonThemesByAssessment = (unitCode: string) => {
     setSelectedUnit(unitCode);
@@ -134,7 +134,7 @@ export function OverviewPage({
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {user?.emailVerified ? (
+      {isAuthenticated ? (
         <div className="flex relative">
           {/* Mobile Header */}
           <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white shadow-sm z-40 px-4">
@@ -405,7 +405,7 @@ function GraphsContainer({
     case "actions":
       return renderGraphContainer(
         <>
-          {renderHeader("Action Items Overview")}
+          {renderHeader("Suggestions Overview")}
           <ActionItemBarChart />
         </>
       );

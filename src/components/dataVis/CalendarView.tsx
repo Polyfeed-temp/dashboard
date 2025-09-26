@@ -16,7 +16,7 @@ export function CalendarView() {
   const colorMapping = {
     "Strength": "#3a70b7",
     "Weakness": "#ef5975",
-    "Action Item" : "#23bfc6",
+    "Suggestion" : "#23bfc6",
     "Confused": "#f79633",
     "Other": "#8960aa"
   };

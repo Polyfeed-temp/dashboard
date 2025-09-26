@@ -14,38 +14,35 @@ import UserService from "./services/user.service";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { AllUnitsPage } from "./pages/AllUnitsPage";
-import { useUserAuth } from "./store/UserAuthContext";
+import { useAuth } from "./store/AuthContext";
+import { RegisterPage } from "./pages/RegisterPage";
 
 function App() {
   const [, setUnitFeedBacks] = useState([]);
   const [feedbacks, setFeedback] = useState<Feedback[]>([]);
-  // const user = useUserState();
-  const { user } = useUserAuth() || {};
+  const { user, isAuthenticated } = useAuth();
   const userService = new UserService();
   const [groupedByUnitCode, setGroupedByUnitCode] = useState<{
     [key: string]: Feedback[];
-  } | null>(null);
+  }>({});
 
   const fetchData = useCallback(async () => {
-    if (!user?.emailVerified) {
+    if (!isAuthenticated || !user) {
       return;
     }
-    if (!(await userService.checkUserExists(user?.email || " "))) {
-      console.log("User exists from app");
-      return;
+    try {
+      const result = await userService.getUserFeedbacks();
+      setFeedback(result || []);
+    } catch (error) {
+      console.error("Failed to fetch feedbacks:", error);
     }
-    const result = await userService.getUserFeedbacks();
-    setFeedback(result || []);
-  }, [user, setFeedback]);
+  }, [user, isAuthenticated, setFeedback]);
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
   useEffect(() => {
-    if (feedbacks.length === 0) {
-      return;
-    }
     const mapped = feedbacks.reduce((acc, item) => {
       if (!acc[item.unitCode]) {
         acc[item.unitCode] = [];
@@ -64,9 +61,9 @@ function App() {
         <NavBar unitCodes={Object.keys(groupedByUnitCode || {})}></NavBar>
 
         <Routes>
-          {/* <Route path="/signup" element={<SignUpPage />}></Route> */}
+          <Route path="/register" element={<RegisterPage />}></Route>
           <Route path="/login" element={<LoginPage />}></Route>
-          {groupedByUnitCode && (
+          {isAuthenticated && (
             <>
               <Route
                 path="/dashboard"
@@ -88,6 +85,9 @@ function App() {
                 element={<AllUnitsPage feedbacks={feedbacks} />}
               ></Route>
             </>
+          )}
+          {!isAuthenticated && (
+            <Route path="*" element={<LoginPage />} />
           )}
         </Routes>
       </BrowserRouter>

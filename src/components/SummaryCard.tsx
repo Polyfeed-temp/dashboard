@@ -12,7 +12,7 @@ const getIcons = (tag: AnnotationTag) => {
       return `${process.env.PUBLIC_URL}/tag_icons/Weakness_Col_Pos.svg`;
     case "Confused":
       return `${process.env.PUBLIC_URL}/tag_icons/Confused_Col_Pos.svg`;
-    case "Action Item":
+    case "Suggestion":
       return `${process.env.PUBLIC_URL}/tag_icons/Action_Col_Pos.svg`;
     case "Other":
       return `${process.env.PUBLIC_URL}/tag_icons/Other_Col_Pos.svg`;
@@ -77,7 +77,7 @@ export const SummaryCard: React.FC<Props> = ({ annotationData }) => {
   const annotationTagCount: { [key in AnnotationTag]: number } = {
     Strength: 0,
     Weakness: 0,
-    "Action Item": 0,
+    "Suggestion": 0,
     Confused: 0,
     Other: 0,
   };

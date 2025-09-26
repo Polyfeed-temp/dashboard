@@ -18,22 +18,21 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { menuItemsData } from "./MenuItemsData";
 import { UnitSelection } from "./UnitSelection";
 import { UnitContext } from "../store/UnitContext";
-import GoogleSignInButton from "./SigninGoogleButton";
-import { useUserAuth } from "../store/UserAuthContext";
+import { useAuth } from "../store/AuthContext";
 import { addLogs, eventType, eventSource } from "../services/logs.serivce";
 
 export function NavBar({ unitCodes }: { unitCodes: string[] | null }) {
   const { unit } = useContext(UnitContext);
   const [activeButton, setActiveButton] = useState("Overview");
 
-  const { user, signInWithGoogle } = useUserAuth() || {}; // Add null check here
+  const { user, logout, isAuthenticated } = useAuth();
 
   const navigate = useNavigate();
   const location = useLocation();
 
   // const user = useUserState();
   // const userDispatch = useUserDispatch();
-  const initial = user?.displayName?.substring(0, 1); // Update the access to 'user' property
+  const initial = user?.firstName?.substring(0, 1) || user?.email?.substring(0, 1);
 
   return (
     <Navbar
@@ -41,7 +40,7 @@ export function NavBar({ unitCodes }: { unitCodes: string[] | null }) {
       style={{ position: "relative", zIndex: 9999 }}
     >
       <div className="container-fluid">
-        {user?.emailVerified ? (
+        {isAuthenticated ? (
           <>
             <div className="flex items-left justify-between">
               <img
@@ -96,7 +95,7 @@ export function NavBar({ unitCodes }: { unitCodes: string[] | null }) {
                         <span>{initial}</span>
                       </button>
                     </MenuHandler>
-                    <MenuList>
+                    <MenuList className="z-[9999]">
                       <MenuItem className="flex items-center gap-2">
                         <svg
                           width="16"
@@ -117,6 +116,33 @@ export function NavBar({ unitCodes }: { unitCodes: string[] | null }) {
                           My Profile
                         </Typography>
                       </MenuItem>
+                      <hr className="my-2" />
+                      <MenuItem
+                        className="flex items-center gap-2"
+                        onClick={() => logout()}
+                      >
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            d="M2 4.5C2 3.67157 2.67157 3 3.5 3H8V2H3.5C2.11929 2 1 3.11929 1 4.5V11.5C1 12.8807 2.11929 14 3.5 14H8V13H3.5C2.67157 13 2 12.3284 2 11.5V4.5Z"
+                            fill="#90A4AE"
+                          />
+                          <path
+                            d="M10.604 11.146L13.75 8L10.604 4.854L9.896 5.561L12.086 7.5H5V8.5H12.086L9.896 10.439L10.604 11.146Z"
+                            fill="#90A4AE"
+                          />
+                        </svg>
+                        <Typography variant="small" className="font-medium">
+                          Logout
+                        </Typography>
+                      </MenuItem>
                     </MenuList>
                   </Menu>
                 </div>
@@ -131,7 +157,12 @@ export function NavBar({ unitCodes }: { unitCodes: string[] | null }) {
               className="h-20 md:h-12"
             />
             <div className="flex items-center gap-x-1">
-              <GoogleSignInButton />
+              <Button
+                onClick={() => navigate('/login')}
+                className="bg-black text-white"
+              >
+                Login
+              </Button>
             </div>
           </div>
         )}
