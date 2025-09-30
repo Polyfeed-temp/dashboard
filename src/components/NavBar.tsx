@@ -1,22 +1,15 @@
 import {
   Navbar,
-  MobileNav,
-  Button,
-  IconButton,
-  Avatar,
   MenuHandler,
   MenuList,
   MenuItem,
   Menu,
   Typography,
-  Select,
-  Option,
 } from "@material-tailwind/react";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 // import {useUserDispatch, useUserState} from "../store/UserContext";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { menuItemsData } from "./MenuItemsData";
-import { UnitSelection } from "./UnitSelection";
 import { UnitContext } from "../store/UnitContext";
 import { useAuth } from "../store/AuthContext";
 import { addLogs, eventType, eventSource } from "../services/logs.serivce";
@@ -26,9 +19,6 @@ export function NavBar({ unitCodes }: { unitCodes: string[] | null }) {
   const [activeButton, setActiveButton] = useState("Overview");
 
   const { user, logout, isAuthenticated } = useAuth();
-
-  const navigate = useNavigate();
-  const location = useLocation();
 
   // const user = useUserState();
   // const userDispatch = useUserDispatch();
@@ -156,14 +146,6 @@ export function NavBar({ unitCodes }: { unitCodes: string[] | null }) {
               alt="Logo"
               className="h-20 md:h-12"
             />
-            <div className="flex items-center gap-x-1">
-              <Button
-                onClick={() => navigate('/login')}
-                className="bg-black text-white"
-              >
-                Login
-              </Button>
-            </div>
           </div>
         )}
       </div>

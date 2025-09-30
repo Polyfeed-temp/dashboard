@@ -7,18 +7,17 @@ import listPlugin from '@fullcalendar/list';
 import GetUserFeedback from '../GetUserFeedback';
 import EventDetailsModal from './EventDetailsModal';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
-import '../styling/Calendar.css'
-
+import '../styling/Calendar.css';
 
 export function CalendarView() {
   const Feedbacks = GetUserFeedback();
 
   const colorMapping = {
-    "Strength": "#3a70b7",
-    "Weakness": "#ef5975",
-    "Suggestion" : "#23bfc6",
-    "Confused": "#f79633",
-    "Other": "#8960aa"
+    Strength: '#3a70b7',
+    Weakness: '#ef5975',
+    Suggestion: '#23bfc6',
+    Confused: '#f79633',
+    Other: '#8960aa',
   };
 
   const extractActionItemsAndUnitCode = (data: any[]) => {
@@ -28,7 +27,7 @@ export function CalendarView() {
       start: any;
       unitCode: any;
       annotationTag: any;
-      annotationId : any;
+      annotationId: any;
       actionCategory: any;
       notes: any;
       commonTheme: any;
@@ -42,60 +41,91 @@ export function CalendarView() {
 
     const today = new Date();
 
-    data.forEach((assessment: { unitCode: any; highlights: any[]; }) => {
+    data.forEach((assessment: { unitCode: any; highlights: any[] }) => {
       const unitCode = assessment.unitCode;
 
-      assessment.highlights.forEach((highlight: { actionItems: any[]; annotation: { id: any; annotationTag: any; commonTheme: any; text: any; notes: any; }; }) => {
-        highlight.actionItems.forEach((actionItem: { id: any; action: any; category: any; deadline: any; status: any }) => {
-          const deadlineDate = new Date(actionItem.deadline);
-          const status = actionItem.status;
-          const isOverdue = today > deadlineDate;
+      assessment.highlights.forEach(
+        (highlight: {
+          actionItems: any[];
+          annotation: {
+            id: any;
+            annotationTag: any;
+            commonTheme: any;
+            text: any;
+            notes: any;
+          };
+        }) => {
+          highlight.actionItems.forEach(
+            (actionItem: {
+              id: any;
+              action: any;
+              category: any;
+              deadline: any;
+              status: any;
+            }) => {
+              const deadlineDate = new Date(actionItem.deadline);
+              const status = actionItem.status;
+              const isOverdue = today > deadlineDate;
 
-          var bgColor = 'white';
-          var brColor = 'white';
-          var txtColor = 'white';
+              var bgColor = 'white';
+              var brColor = 'white';
+              var txtColor = 'white';
 
-          if (status ==1) {
-            bgColor = colorMapping[highlight.annotation.annotationTag as keyof typeof colorMapping];
-            brColor = colorMapping[highlight.annotation.annotationTag as keyof typeof colorMapping];
-          }else if (status == 0 && isOverdue){
-            bgColor = '#878787';
-            brColor = '#878787';
-            txtColor = 'white';
-          }else{
-            brColor = colorMapping[highlight.annotation.annotationTag as keyof typeof colorMapping];
-            txtColor = 'black';
-          }
+              if (status == 1) {
+                bgColor =
+                  colorMapping[
+                    highlight.annotation
+                      .annotationTag as keyof typeof colorMapping
+                  ];
+                brColor =
+                  colorMapping[
+                    highlight.annotation
+                      .annotationTag as keyof typeof colorMapping
+                  ];
+              } else if (status == 0 && isOverdue) {
+                bgColor = '#878787';
+                brColor = '#878787';
+                txtColor = 'white';
+              } else {
+                brColor =
+                  colorMapping[
+                    highlight.annotation
+                      .annotationTag as keyof typeof colorMapping
+                  ];
+                txtColor = 'black';
+              }
 
-          actionItems.push({
-            id: actionItem.id,
-            title: actionItem.action,
-            start: actionItem.deadline,
-            unitCode: unitCode,
-            annotationTag: highlight.annotation.annotationTag,
-            annotationId: highlight.annotation.id,
-            actionCategory: actionItem.category,
-            notes: highlight.annotation.notes,
-            commonTheme: highlight.annotation.commonTheme,
-            text: highlight.annotation.text,
-            actionItem: actionItem,
-            backgroundColor: bgColor,
-            textColor: txtColor,
-            borderColor: brColor
-          });
-         // console.log(actionItems);
-        });
-      });
+              actionItems.push({
+                id: actionItem.id,
+                title: actionItem.action,
+                start: actionItem.deadline,
+                unitCode: unitCode,
+                annotationTag: highlight.annotation.annotationTag,
+                annotationId: highlight.annotation.id,
+                actionCategory: actionItem.category,
+                notes: highlight.annotation.notes,
+                commonTheme: highlight.annotation.commonTheme,
+                text: highlight.annotation.text,
+                actionItem: actionItem,
+                backgroundColor: bgColor,
+                textColor: txtColor,
+                borderColor: brColor,
+              });
+              // console.log(actionItems);
+            }
+          );
+        }
+      );
     });
     return actionItems;
   };
 
   const ActionItems = extractActionItemsAndUnitCode(Feedbacks);
-  
+
   const [showModal, setShowModal] = useState(false);
   const [clickedEvent, setClickedEvent] = useState(null);
 
-  const handleEventClick = (clickInfo : any) => {
+  const handleEventClick = (clickInfo: any) => {
     setClickedEvent(clickInfo.event);
     setShowModal(true);
   };
@@ -122,11 +152,11 @@ export function CalendarView() {
         (element as HTMLElement).style.display = ''; // Type assertion
       });
     };
-  }, []); 
+  }, []);
 
   return (
     <div className="container">
-      <div className='row'>
+      <div className="row">
         <div className="col-md-8 col-lg-8 col-xl-8">
           <FullCalendar
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -134,14 +164,12 @@ export function CalendarView() {
             events={ActionItems}
             eventClick={handleEventClick}
             eventContent={renderEventContent} // Use custom event rendering
-            headerToolbar={{ // Customize header toolbar with custom buttons and default navigation buttons
+            headerToolbar={{
+              // Customize header toolbar with custom buttons and default navigation buttons
               start: 'prev', // Include customPrev button and prev button
               center: 'title',
-              end: 'next' // Include customNext button and next button
-          
+              end: 'next', // Include customNext button and next button
             }}
-            
-            
           />
           {showModal && (
             <>
@@ -153,36 +181,36 @@ export function CalendarView() {
 
         <div className="col-md-4 col-lg-4 col-xl-4">
           <FullCalendar
-            
-
             plugins={[listPlugin]}
             initialView="listWeek"
             events={ActionItems}
             eventContent={(arg) => (
-              
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 {/* Display unit code before event title */}
                 <div>
                   {arg.event.extendedProps.unitCode && (
-                    <span>{arg.event.extendedProps.unitCode.split('_')[0]}: </span>
+                    <span>
+                      {arg.event.extendedProps.unitCode.split('_')[0]}:{' '}
+                    </span>
                   )}
                   {arg.event.title}
                 </div>
-                <div style={{fontStyle: "italic", fontSize: "12px"}}>
-                  <span>{renderStatus(arg.event.extendedProps.actionItem)}</span>
+                <div style={{ fontStyle: 'italic', fontSize: '12px' }}>
+                  <span>
+                    {renderStatus(arg.event.extendedProps.actionItem)}
+                  </span>
                 </div>
               </div>
-
-        
             )}
             eventClick={handleEventClick}
             displayEventTime={false}
-            headerToolbar={{ // Customize header toolbar with custom buttons and default navigation buttons
+            headerToolbar={{
+              // Customize header toolbar with custom buttons and default navigation buttons
               start: 'prev', // Include customPrev button and prev button
               center: 'title',
-              end: 'next' // Include customNext button and next button
+              end: 'next', // Include customNext button and next button
             }}
-              // Custom style for the title
+            // Custom style for the title
             titleFormat={{
               month: 'short', // Display the full month name
               day: 'numeric', // Display the day of the month
@@ -191,7 +219,6 @@ export function CalendarView() {
               prev: 'chevron-left',
               next: 'chevron-right',
             }}
-
           />
           {showModal && (
             <>
@@ -199,95 +226,174 @@ export function CalendarView() {
               <EventDetailsModal event={clickedEvent} onClose={closeModal} />
             </>
           )}
-          <br/>
+          <br />
           {/* Adding Legend*/}
-          <table className="Legendtable" style={{fontSize: '12px'}}>
+          <table className="Legendtable" style={{ fontSize: '12px' }}>
             <thead>
-                <tr>
-                    <th scope="col">Legend</th>
-                    <th scope="col"></th>
-                </tr>
+              <tr>
+                <th scope="col">Legend</th>
+                <th scope="col"></th>
+              </tr>
             </thead>
             <tbody>
               <tr>
                 <td>
-                  <div style={{backgroundColor:'#3a70b7',width:'50px',height:'25px',borderColor:'#3a70b7'}}></div>
+                  <div
+                    style={{
+                      backgroundColor: '#3a70b7',
+                      width: '50px',
+                      height: '25px',
+                      borderColor: '#3a70b7',
+                    }}
+                  ></div>
                 </td>
                 <td>Completed to-do list item labelled for strength </td>
               </tr>
               <tr>
-              <td>
-                  <div style={{backgroundColor:'white',width:'50px',height:'25px', border:'2px solid #3a70b7'}}></div>
+                <td>
+                  <div
+                    style={{
+                      backgroundColor: 'white',
+                      width: '50px',
+                      height: '25px',
+                      border: '2px solid #3a70b7',
+                    }}
+                  ></div>
                 </td>
                 <td>Incomplete to-do list item labelled for strength </td>
               </tr>
               <tr>
                 <td>
-                  <div style={{backgroundColor:'#ef5975',width:'50px',height:'25px'}}></div>
+                  <div
+                    style={{
+                      backgroundColor: '#ef5975',
+                      width: '50px',
+                      height: '25px',
+                    }}
+                  ></div>
                 </td>
                 <td>Completed to-do list item labelled for weakness </td>
               </tr>
               <tr>
-              <td>
-                  <div style={{backgroundColor:'white',width:'50px',height:'25px', border:' 2px solid #ef5975'}}></div>
+                <td>
+                  <div
+                    style={{
+                      backgroundColor: 'white',
+                      width: '50px',
+                      height: '25px',
+                      border: ' 2px solid #ef5975',
+                    }}
+                  ></div>
                 </td>
                 <td>Incomplete to-do list item labelled for weakness </td>
               </tr>
               <tr>
                 <td>
-                  <div style={{backgroundColor:'#23bfc6',width:'50px',height:'25px'}}></div>
+                  <div
+                    style={{
+                      backgroundColor: '#23bfc6',
+                      width: '50px',
+                      height: '25px',
+                    }}
+                  ></div>
                 </td>
-                <td>Completed to-do list item labelled for action point </td>
-              </tr>
-              <tr>
-              <td>
-                  <div style={{backgroundColor:'white',width:'50px',height:'25px', border:'2px solid #23bfc6'}}></div>
-                </td>
-                <td>Incomplete to-do list item labelled for action point </td>
+                <td>Completed to-do list item labelled suggestions </td>
               </tr>
               <tr>
                 <td>
-                  <div style={{backgroundColor:'#f79633',width:'50px',height:'25px'}}></div>
+                  <div
+                    style={{
+                      backgroundColor: 'white',
+                      width: '50px',
+                      height: '25px',
+                      border: '2px solid #23bfc6',
+                    }}
+                  ></div>
+                </td>
+                <td>Incomplete to-do list item labelled suggestions </td>
+              </tr>
+              <tr>
+                <td>
+                  <div
+                    style={{
+                      backgroundColor: '#f79633',
+                      width: '50px',
+                      height: '25px',
+                    }}
+                  ></div>
                 </td>
                 <td>Completed to-do list item labelled for confused </td>
               </tr>
               <tr>
-              <td>
-                  <div style={{backgroundColor:'white',width:'50px',height:'25px', border:'2px solid #f79633'}}></div>
+                <td>
+                  <div
+                    style={{
+                      backgroundColor: 'white',
+                      width: '50px',
+                      height: '25px',
+                      border: '2px solid #f79633',
+                    }}
+                  ></div>
                 </td>
                 <td>Incomplete to-do list item labelled for confused </td>
               </tr>
               <tr>
                 <td>
-                  <div style={{backgroundColor:'#8960aa',width:'50px',height:'25px'}}></div>
+                  <div
+                    style={{
+                      backgroundColor: '#8960aa',
+                      width: '50px',
+                      height: '25px',
+                    }}
+                  ></div>
                 </td>
                 <td>Completed to-do list item labelled for other </td>
               </tr>
               <tr>
-              <td>
-                  <div style={{backgroundColor:'white',width:'50px',height:'25px', border:'2px solid #8960aa'}}></div>
+                <td>
+                  <div
+                    style={{
+                      backgroundColor: 'white',
+                      width: '50px',
+                      height: '25px',
+                      border: '2px solid #8960aa',
+                    }}
+                  ></div>
                 </td>
                 <td>Incomplete to-do list item labelled for other </td>
               </tr>
               <tr>
-              <td>
-                  <div style={{backgroundColor:'#878787',width:'50px',height:'25px', border:'2px solid #878787'}}></div>
+                <td>
+                  <div
+                    style={{
+                      backgroundColor: '#878787',
+                      width: '50px',
+                      height: '25px',
+                      border: '2px solid #878787',
+                    }}
+                  ></div>
                 </td>
                 <td>Overdue to-do list items</td>
               </tr>
-              
             </tbody>
-        </table>
+          </table>
         </div>
       </div>
- 
     </div>
   );
 }
 
 const renderEventContent = (eventInfo: any) => {
   return (
-    <div style={{ backgroundColor: eventInfo.backgroundColor, borderColor: eventInfo.borderColor, color: eventInfo.textColor, borderWidth: '2px', borderStyle: 'solid' }}>
+    <div
+      style={{
+        backgroundColor: eventInfo.backgroundColor,
+        borderColor: eventInfo.borderColor,
+        color: eventInfo.textColor,
+        borderWidth: '2px',
+        borderStyle: 'solid',
+      }}
+    >
       {eventInfo.timeText && (
         <div className="fc-event-time">{eventInfo.timeText}</div>
       )}
@@ -301,12 +407,12 @@ const renderStatus = (actionItem: any) => {
   const eventDeadline = new Date(actionItem.deadline);
 
   if (actionItem.status === 0 && eventDeadline < today) {
-    return "Overdue";
+    return 'Overdue';
   } else if (actionItem.status === 1) {
-    return "Completed";
+    return 'Completed';
   } else if (actionItem.status === 0) {
-    return "Incomplete";
+    return 'Incomplete';
   } else {
-    return "Unknown Status";
+    return 'Unknown Status';
   }
-}
+};
