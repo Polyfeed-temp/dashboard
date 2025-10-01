@@ -9,7 +9,7 @@ export interface CommonThemeFromGPTAssessment {
 
 function createChart(data: any, container: string) {
   d3.select(container).select("svg").remove();
-  const margin = { top: 20, right: 20, bottom: 50, left: 150 },
+  const margin = { top: 20, right: 20, bottom: 200, left: 150 },
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
