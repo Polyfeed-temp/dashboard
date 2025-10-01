@@ -8,9 +8,26 @@ export interface CommonThemeFromGPTAssessment {
 
 function createChart(data: any, container: string) {
   d3.select(container).select('svg').remove();
+
+  // Count unique weaknesses to calculate needed height
+  let wekanessFrequency = new Map();
+  data.forEach((d: { weakness: any[] }) => {
+    d.weakness.forEach((weakness: any) => {
+      if (!wekanessFrequency.has(weakness)) {
+        wekanessFrequency.set(weakness, 1);
+      }
+    });
+  });
+
+  const numWeaknesses = wekanessFrequency.size;
+  const minHeightPerItem = 80; // Minimum 80px per item to avoid overlap
+
   const margin = { top: 20, right: 20, bottom: 200, left: 250 },
     width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+    height =
+      Math.max(500, numWeaknesses * minHeightPerItem) -
+      margin.top -
+      margin.bottom;
 
   // Append the svg object to the body of the page
   const svg = d3
@@ -27,24 +44,23 @@ function createChart(data: any, container: string) {
   // Set up x-axis scale
   const x = d3.scaleBand().domain(units).range([0, width]).padding(0.01); // Adjust padding as needed
 
-  // Create a map to count the frequency of each weakness
-  let wekanessFrequency = new Map();
-
+  // Count frequency of each weakness
   data.forEach((d: { weakness: any[] }) => {
     d.weakness.forEach((weakness: any) => {
       if (wekanessFrequency.has(weakness)) {
         wekanessFrequency.set(weakness, wekanessFrequency.get(weakness) + 1);
       } else {
-        wekanessFrequency.set(weakness, 1);
+        wekanessFrequency.set(weakness, wekanessFrequency.get(weakness) + 1);
       }
     });
   });
+
   // Set up y-axis scale
   const y = d3
     .scaleBand()
     .domain(Array.from(wekanessFrequency.keys()))
     .range([0, height])
-    .padding(0.95);
+    .padding(0.1);
 
   // Add faces for weakness
   data.forEach((d: any, index: any) => {
@@ -56,7 +72,7 @@ function createChart(data: any, container: string) {
           .append('g')
           .attr(
             'transform',
-            `translate(${xValue + x.bandwidth() / 2}, ${yValue})`
+            `translate(${xValue + x.bandwidth() / 2}, ${yValue + y.bandwidth() / 2})`
           );
 
         // Configuration for the smaller face with blinking eyes
@@ -133,9 +149,9 @@ function createChart(data: any, container: string) {
     .call(d3.axisBottom(x))
     .selectAll('text')
     .style('text-anchor', 'end')
-    .attr('transform', 'rotate(-90)')
+    .attr('transform', 'rotate(-45)')
     .attr('dx', '-0.8em')
-    .attr('dy', '-0.6em');
+    .attr('dy', '0.15em');
 
   svg.append('g').call(d3.axisLeft(y));
 }

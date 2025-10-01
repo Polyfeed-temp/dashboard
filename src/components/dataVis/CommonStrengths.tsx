@@ -48,7 +48,7 @@ function createChart(data: CommonThemeFromGPT[], container: string) {
     .scaleBand()
     .domain(Array.from(strengthFrequency.keys()))
     .range([0, height])
-    .padding(0.95);
+    .padding(0.5);
 
   // Add circles for strengths
   data.forEach((d: { strengths: any[]; Unit: string }, index: any) => {
@@ -117,9 +117,9 @@ function createChart(data: CommonThemeFromGPT[], container: string) {
     .call(d3.axisBottom(x))
     .selectAll("text")
     .style("text-anchor", "end")
-    .attr("transform", "rotate(-90)")
+    .attr("transform", "rotate(-45)")
     .attr("dx", "-0.8em")
-    .attr("dy", "-0.6em");
+    .attr("dy", "0.15em");
 
   svg.append("g").call(d3.axisLeft(y));
 }

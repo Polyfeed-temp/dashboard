@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import * as d3 from "d3";
+import React, { useEffect } from 'react';
+import * as d3 from 'd3';
 
 export interface CommonThemeFromGPTAssessment {
   assessmentName: string;
@@ -8,43 +8,59 @@ export interface CommonThemeFromGPTAssessment {
 }
 
 function createChart(data: any, container: string) {
-  d3.select(container).select("svg").remove();
+  d3.select(container).select('svg').remove();
+
+  // Count unique strengths to calculate needed height
+  let strengthFrequency = new Map();
+  data.forEach((d: any) => {
+    d.strengths.forEach((strength: any) => {
+      if (!strengthFrequency.has(strength)) {
+        strengthFrequency.set(strength, 1);
+      }
+    });
+  });
+
+  const numStrengths = strengthFrequency.size;
+  const minHeightPerItem = 80; // Minimum 80px per item to avoid overlap
+
   const margin = { top: 20, right: 20, bottom: 200, left: 150 },
     width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+    height =
+      Math.max(500, numStrengths * minHeightPerItem) -
+      margin.top -
+      margin.bottom;
 
   // Append the svg object to the body of the page
   const svg = d3
     .select(container)
-    .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", `translate(${margin.left},${margin.top})`);
+    .append('svg')
+    .attr('width', width + margin.left + margin.right)
+    .attr('height', height + margin.top + margin.bottom)
+    .append('g')
+    .attr('transform', `translate(${margin.left},${margin.top})`);
 
   const units = data.map((d: { assessmentName: any }) => d.assessmentName);
 
   // Set up x-axis scale
   const x = d3.scaleBand().domain(units).range([0, width]).padding(0.01); // Adjust padding as needed
 
-  // Create a map to count the frequency of each strength
-  let strengthFrequency = new Map();
-
+  // Count frequency of each strength
   data.forEach((d: any) => {
     d.strengths.forEach((strength: any) => {
       if (strengthFrequency.has(strength)) {
         strengthFrequency.set(strength, strengthFrequency.get(strength) + 1);
       } else {
-        strengthFrequency.set(strength, 1);
+        strengthFrequency.set(strength, strengthFrequency.get(strength) + 1);
       }
     });
   });
+
   // Set up y-axis scale
   const y = d3
     .scaleBand()
     .domain(Array.from(strengthFrequency.keys()))
     .range([0, height])
-    .padding(0.95);
+    .padding(0.1);
 
   // Add faces for strengths
   data.forEach((d: any, index: any) => {
@@ -53,10 +69,12 @@ function createChart(data: any, container: string) {
       const yValue = y(strength);
       if (xValue !== undefined && yValue !== undefined) {
         const group = svg
-          .append("g")
+          .append('g')
           .attr(
-            "transform",
-            `translate(${xValue + x.bandwidth() / 2}, ${yValue})`
+            'transform',
+            `translate(${xValue + x.bandwidth() / 2}, ${
+              yValue + y.bandwidth() / 2
+            })`
           );
 
         // Configuration for the smaller face with blinking eyes
@@ -69,30 +87,30 @@ function createChart(data: any, container: string) {
 
         // Add the main circle (face)
         group
-          .append("ellipse")
-          .attr("cx", 0)
-          .attr("cy", 0)
-          .attr("rx", faceRadiusX)
-          .attr("ry", faceRadiusY)
-          .attr("fill", "none")
-          .attr("stroke", "#3a70b7")
-          .attr("stroke-width", 2);
+          .append('ellipse')
+          .attr('cx', 0)
+          .attr('cy', 0)
+          .attr('rx', faceRadiusX)
+          .attr('ry', faceRadiusY)
+          .attr('fill', 'none')
+          .attr('stroke', '#3a70b7')
+          .attr('stroke-width', 2);
 
         // Adding blinking eyes
         const addEyeWithBlink = (eyeXOffset: any) => {
           const eye = group
-            .append("circle")
-            .attr("cx", eyeXOffset)
-            .attr("cy", eyeOffsetY)
-            .attr("r", eyeRadius)
-            .attr("fill", "#3a70b7");
+            .append('circle')
+            .attr('cx', eyeXOffset)
+            .attr('cy', eyeOffsetY)
+            .attr('r', eyeRadius)
+            .attr('fill', '#3a70b7');
 
           eye
-            .append("animate")
-            .attr("attributeName", "r")
-            .attr("values", `${eyeRadius};0;${eyeRadius}`) // From full size to 0 to full size
-            .attr("dur", `${blinkDuration}ms`)
-            .attr("repeatCount", "indefinite");
+            .append('animate')
+            .attr('attributeName', 'r')
+            .attr('values', `${eyeRadius};0;${eyeRadius}`) // From full size to 0 to full size
+            .attr('dur', `${blinkDuration}ms`)
+            .attr('repeatCount', 'indefinite');
         };
 
         // Create both eyes with blink animation
@@ -101,42 +119,42 @@ function createChart(data: any, container: string) {
 
         // Adding the mouth
         group
-          .append("path")
-          .attr("d", "M -12.5,10 Q 0,17.5 12.5,10")
-          .attr("fill", "#3a70b7")
-          .attr("stroke", "#3a70b7")
-          .attr("stroke-width", 1.5);
+          .append('path')
+          .attr('d', 'M -12.5,10 Q 0,17.5 12.5,10')
+          .attr('fill', '#3a70b7')
+          .attr('stroke', '#3a70b7')
+          .attr('stroke-width', 1.5);
       }
     });
   });
 
   // Add X axis label
   svg
-    .append("text")
-    .attr("transform", `translate(${width / 2}, ${height + margin.bottom - 5})`)
-    .style("text-anchor", "middle")
-    .text("Assignment");
+    .append('text')
+    .attr('transform', `translate(${width / 2}, ${height + margin.bottom - 5})`)
+    .style('text-anchor', 'middle')
+    .text('Assignment');
 
   // Add Y axis label
   svg
-    .append("text")
-    .attr("transform", "rotate(-90)")
-    .attr("y", 0 - margin.left)
-    .attr("x", 0 - height / 2)
-    .attr("dy", "1em")
-    .style("text-anchor", "middle")
-    .text("Strengths");
+    .append('text')
+    .attr('transform', 'rotate(-90)')
+    .attr('y', 0 - margin.left)
+    .attr('x', 0 - height / 2)
+    .attr('dy', '1em')
+    .style('text-anchor', 'middle')
+    .text('Strengths');
   svg
-    .append("g")
-    .attr("transform", "translate(0," + height + ")")
+    .append('g')
+    .attr('transform', 'translate(0,' + height + ')')
     .call(d3.axisBottom(x))
-    .selectAll("text")
-    .style("text-anchor", "end")
-    .attr("transform", "rotate(-90)")
-    .attr("dx", "-0.8em")
-    .attr("dy", "-0.6em");
+    .selectAll('text')
+    .style('text-anchor', 'end')
+    .attr('transform', 'rotate(-45)')
+    .attr('dx', '-0.8em')
+    .attr('dy', '0.15em');
 
-  svg.append("g").call(d3.axisLeft(y));
+  svg.append('g').call(d3.axisLeft(y));
 }
 
 export function TemporalStrengthChart({
@@ -145,7 +163,7 @@ export function TemporalStrengthChart({
   data: CommonThemeFromGPTAssessment[];
 }) {
   useEffect(() => {
-    createChart(data, "#chart1");
+    createChart(data, '#chart1');
   }, []);
 
   return (
